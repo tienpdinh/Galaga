@@ -16,7 +16,9 @@ jobs:
           node-version: 12
 
       - name: Install and Build 🔧
-        run: yarn && yarn build
+        run: |
+          yarn
+          yarn build
 
       - name: Deploy 🚀
         uses: peaceiris/actions-gh-pages@v3
