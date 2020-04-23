@@ -4,9 +4,9 @@
 
 Run the following commands to get started
 
-    ```shell
-    yarn              # install dependencies
-    yarn start        # start the app
-    ```
+```bash
+yarn              # install dependencies
+yarn start        # start the app
+```
 
 That should be it!
