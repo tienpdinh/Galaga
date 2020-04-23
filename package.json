@@ -1,7 +1,7 @@
 {
   "name": "Asteroids",
   "version": "1.0.0",
-  "main": "index.html",
+  "main": "dist/index.html",
   "repository": "https://github.com/tienpdinh/Asteroids.git",
   "author": "Tien Dinh & Rafi Barash",
   "license": "MIT",

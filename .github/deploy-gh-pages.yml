@@ -1,0 +1,26 @@
+name: Deploy to Github Pages
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy-gh-pages:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 🛎️
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12
+
+      - name: Install and Build 🔧
+        - run: yarn
+        - run: yarn build
+
+      - name: Deploy 🚀
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
