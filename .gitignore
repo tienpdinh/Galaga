@@ -1,0 +1,9 @@
+# JS
+node_modules/
+
+# Parcel
+dist/
+.cache/
+
+# Mac
+.DS_Store
