@@ -1,13 +1,14 @@
 {
   "name": "Asteroids",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "index.html",
   "repository": "https://github.com/tienpdinh/Asteroids.git",
   "author": "Tien Dinh & Rafi Barash",
   "license": "MIT",
   "scripts": {
-    "start": "parcel src/index.html",
+    "dev": "parcel src/index.html",
     "watch": "parcel watch src/index.html",
+    "start": "concurrently \"yarn dev\" \"yarn watch\" ",
     "build": "parcel build src/index.html"
   },
   "dependencies": {
@@ -17,6 +18,7 @@
   "devDependencies": {
     "@babel/core": "^7.9.0",
     "@babel/plugin-proposal-class-properties": "^7.8.3",
+    "concurrently": "^5.1.0",
     "parcel-bundler": "^1.12.4",
     "typescript": "^3.8.3"
   }
