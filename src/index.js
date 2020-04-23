@@ -4,7 +4,8 @@ import App from "./App";
 
 if (WEBGL.isWebGLAvailable()) {
   // Initiate app here
-  App();
+  const app = new App();
+  app.run();
 } else {
   const warning = WEBGL.getWebGLErrorMessage();
   document.getElementById("container").appendChild(warning);

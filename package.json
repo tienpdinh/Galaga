@@ -9,7 +9,7 @@
     "dev": "parcel src/index.html",
     "watch": "parcel watch src/index.html",
     "start": "concurrently \"yarn dev\" \"yarn watch\" ",
-    "build": "parcel build src/index.html"
+    "build": "parcel build src/index.html --public-url ./"
   },
   "dependencies": {
     "simple-physics-engine": "^0.0.43",
