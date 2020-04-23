@@ -1,0 +1,1 @@
+{"version":3,"sources":["index.css"],"names":[],"mappings":"AAAA,UAEE,QAAS,CACT,WACF,CACA,WACE,UAAW,CACX,WAAY,CACZ,aACF","file":"src.86b91417.css","sourceRoot":"../src","sourcesContent":["html,\nbody {\n  margin: 0;\n  height: 100%;\n}\n#container {\n  width: 100%;\n  height: 100%;\n  display: block;\n}\n"]}
