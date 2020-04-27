@@ -20,7 +20,7 @@ That should be it!
 - [ ] Write PhysicsObject extended class for WorldProp (like a tree or house that the player could hide behind)
 - [ ] Create character camera who's position trails behind main character, ability for rotation through mouse
 - [ ] Translate character position with "WASD" keys, rotation with "QE" keys
-- [ ] Fire laser particle system from character to asteroid on mouse click
+- [ ] Fire laser particle system (extended from simple-physics-engine's ParticleSystem) from character to asteroid on mouse click
 - [ ] Remove asteroid health / destroy asteroid on collision with laser particle system
 - [ ] Remove main character health / die on collision with asteroid
 - [ ] Add alerting sound when asteroid is close to colliding with main character
