@@ -1,9 +1,5 @@
-import * as THREE from "three";
-import {
-  PhysicsEngine as AbstractPhysicsEngine,
-  Vector,
-} from "simple-physics-engine";
-import Cube from "./Cube";
+import * as THREE from 'three';
+import { PhysicsEngine as AbstractPhysicsEngine } from 'simple-physics-engine';
 
 export default class PhysicsEngine extends AbstractPhysicsEngine {
   scene;

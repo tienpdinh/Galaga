@@ -19,7 +19,18 @@
     "@babel/core": "^7.9.0",
     "@babel/plugin-proposal-class-properties": "^7.8.3",
     "concurrently": "^5.1.0",
+    "husky": ">=4",
+    "lint-staged": ">=10",
     "parcel-bundler": "^1.12.4",
+    "prettier": "^2.0.5",
     "typescript": "^3.8.3"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js,css,md}": "prettier --write"
   }
 }
