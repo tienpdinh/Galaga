@@ -14,20 +14,28 @@ export default class PhysicsEngine extends AbstractPhysicsEngine {
   }
 
   init() {
-    // Scene
+    // Create Scene
     this.scene = new THREE.Scene();
-
-    // Cube
-    this.cube = new Cube(new Vector());
-    this.addObject(this.cube);
   }
 
+  // Return the scene instance
   getScene() {
     return this.scene;
   }
 
+  // Add an object to internal objects list and the scene
   addObject(obj) {
     this.objects.push(obj);
     this.scene.add(obj.mesh);
+  }
+
+  // Add a mesh to the scene
+  addMesh(mesh) {
+    this.scene.add(mesh);
+  }
+
+  // Remove a mesh from the scene (garbage collection does not do this for you)
+  removeMesh(mesh) {
+    this.scene.remove(mesh);
   }
 }
