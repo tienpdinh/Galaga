@@ -1,6 +1,6 @@
-import AbstractLevel from "./AbstractLevel";
-import Cube from "../physics/Cube";
-import { Vector } from "simple-physics-engine";
+import AbstractLevel from './AbstractLevel';
+import Cube from '../physics/Cube';
+import { Vector } from 'simple-physics-engine';
 
 /**
  * Probably the only level this game will have. The actual game functionality goes in here

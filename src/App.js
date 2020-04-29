@@ -1,7 +1,7 @@
-import * as THREE from "three";
-import PhysicsEngine from "./physics/PhysicsEngine";
-import LevelManager, { Levels } from "./levels/LevelManager";
-import Camera from "./rendering/Camera";
+import * as THREE from 'three';
+import PhysicsEngine from './physics/PhysicsEngine';
+import LevelManager, { Levels } from './levels/LevelManager';
+import Camera from './rendering/Camera';
 
 /**
  * The main app to run the game. Initializes the game and then lets the LevelManager handle the rest
@@ -52,7 +52,7 @@ export default class App {
 
   // Initialize renderer
   createRenderer = () => {
-    const canvas = document.querySelector("#container");
+    const canvas = document.querySelector('#container');
     this.renderer = new THREE.WebGLRenderer({ canvas });
   };
 
@@ -74,7 +74,7 @@ export default class App {
   // Add event listeners
   addEventListeners = () => {
     // Event listener for window resize
-    window.addEventListener("resize", this.onWindowResize, false);
+    window.addEventListener('resize', this.onWindowResize, false);
     this.onWindowResize();
   };
 }

@@ -1,5 +1,5 @@
-import Intro from "./Intro";
-import LevelOne from "./LevelOne";
+import Intro from './Intro';
+import LevelOne from './LevelOne';
 
 const levelsArr = [Intro, LevelOne];
 

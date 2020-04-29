@@ -1,5 +1,5 @@
-import * as THREE from "three";
-import { PhysicsObject } from "simple-physics-engine";
+import * as THREE from 'three';
+import { PhysicsObject } from 'simple-physics-engine';
 
 export default class Cube extends PhysicsObject {
   geometry;

@@ -1,6 +1,6 @@
-import * as THREE from "three";
-import AbstractLevel from "./AbstractLevel";
-import { Levels } from "./LevelManager";
+import * as THREE from 'three';
+import AbstractLevel from './AbstractLevel';
+import { Levels } from './LevelManager';
 
 /**
  * First level a user sees when loading the game.
@@ -28,7 +28,7 @@ export default class Intro extends AbstractLevel {
     this.engine.removeMesh(this.titleMesh);
     this.engine.removeMesh(this.subtitleMesh);
     // Remove window eventListener for listening to "enter" key
-    window.removeEventListener("keypress", this.onPressEnter);
+    window.removeEventListener('keypress', this.onPressEnter);
   };
 
   // Add a title and subtitle to main scene
@@ -46,14 +46,14 @@ export default class Intro extends AbstractLevel {
     };
 
     loader.load(
-      "https://threejs.org/examples/fonts/helvetiker_regular.typeface.json",
+      'https://threejs.org/examples/fonts/helvetiker_regular.typeface.json',
       onFontLoad
     );
   };
 
   // Returns a mesh object for the title
   createTitleMesh = (font) => {
-    const geometry = new THREE.TextGeometry("Galaga Remake", {
+    const geometry = new THREE.TextGeometry('Galaga Remake', {
       font: font,
       size: 0.3,
       height: 0.1,
@@ -72,7 +72,7 @@ export default class Intro extends AbstractLevel {
 
   // Returns a mesh object for the subtitle
   createSubtitleMesh = (font) => {
-    const geometry = new THREE.TextGeometry("Press <ENTER> to play...", {
+    const geometry = new THREE.TextGeometry('Press <ENTER> to play...', {
       font: font,
       size: 0.1,
       height: 0.02,
@@ -90,7 +90,7 @@ export default class Intro extends AbstractLevel {
 
   addEventListeners = () => {
     // Add event listener for <Enter> key
-    window.addEventListener("keypress", this.onPressEnter, false);
+    window.addEventListener('keypress', this.onPressEnter, false);
   };
 
   // Switch levels when <Enter> is pressed
