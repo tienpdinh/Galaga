@@ -3,11 +3,11 @@ import LevelOne from './LevelOne';
 
 const levelsArr = [Intro, LevelOne];
 
-export const Levels = {
+export const Levels = Object.freeze({
   INTRO: 0,
   LEVEL_ONE: 1,
   END: 2,
-};
+});
 
 /**
  * Handles current level and initializing/cleaning up after levels
