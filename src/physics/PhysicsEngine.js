@@ -1,9 +1,13 @@
 import * as THREE from 'three';
-import { PhysicsEngine as AbstractPhysicsEngine } from 'simple-physics-engine';
+import {
+  PhysicsEngine as AbstractPhysicsEngine,
+  Vector,
+} from 'simple-physics-engine';
+import ParticleSystem from './ParticleSystem';
 
 export default class PhysicsEngine extends AbstractPhysicsEngine {
   scene;
-  cube;
+  particleSystems;
 
   constructor() {
     super();
@@ -12,6 +16,22 @@ export default class PhysicsEngine extends AbstractPhysicsEngine {
   init() {
     // Create Scene
     this.scene = new THREE.Scene();
+    this.particleSystems = [];
+  }
+
+  update(dt) {
+    // Handle collisions
+    this.handleCollisions();
+
+    // Update objects
+    for (let obj of this.objects) {
+      obj.update(dt);
+    }
+
+    // Update particle systems
+    for (let ps of this.particleSystems) {
+      ps.update(dt);
+    }
   }
 
   // Return the scene instance
@@ -23,6 +43,13 @@ export default class PhysicsEngine extends AbstractPhysicsEngine {
   addObject(obj) {
     this.objects.push(obj);
     this.scene.add(obj.mesh);
+  }
+
+  createParticleSystem(type, options = {}) {
+    const ps = new ParticleSystem();
+    ps.setPropsByType(type, options);
+    this.particleSystems.push(ps);
+    this.scene.add(ps.getMesh());
   }
 
   // Add a mesh to the scene

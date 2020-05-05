@@ -5097,11 +5097,12 @@ signal-exit@^3.0.2:
   resolved "https://registry.yarnpkg.com/signal-exit/-/signal-exit-3.0.3.tgz#a1410c2edd8f077b08b4e253c8eacfcaf057461c"
   integrity sha512-VUJ49FC8U1OxwZLxIbTTrDvLnf/6TDgxZcK8wxR8zs13xpx7xbG60ndBlhNrFi2EMuFRoeDoJO7wthSLq42EjA==
 
-simple-physics-engine@^0.0.43:
-  version "0.0.43"
-  resolved "https://registry.yarnpkg.com/simple-physics-engine/-/simple-physics-engine-0.0.43.tgz#6aff5f6ced60fe1ebcd82c5f8648e9a347932884"
-  integrity sha512-Ru+GI0dyFfj81iFWZg2Mtla6wY6vCzuip+Z7kABq9p6sm2SaVWEhRhoH+x/088vM/dpoX/VsgkaxnI915sq5rg==
+simple-physics-engine@^0.0.47:
+  version "0.0.47"
+  resolved "https://registry.yarnpkg.com/simple-physics-engine/-/simple-physics-engine-0.0.47.tgz#047408f730386bc4ddcbde12759c8a481d223ce0"
+  integrity sha512-yUaEf/+J/WKpyR9x9OXpWBeeP8BgeJs7FTQJhZGbvfAqLznQvA66JMr5v5/VzGg9T5h524aoQZSj+xP7+WN29A==
   dependencies:
+    three "^0.116.1"
     tinyqueue "^2.0.3"
 
 simple-swizzle@^0.2.2:
@@ -5526,6 +5527,11 @@ three@^0.115.0:
   version "0.115.0"
   resolved "https://registry.yarnpkg.com/three/-/three-0.115.0.tgz#540d800c381b9da2334c024f0fbe4d23f84eb05e"
   integrity sha512-mAV2Ky3RdcbdSbR9capI+tKLvRldWYxd4151PZTT/o7+U2jh9Is3a4KmnYwzyUAhB2ZA3pXSgCd2DOY4Tj5kow==
+
+three@^0.116.1:
+  version "0.116.1"
+  resolved "https://registry.yarnpkg.com/three/-/three-0.116.1.tgz#a393f7a81fdc3e2fbf57ded5ba47dc5bd3678ce0"
+  integrity sha512-l2JCMiA/lVZAuSrLWRYMalvpR+0j8hbIhCpfs4V6JFnw2+JQEQJ5HltNpfFr+9TDpQts1BhtcISehWf/xBGPvQ==
 
 through2@^2.0.0, through2@~2.0.3:
   version "2.0.5"

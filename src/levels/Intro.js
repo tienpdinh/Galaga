@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import AbstractLevel from './AbstractLevel';
 import { Levels } from './LevelManager';
+import ParticleSystem from '../physics/ParticleSystem';
 
 /**
  * First level a user sees when loading the game.
@@ -19,6 +20,7 @@ export default class Intro extends AbstractLevel {
 
   init = () => {
     this.addText();
+    this.addStarTunnel();
     // TODO: Add particle system space background
     this.addEventListeners();
   };
@@ -51,20 +53,25 @@ export default class Intro extends AbstractLevel {
     );
   };
 
+  // Creates star tunnel particle system
+  addStarTunnel = () => {
+    this.engine.createParticleSystem('STAR_TUNNEL');
+  };
+
   // Returns a mesh object for the title
   createTitleMesh = (font) => {
     const geometry = new THREE.TextGeometry('Galaga Remake', {
       font: font,
-      size: 0.3,
-      height: 0.1,
+      size: 15,
+      height: 5,
       curveSegments: 4,
       bevelEnabled: true,
-      bevelThickness: 0.02,
-      bevelSize: 0.01,
-      bevelSegments: 2,
+      bevelThickness: 2,
+      bevelSize: 1,
+      bevelSegments: 20,
     });
     geometry.center();
-    geometry.translate(0, 0.5, 0);
+    geometry.translate(0, 15, 400);
     const material = new THREE.MeshNormalMaterial();
     const mesh = new THREE.Mesh(geometry, material);
     return mesh;
@@ -74,15 +81,16 @@ export default class Intro extends AbstractLevel {
   createSubtitleMesh = (font) => {
     const geometry = new THREE.TextGeometry('Press <ENTER> to play...', {
       font: font,
-      size: 0.1,
-      height: 0.02,
+      size: 6.5,
+      height: 0.5,
       curveSegments: 4,
       bevelEnabled: true,
-      bevelThickness: 0.01,
-      bevelSize: 0.005,
-      bevelSegments: 2,
+      bevelThickness: 1,
+      bevelSize: 0.5,
+      bevelSegments: 20,
     });
     geometry.center();
+    geometry.translate(0, -10, 400);
     const material = new THREE.MeshNormalMaterial();
     const mesh = new THREE.Mesh(geometry, material);
     return mesh;
