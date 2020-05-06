@@ -62,16 +62,16 @@ export default class Intro extends AbstractLevel {
   createTitleMesh = (font) => {
     const geometry = new THREE.TextGeometry('Galaga Remake', {
       font: font,
-      size: 15,
-      height: 5,
+      size: 6,
+      height: 1.5,
       curveSegments: 4,
       bevelEnabled: true,
-      bevelThickness: 2,
-      bevelSize: 1,
+      bevelThickness: 0.7,
+      bevelSize: 0.3,
       bevelSegments: 20,
     });
     geometry.center();
-    geometry.translate(0, 15, 400);
+    geometry.translate(0, 10, 460);
     const material = new THREE.MeshNormalMaterial();
     const mesh = new THREE.Mesh(geometry, material);
     return mesh;
@@ -81,16 +81,16 @@ export default class Intro extends AbstractLevel {
   createSubtitleMesh = (font) => {
     const geometry = new THREE.TextGeometry('Press <ENTER> to play...', {
       font: font,
-      size: 6.5,
-      height: 0.5,
+      size: 2,
+      height: 0.1,
       curveSegments: 4,
       bevelEnabled: true,
-      bevelThickness: 1,
-      bevelSize: 0.5,
+      bevelThickness: 0.2,
+      bevelSize: 0.1,
       bevelSegments: 20,
     });
     geometry.center();
-    geometry.translate(0, -10, 400);
+    geometry.translate(0, -2, 460);
     const material = new THREE.MeshNormalMaterial();
     const mesh = new THREE.Mesh(geometry, material);
     return mesh;
