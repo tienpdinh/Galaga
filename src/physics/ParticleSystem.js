@@ -48,13 +48,13 @@ export default class ParticleSystem extends PSystem {
 
     this.particles = liveParticles;
 
-    console.log(
-      'isDead: ',
-      this.isDead(),
-      '... numParticles: ',
-      this.particles.length
-    );
-    console.log(this.mesh);
+    // console.log(
+    //   'isDead: ',
+    //   this.isDead(),
+    //   '... numParticles: ',
+    //   this.particles.length
+    // );
+    // console.log(this.mesh);
     // this.geometry.verticesNeedUpdate = true;
     this.geometry.setDrawRange(0, this.particles.length % this.maxPoints);
     this.geometry.attributes.position.needsUpdate = true;
@@ -131,9 +131,9 @@ export default class ParticleSystem extends PSystem {
         //   this.colorBase.y,
         //   this.colorBase.z
         // ),
-        color: 0xffffff,
         // map: this.particleTexture,
         // TODO: Get above texture mapping to work
+        color: 0xffffff,
         size: 0.1,
         blending: this.blendStyle,
         transparent: true,

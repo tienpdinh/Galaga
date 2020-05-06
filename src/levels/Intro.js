@@ -21,8 +21,8 @@ export default class Intro extends AbstractLevel {
   init = () => {
     this.addText();
     this.addStarTunnel();
-    // TODO: Add particle system space background
     this.addEventListeners();
+    this.addSound();
   };
 
   cleanup = () => {
@@ -94,6 +94,24 @@ export default class Intro extends AbstractLevel {
     const material = new THREE.MeshNormalMaterial();
     const mesh = new THREE.Mesh(geometry, material);
     return mesh;
+  };
+
+  addSound = () => {
+    const audioLoader = new THREE.AudioLoader();
+    const listener = new THREE.AudioListener();
+    const audio = new THREE.Audio(listener);
+    audio.crossOrigin = 'anonymous';
+    // const streamUrl =
+    // 'https://cdn.rawgit.com/ellenprobst/web-audio-api-with-Threejs/57582104/lib/TheWarOnDrugs.m4a';
+    // const streamUrl =
+    //   'https://misc-files-121.storage.googleapis.com/starwars_gameplay.ogg';
+    // const streamUrl =
+    //   'https://storage.googleapis.com/misc-files-121/starwars_gameplay.ogg';
+    audioLoader.load(streamUrl, function (buffer) {
+      audio.setBuffer(buffer);
+      audio.setLoop(true);
+      audio.play();
+    });
   };
 
   addEventListeners = () => {
