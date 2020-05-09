@@ -149,11 +149,11 @@ export default class ParticleSystem extends PSystem {
 const StarTunnelProps = {
   posStyle: ParticleSystem.ShapeType.CUBE,
   posBase: new Vector(0, 0, 350),
-  posSpread: new Vector(10, 10, 10),
+  posSpread: new Vector(5, 5, 5),
 
   velStyle: ParticleSystem.ShapeType.CUBE,
   velBase: new Vector(0, 0, 0.2),
-  velSpread: new Vector(0.1, 0.1, 0.05),
+  velSpread: new Vector(0.1, 0.1, 0.1),
 
   angleBase: 0,
   angleSpread: 720,
@@ -171,7 +171,7 @@ const StarTunnelProps = {
   opacityBase: 1,
 
   // genRate: 20000,
-  genRate: 4,
+  genRate: 0.8,
   particleLifespan: 600,
   lifespan: Infinity,
 };

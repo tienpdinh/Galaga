@@ -1,6 +1,7 @@
 import AbstractLevel from './AbstractLevel';
-import Cube from '../physics/Cube';
+import Player from '../physics/Player';
 import { Vector } from 'simple-physics-engine';
+import Enemy from '../physics/Enemy';
 
 /**
  * Probably the only level this game will have. The actual game functionality goes in here
@@ -14,38 +15,47 @@ export default class LevelOne extends AbstractLevel {
 
   constructor(engine, renderer, camera, switchLevel) {
     super(engine, renderer, camera, switchLevel);
+    this.enemies = [];
   }
 
   init = () => {
-    this.spawnPlayer(new Vector(0, -70, 400));
+    this.spawnPlayer();
     this.addEventListeners();
     this.spawnEnemies();
   };
 
-  spawnPlayer = (pos) => {
+  spawnPlayer = () => {
     // The player will be initialized to the bottom middle of the screen
-    this.player = new Cube(pos);
+    this.player = new Player(new Vector(0, -20, 450));
     this.engine.addObject(this.player);
   };
 
-  spawnEnemies = () => {};
+  spawnEnemies = () => {
+    const enemy1 = new Enemy(new Vector(-70, -20, 150));
+    const enemy2 = new Enemy(new Vector(0, -20, 150));
+    const enemy3 = new Enemy(new Vector(70, -20, 150));
+    this.enemies.push(enemy1, enemy2, enemy3);
+    for (let enemy of this.enemies) {
+      this.engine.addObject(enemy);
+    }
+  };
 
   movePlayer = (e) => {
-    if (e.keyCode === 68) {
+    if (e.keyCode === 68 || e.keyCode === 39) {
       // move right
-      this.player.setVel(new Vector(0.1, 0, 0));
+      this.player.setVel(new Vector(0.3, 0, 0));
     }
-    if (e.keyCode === 65) {
+    if (e.keyCode === 65 || e.keyCode === 37) {
       // move left
-      this.player.setVel(new Vector(-0.1, 0, 0));
+      this.player.setVel(new Vector(-0.3, 0, 0));
     }
-    if (e.keyCode === 87) {
+    if (e.keyCode === 87 || e.keyCode === 38) {
       // move up
-      this.player.setVel(new Vector(0, 0, -0.1));
+      this.player.setVel(new Vector(0, 0, -0.3));
     }
-    if (e.keyCode === 83) {
+    if (e.keyCode === 83 || e.keyCode === 40) {
       // move down
-      this.player.setVel(new Vector(0, 0, 0.1));
+      this.player.setVel(new Vector(0, 0, 0.3));
     }
   };
 
