@@ -1,7 +1,6 @@
 import * as THREE from 'three';
 import AbstractLevel from './AbstractLevel';
 import { Levels } from './LevelManager';
-import ParticleSystem from '../physics/ParticleSystem';
 
 /**
  * First level a user sees when loading the game.
@@ -101,12 +100,9 @@ export default class Intro extends AbstractLevel {
     const listener = new THREE.AudioListener();
     const audio = new THREE.Audio(listener);
     audio.crossOrigin = 'anonymous';
-    // const streamUrl =
-    // 'https://cdn.rawgit.com/ellenprobst/web-audio-api-with-Threejs/57582104/lib/TheWarOnDrugs.m4a';
-    // const streamUrl =
-    //   'https://misc-files-121.storage.googleapis.com/starwars_gameplay.ogg';
-    // const streamUrl =
-    //   'https://storage.googleapis.com/misc-files-121/starwars_gameplay.ogg';
+    // TODO: fix cors issue with loading sound file
+    const streamUrl =
+      'https://storage.googleapis.com/misc-files-121/starwars_gameplay.ogg';
     audioLoader.load(streamUrl, function (buffer) {
       audio.setBuffer(buffer);
       audio.setLoop(true);
