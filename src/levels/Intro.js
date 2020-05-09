@@ -21,7 +21,7 @@ export default class Intro extends AbstractLevel {
     this.addText();
     this.addStarTunnel();
     this.addEventListeners();
-    this.addSound();
+    // this.addSound();
   };
 
   cleanup = () => {
