@@ -1,7 +1,8 @@
+import { Vector } from 'simple-physics-engine';
 import AbstractLevel from './AbstractLevel';
 import Player from '../physics/Player';
-import { Vector } from 'simple-physics-engine';
 import Enemy from '../physics/Enemy';
+import { PSystemType } from '../physics/ParticleSystem';
 
 /**
  * Probably the only level this game will have. The actual game functionality goes in here
@@ -63,9 +64,19 @@ export default class LevelOne extends AbstractLevel {
     this.player.setVel(new Vector());
   };
 
+  spawnLaser = (e) => {
+    const keyCode = 32; // SPACE
+    const { pos } = this.player;
+    if (e.keyCode === keyCode) {
+      // TODO: Create laser particle system shooting out in z direction
+      this.engine.createParticleSystem(PSystemType.LASER, { pos });
+    }
+  };
+
   addEventListeners = () => {
     window.addEventListener('keydown', this.movePlayer, false);
     window.addEventListener('keyup', this.stopPlayer, false);
+    window.addEventListener('keypress', this.spawnLaser, false);
   };
 
   cleanup = () => {};

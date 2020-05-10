@@ -58,7 +58,7 @@ export default class LevelManager {
   // Updates the game state
   update = (dt) => {
     dt *= 0.001; // convert time to seconds
-    this.engine.update(dt);
+    this.engine.update(8);
   };
 
   // Renders the game

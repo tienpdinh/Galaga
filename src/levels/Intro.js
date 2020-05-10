@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import AbstractLevel from './AbstractLevel';
 import { Levels } from './LevelManager';
+import { PSystemType } from '../physics/ParticleSystem';
 
 /**
  * First level a user sees when loading the game.
@@ -54,7 +55,7 @@ export default class Intro extends AbstractLevel {
 
   // Creates star tunnel particle system
   addStarTunnel = () => {
-    this.engine.createParticleSystem('STAR_TUNNEL');
+    this.engine.createParticleSystem(PSystemType.STAR_TUNNEL);
   };
 
   // Returns a mesh object for the title

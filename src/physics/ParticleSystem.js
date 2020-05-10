@@ -5,6 +5,11 @@ import {
   Tween,
 } from 'simple-physics-engine';
 
+export const PSystemType = Object.freeze({
+  STAR_TUNNEL: 1,
+  LASER: 2,
+});
+
 export default class ParticleSystem extends PSystem {
   // THREE.js stuff
   geometry;
@@ -80,8 +85,10 @@ export default class ParticleSystem extends PSystem {
 
   setPropsByType = (type, options) => {
     let props = {};
-    if (type === 'STAR_TUNNEL') {
+    if (type === PSystemType.STAR_TUNNEL) {
       props = this.getStarTunnelProps(options);
+    } else if (type === PSystemType.LASER) {
+      props = this.getLaserProps(options);
     } else {
       throw new Error(
         `Trying to create unsupported particle system of type: "${type}"`
@@ -94,23 +101,28 @@ export default class ParticleSystem extends PSystem {
   };
 
   getStarTunnelProps = (options) => {
-    const props = StarTunnelProps;
-    // merge options into props
-    if (options.pos) props.posBase = pos;
+    let props = StarTunnelProps;
+    props = this.mergeOptionsWithProps(options, props);
 
-    return StarTunnelProps;
+    return props;
+  };
+
+  getLaserProps = (options) => {
+    let props = LaserProps;
+    props = this.mergeOptionsWithProps(options, props);
+
+    return props;
+  };
+
+  mergeOptionsWithProps = (options, props) => {
+    if (options.pos) props.posBase = options.pos;
+    return props;
   };
 
   getMesh() {
     if (!this.mesh) {
       this.geometry = new THREE.BufferGeometry();
-      // attributes
       this.geomParticles = new Float32Array(this.maxPoints * 3);
-      // this.geomParticles = [];
-      // for (let i = 0; i < MAX_POINTS; i++) {
-      //   this.geomParticles.push(0, 0, 0);
-      // }
-      // this.particles = new Array(MAX_POINTS)
       this.geometry.setAttribute(
         'position',
         new THREE.BufferAttribute(this.geomParticles, 3) // x,y,z==3
@@ -126,19 +138,17 @@ export default class ParticleSystem extends PSystem {
       //   depthTest: true,
       // });
       this.material = new THREE.PointsMaterial({
-        // color: new THREE.Color().setHSL(
-        //   this.colorBase.x,
-        //   this.colorBase.y,
-        //   this.colorBase.z
-        // ),
         // map: this.particleTexture,
         // TODO: Get above texture mapping to work
-        color: 0xffffff,
-        size: 0.1,
+        color: new THREE.Color().setRGB(
+          this.colorBase.x,
+          this.colorBase.y,
+          this.colorBase.z
+        ),
+        size: this.radiusBase,
         blending: this.blendStyle,
         transparent: true,
       });
-      // this.material = new THREE.PointsMaterial({ color: 0xffffff });
       this.mesh = new THREE.Points(this.geometry, this.material);
     }
 
@@ -165,13 +175,43 @@ const StarTunnelProps = {
   ),
   blendStyle: THREE.AdditiveBlending,
 
-  radiusBase: 4.0,
-  radiusSpread: 2.0,
-  colorBase: new Vector(0.15, 1.0, 0.8), // H,S,L
+  radiusBase: 0.1,
+  radiusSpread: 0,
+  colorBase: new Vector(255, 255, 255), // H,S,L
   opacityBase: 1,
 
   // genRate: 20000,
   genRate: 0.8,
   particleLifespan: 600,
   lifespan: Infinity,
+};
+
+const LaserProps = {
+  posStyle: ParticleSystem.ShapeType.CUBE,
+  posBase: new Vector(0, 0, 350),
+  posSpread: new Vector(1, 1, 10),
+
+  velStyle: ParticleSystem.ShapeType.CUBE,
+  velBase: new Vector(0, 0, -0.4),
+  velSpread: new Vector(0.001, 0.001, 0.1),
+
+  angleBase: 0,
+  angleSpread: 720,
+  angleVelBase: 10,
+  angleVelSpread: 0,
+
+  particleTexture: new THREE.TextureLoader().load(
+    '../assets/images/spikey.png'
+  ),
+  blendStyle: THREE.AdditiveBlending,
+
+  radiusBase: 1,
+  radiusSpread: 0,
+  colorBase: new Vector(0, 0, 255), // RGB
+  opacityBase: 1,
+
+  // genRate: 20000,
+  genRate: 50,
+  particleLifespan: 700,
+  lifespan: 1,
 };
