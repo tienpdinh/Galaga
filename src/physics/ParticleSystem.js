@@ -5,6 +5,10 @@ import {
   Tween,
 } from 'simple-physics-engine';
 
+// Images
+import sparkImg from '../assets/images/spark.png';
+import spikeyImg from '../assets/images/spikey.png';
+
 export const PSystemType = Object.freeze({
   STAR_TUNNEL: 1,
   LASER: 2,
@@ -142,7 +146,7 @@ export default class ParticleSystem extends PSystem {
       //   depthTest: true,
       // });
       this.material = new THREE.PointsMaterial({
-        // map: this.particleTexture,
+        map: this.particleTexture,
         // TODO: Get above texture mapping to work
         color: new THREE.Color().setRGB(
           this.colorBase.x,
@@ -174,12 +178,10 @@ const StarTunnelProps = {
   angleVelBase: 10,
   angleVelSpread: 0,
 
-  particleTexture: new THREE.TextureLoader().load(
-    '../assets/images/spikey.png'
-  ),
+  particleTexture: new THREE.TextureLoader().load(spikeyImg),
   blendStyle: THREE.AdditiveBlending,
 
-  radiusBase: 0.1,
+  radiusBase: 0.5,
   radiusSpread: 0,
   colorBase: new Vector(255, 255, 255), // H,S,L
   opacityBase: 1,
@@ -203,9 +205,7 @@ const LaserProps = {
   angleVelBase: 10,
   angleVelSpread: 0,
 
-  particleTexture: new THREE.TextureLoader().load(
-    '../assets/images/spikey.png'
-  ),
+  particleTexture: new THREE.TextureLoader().load(spikeyImg),
   blendStyle: THREE.AdditiveBlending,
 
   radiusBase: 3,
@@ -249,12 +249,12 @@ const ExplosionProps = {
   speedBase: 1,
   speedSpread: 0.1,
 
-  particleTexture: new THREE.TextureLoader().load('../assets/images/spark.png'),
+  particleTexture: new THREE.TextureLoader().load(sparkImg),
   blendStyle: THREE.AdditiveBlending,
 
-  radiusTween: new Tween([50, 50, 50], [200, 200, 200]),
-  opacityTween: new Tween([50, 50, 50], [200, 200, 200]),
-  colorTween: new Tween([50, 50, 50], [200, 200, 200]),
+  radiusTween: new Tween([10, 10, 10], [100, 100, 100]),
+  opacityTween: new Tween([10, 10, 10], [220, 220, 220]),
+  colorTween: new Tween([10, 10, 10], [220, 220, 220]),
 
   genRate: 75,
   particleLifespan: 50,
