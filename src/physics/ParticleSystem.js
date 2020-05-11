@@ -152,7 +152,7 @@ export default class ParticleSystem extends PSystem {
 const StarTunnelProps = {
   posStyle: ParticleSystem.ShapeType.CUBE,
   posBase: new Vector(0, 0, 350),
-  posSpread: new Vector(5, 5, 5),
+  posSpread: new Vector(0.1, 0.1, 5),
 
   velStyle: ParticleSystem.ShapeType.CUBE,
   velBase: new Vector(0, 0, 0.2),
@@ -181,7 +181,7 @@ const StarTunnelProps = {
 
 const LaserProps = {
   posStyle: ParticleSystem.ShapeType.CUBE,
-  posSpread: new Vector(1, 1, 10),
+  posSpread: new Vector(0.5, 0.5, 3),
 
   velStyle: ParticleSystem.ShapeType.CUBE,
   velBase: new Vector(0, 0, -0.4),
@@ -197,7 +197,7 @@ const LaserProps = {
   ),
   blendStyle: THREE.AdditiveBlending,
 
-  radiusBase: 10,
+  radiusBase: 3,
   radiusSpread: 0,
   colorBase: new Vector(0, 0, 255), // RGB
   opacityBase: 1,
