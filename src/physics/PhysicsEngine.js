@@ -52,6 +52,8 @@ export default class PhysicsEngine extends AbstractPhysicsEngine {
           for (let p of ps.particles) {
             // Compare object against every particle in ps
             const pCollider = p.getCollider();
+            pCollider.center = p.pos.copy();
+            // console.log(obj, p);
             const intersectData = objCollider.intersect(pCollider);
 
             // If intersecting, do collision response

@@ -13,7 +13,7 @@
     "build": "parcel build src/index.html --public-url ./"
   },
   "dependencies": {
-    "simple-physics-engine": "^0.0.52",
+    "simple-physics-engine": "^0.0.53",
     "three": "^0.115.0"
   },
   "devDependencies": {
