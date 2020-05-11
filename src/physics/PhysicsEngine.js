@@ -60,6 +60,9 @@ export default class PhysicsEngine extends AbstractPhysicsEngine {
             if (intersectData.doesIntersect) {
               // TODO: Initialize explosion here, remove both laser and object
               console.log('Collision detected!');
+              this.createParticleSystem(PSystemType.EXPLOSION, {
+                pos: obj.pos,
+              });
             }
           }
         }

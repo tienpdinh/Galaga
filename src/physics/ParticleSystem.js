@@ -8,6 +8,7 @@ import {
 export const PSystemType = Object.freeze({
   STAR_TUNNEL: 1,
   LASER: 2,
+  EXPLOSION: 3,
 });
 
 export default class ParticleSystem extends PSystem {
@@ -82,6 +83,9 @@ export default class ParticleSystem extends PSystem {
     } else if (type === PSystemType.LASER) {
       props = this.getLaserProps(options);
       this.type = PSystemType.LASER;
+    } else if (type === PSystemType.EXPLOSION) {
+      props = this.getExplosionProps(options);
+      this.type = PSystemType.EXPLOSION;
     } else {
       throw new Error(
         `Trying to create unsupported particle system of type: "${type}"`
@@ -102,6 +106,13 @@ export default class ParticleSystem extends PSystem {
 
   getLaserProps = (options) => {
     let props = LaserProps;
+    props = this.mergeOptionsWithProps(options, props);
+
+    return props;
+  };
+
+  getExplosionProps = (options) => {
+    let props = ExplosionProps;
     props = this.mergeOptionsWithProps(options, props);
 
     return props;
@@ -207,4 +218,45 @@ const LaserProps = {
   particleLifespan: 700,
   lifespan: 1,
   isCollidable: true,
+};
+
+// positionStyle  : Type.SPHERE,
+// 		positionBase   : new THREE.Vector3( 0, 100, 0 ),
+// 		positionRadius : 10,
+
+// 		velocityStyle  : Type.SPHERE,
+// 		speedBase      : 90,
+// 		speedSpread    : 10,
+
+// 		accelerationBase : new THREE.Vector3( 0, -80, 0 ),
+
+// 		particleTexture : THREE.ImageUtils.loadTexture( 'images/spark.png' ),
+
+// 		sizeTween    : new Tween( [0.5, 0.7, 1.3], [5, 40, 1] ),
+// 		opacityTween : new Tween( [0.2, 0.7, 2.5], [0.75, 1, 0] ),
+// 		colorTween   : new Tween( [0.4, 0.8, 1.0], [ new THREE.Vector3(0,1,1), new THREE.Vector3(0,1,0.6), new THREE.Vector3(0.8, 1, 0.6) ] ),
+// 		blendStyle   : THREE.AdditiveBlending,
+
+// 		particlesPerSecond : 3000,
+// 		particleDeathAge   : 2.5,
+// 		emitterDeathAge    : 0.2
+
+const ExplosionProps = {
+  posStyle: ParticleSystem.ShapeType.SPHERE,
+  posRadius: 1,
+
+  velStyle: ParticleSystem.ShapeType.SPHERE,
+  speedBase: 1,
+  speedSpread: 0.1,
+
+  particleTexture: new THREE.TextureLoader().load('../assets/images/spark.png'),
+  blendStyle: THREE.AdditiveBlending,
+
+  radiusTween: new Tween([50, 50, 50], [200, 200, 200]),
+  opacityTween: new Tween([50, 50, 50], [200, 200, 200]),
+  colorTween: new Tween([50, 50, 50], [200, 200, 200]),
+
+  genRate: 75,
+  particleLifespan: 50,
+  lifespan: 1,
 };
