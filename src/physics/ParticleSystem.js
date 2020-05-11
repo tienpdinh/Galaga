@@ -12,6 +12,7 @@ export const PSystemType = Object.freeze({
 
 export default class ParticleSystem extends PSystem {
   // THREE.js stuff
+  type;
   geometry;
   geomParticles; // just particle positions array
   material;
@@ -28,8 +29,8 @@ export default class ParticleSystem extends PSystem {
     const liveParticles = [];
     const positions = this.geometry.attributes.position.array;
     let idx = 0;
-    // const threeLiveParticles = [];
 
+    // Loop through particles and update live particles
     for (let i = 0; i < this.particles.length; i++) {
       let p = this.particles[i];
       if (!p.isDead()) {
@@ -39,28 +40,18 @@ export default class ParticleSystem extends PSystem {
         positions[idx++] = p.pos.x;
         positions[idx++] = p.pos.y;
         positions[idx++] = p.pos.z;
-        // positions[i] = [p.pos.x, p.pos.y, p.pos.z];
       }
     }
 
-    // this.geometry.setFromPoints(threeLiveParticles);
-
+    // If PSystem alive, generate more particles and push to liveParticles
     if (!this.isDead()) {
       this.lifespan -= dt;
       const newParticles = this.genParticles(dt);
       liveParticles.push(...newParticles);
     }
-
     this.particles = liveParticles;
 
-    // console.log(
-    //   'isDead: ',
-    //   this.isDead(),
-    //   '... numParticles: ',
-    //   this.particles.length
-    // );
-    // console.log(this.mesh);
-    // this.geometry.verticesNeedUpdate = true;
+    // Update geometry
     this.geometry.setDrawRange(0, this.particles.length % this.maxPoints);
     this.geometry.attributes.position.needsUpdate = true;
   };
@@ -74,6 +65,7 @@ export default class ParticleSystem extends PSystem {
     const newParticles = [];
     for (let i = 0; i < numParticles; i++) {
       let p = this.genParticle();
+      console.log(p);
       newParticles.push(p);
       positions[len * 3 + idx++] = p.pos.x;
       positions[len * 3 + idx++] = p.pos.y;
@@ -87,8 +79,10 @@ export default class ParticleSystem extends PSystem {
     let props = {};
     if (type === PSystemType.STAR_TUNNEL) {
       props = this.getStarTunnelProps(options);
+      this.type = PSystemType.STAR_TUNNEL;
     } else if (type === PSystemType.LASER) {
       props = this.getLaserProps(options);
+      this.type = PSystemType.LASER;
     } else {
       throw new Error(
         `Trying to create unsupported particle system of type: "${type}"`
@@ -188,7 +182,6 @@ const StarTunnelProps = {
 
 const LaserProps = {
   posStyle: ParticleSystem.ShapeType.CUBE,
-  posBase: new Vector(0, 0, 350),
   posSpread: new Vector(1, 1, 10),
 
   velStyle: ParticleSystem.ShapeType.CUBE,
@@ -205,13 +198,14 @@ const LaserProps = {
   ),
   blendStyle: THREE.AdditiveBlending,
 
-  radiusBase: 1,
+  radiusBase: 10,
   radiusSpread: 0,
   colorBase: new Vector(0, 0, 255), // RGB
   opacityBase: 1,
 
   // genRate: 20000,
-  genRate: 50,
+  genRate: 1,
   particleLifespan: 700,
   lifespan: 1,
+  isCollidable: true,
 };

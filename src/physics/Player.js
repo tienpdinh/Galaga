@@ -37,5 +37,6 @@ export default class Player extends AbstractModel {
     // this.mesh.rotation.y = dt;
     super.update(dt);
     this.mesh.position.set(this.pos.x, this.pos.y, this.pos.z);
+    console.log(this.pos);
   }
 }

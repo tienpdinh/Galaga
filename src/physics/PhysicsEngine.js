@@ -3,7 +3,7 @@ import {
   PhysicsEngine as AbstractPhysicsEngine,
   Vector,
 } from 'simple-physics-engine';
-import ParticleSystem from './ParticleSystem';
+import ParticleSystem, { PSystemType } from './ParticleSystem';
 
 export default class PhysicsEngine extends AbstractPhysicsEngine {
   scene;
@@ -29,8 +29,39 @@ export default class PhysicsEngine extends AbstractPhysicsEngine {
     }
 
     // Update particle systems
+    const livePsArr = [];
     for (let ps of this.particleSystems) {
-      ps.update(dt);
+      if (!ps.isDead() || ps.particles.length > 0) {
+        ps.update(dt);
+        livePsArr.push(ps);
+      } else {
+        this.removeMesh(ps.getMesh());
+      }
+    }
+
+    this.particleSystems = livePsArr;
+  }
+
+  handleCollisions() {
+    // Handle collisions between lasers and game objects
+    for (let obj of this.objects) {
+      const objCollider = obj.getCollider();
+      for (let ps of this.particleSystems) {
+        // Make sure particle system is a laser
+        if (ps.type === PSystemType.LASER) {
+          for (let p of ps.particles) {
+            // Compare object against every particle in ps
+            const pCollider = p.getCollider();
+            const intersectData = objCollider.intersect(pCollider);
+
+            // If intersecting, do collision response
+            if (intersectData.doesIntersect) {
+              // TODO: Initialize explosion here, remove both laser and object
+              console.log('Collision detected!');
+            }
+          }
+        }
+      }
     }
   }
 
@@ -49,7 +80,7 @@ export default class PhysicsEngine extends AbstractPhysicsEngine {
     const ps = new ParticleSystem();
     ps.setPropsByType(type, options);
     this.particleSystems.push(ps);
-    this.scene.add(ps.getMesh());
+    this.addMesh(ps.getMesh());
   }
 
   // Add a mesh to the scene
