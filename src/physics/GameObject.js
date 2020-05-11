@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { PhysicsObject, Vector } from 'simple-physics-engine';
+import { PhysicsObject, Vector, AABB } from 'simple-physics-engine';
 
 export default class GameObject extends PhysicsObject {
   geometry;
@@ -13,10 +13,18 @@ export default class GameObject extends PhysicsObject {
   constructor(pos, dim, col = 0x44aa88) {
     super(pos, {}); // Second parameter is init options like starting vel, etc
 
-    // Geometry
+    // Add AABB Collider
     this.width = dim[0];
     this.height = dim[1];
     this.depth = dim[2];
+    const minExtents = pos.copy();
+    const maxExtents = Vector.add(
+      minExtents,
+      new Vector(this.width, this.height, this.depth)
+    );
+    this.setCollider(new AABB(minExtents, maxExtents));
+
+    // Geometry
     this.color = col;
     this.geometry = new THREE.BoxGeometry(this.width, this.height, this.depth);
 
@@ -28,14 +36,5 @@ export default class GameObject extends PhysicsObject {
     // Mesh
     this.mesh = new THREE.Mesh(this.geometry, this.material);
     this.mesh.position.set(pos.x, pos.y, pos.z);
-  }
-
-  // Update state of cube... by default this just performs euleriean integration but I'm overriding it to directly add rotation
-  update(dt) {
-    // Let's stop rotating for now
-    // this.mesh.rotation.x = dt;
-    // this.mesh.rotation.y = dt;
-    super.update(dt);
-    this.mesh.position.set(this.pos.x, this.pos.y, this.pos.z);
   }
 }

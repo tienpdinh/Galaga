@@ -65,7 +65,6 @@ export default class ParticleSystem extends PSystem {
     const newParticles = [];
     for (let i = 0; i < numParticles; i++) {
       let p = this.genParticle();
-      console.log(p);
       newParticles.push(p);
       positions[len * 3 + idx++] = p.pos.x;
       positions[len * 3 + idx++] = p.pos.y;
