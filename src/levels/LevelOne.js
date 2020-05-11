@@ -32,10 +32,23 @@ export default class LevelOne extends AbstractLevel {
   };
 
   spawnEnemies = () => {
-    const enemy1 = new Enemy(new Vector(-70, -20, 150));
-    const enemy2 = new Enemy(new Vector(0, -20, 150));
-    const enemy3 = new Enemy(new Vector(70, -20, 150));
-    this.enemies.push(enemy1, enemy2, enemy3);
+    this.enemies.push(new Enemy(new Vector(-140, -20, 200)));
+    this.enemies.push(new Enemy(new Vector(-70, -20, 200)));
+    this.enemies.push(new Enemy(new Vector(0, -20, 200)));
+    this.enemies.push(new Enemy(new Vector(70, -20, 200)));
+    this.enemies.push(new Enemy(new Vector(140, -20, 200)));
+
+    this.enemies.push(new Enemy(new Vector(-140, -20, 150)));
+    this.enemies.push(new Enemy(new Vector(-70, -20, 150)));
+    this.enemies.push(new Enemy(new Vector(0, -20, 150)));
+    this.enemies.push(new Enemy(new Vector(70, -20, 150)));
+    this.enemies.push(new Enemy(new Vector(140, -20, 150)));
+
+    this.enemies.push(new Enemy(new Vector(-140, -20, 100)));
+    this.enemies.push(new Enemy(new Vector(-70, -20, 100)));
+    this.enemies.push(new Enemy(new Vector(0, -20, 100)));
+    this.enemies.push(new Enemy(new Vector(70, -20, 100)));
+    this.enemies.push(new Enemy(new Vector(140, -20, 100)));
     for (let enemy of this.enemies) {
       this.engine.addObject(enemy);
     }
