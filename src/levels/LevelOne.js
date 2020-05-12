@@ -1,9 +1,11 @@
 import { Vector } from 'simple-physics-engine';
 import * as THREE from 'three';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import AbstractLevel from './AbstractLevel';
 import Player from '../physics/Player';
 import EnemyPack from '../math/EnemyPack';
 import { PSystemType } from '../physics/ParticleSystem';
+import playerSpaceshipImg from '../assets/models/playerSpaceship.glb';
 
 /**
  * Probably the only level this game will have. The actual game functionality goes in here
@@ -20,24 +22,21 @@ export default class LevelOne extends AbstractLevel {
     this.enemyPacks = [];
   }
 
-  init = () => {
+  init = async () => {
+    // TODO: Loading message
+    await this.loadAssets();
     this.spawnPlayer();
     this.addEventListeners();
     this.spawnEnemies();
   };
 
   spawnPlayer = () => {
+    // TODO: put glb spaceship inside player class
+    const playerSpaceship = this.assets.playerSpaceship;
+
     // The player will be initialized to the bottom middle of the screen
     this.player = new Player(new Vector(0, 0, 450));
-
-    // TODO: put glb spaceship inside player class
-    // const { playerSpaceship } = this.assets;
-    // const position = new THREE.Vector3(0, 0, 300);
-    // playerSpaceship.position.add(position);
-    // playerSpaceship.scale.sub(new THREE.Vector3(0.9, 0.9, 0.9));
-    // this.engine.addMesh(playerSpaceship);
-    const playerSpaceship = this.engine.getMeshByName('PlayerSpaceship');
-    playerSpaceship.visible = true;
+    this.player.setModel(playerSpaceship, 'Raven_sketchfabobjcleanergles');
 
     // Add player to scene
     this.engine.addObject(this.player);
@@ -88,6 +87,34 @@ export default class LevelOne extends AbstractLevel {
     window.addEventListener('keydown', this.movePlayer, false);
     window.addEventListener('keyup', this.stopPlayer, false);
     window.addEventListener('mousedown', this.spawnLaser, false);
+  };
+
+  loadAssets = async () => {
+    const promises = [this.loadGlb(playerSpaceshipImg)];
+
+    // Convert resolved assetArr into assets object
+    const assetArr = await Promise.all(promises);
+
+    // Get player spaceship
+    const playerSpaceship = assetArr[0].scene;
+
+    const position = new THREE.Vector3(0, 0, 300);
+    playerSpaceship.position.add(position);
+    playerSpaceship.scale.sub(new THREE.Vector3(0.9, 0.9, 0.9));
+    playerSpaceship.name = 'PlayerSpaceship';
+    // this.engine.addMesh(playerSpaceship);
+
+    // Set this.assets for future use
+    this.assets = {
+      playerSpaceship,
+    };
+  };
+
+  loadGlb = (glbFile) => {
+    const loader = new GLTFLoader();
+    return new Promise((resolve, reject) => {
+      loader.load(glbFile, (data) => resolve(data), null, reject);
+    });
   };
 
   cleanup = () => {};

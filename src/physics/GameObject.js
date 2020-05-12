@@ -44,7 +44,12 @@ export default class GameObject extends PhysicsObject {
     this.mesh.position.set(pos.x, pos.y, pos.z);
   }
 
-  createMesh = () => {};
+  setModel = (root, modelName) => {
+    console.log(root);
+    this.mesh = root;
+    const model = root.getObjectByName(modelName);
+    console.log(model);
+  };
 
   getMesh = () => {
     return this.mesh;
@@ -62,3 +67,5 @@ export default class GameObject extends PhysicsObject {
     return this.dead;
   };
 }
+
+const defaultMesh = () => {};
