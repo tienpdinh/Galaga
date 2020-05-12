@@ -1,11 +1,11 @@
 import { Vector } from 'simple-physics-engine';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
+import * as THREE from 'three';
 import AbstractLevel from './AbstractLevel';
 import Player from '../physics/Player';
 import Enemy from '../physics/Enemy';
 import { PSystemType } from '../physics/ParticleSystem';
-import playerSpaceshipBinary from '../assets/models/spaceship/scene.bin';
-import playerSpaceshipImg from '../assets/models/spaceship/scene.gltf';
+import playerSpaceshipImg from '../assets/models/playerSpaceship.glb';
 
 /**
  * Probably the only level this game will have. The actual game functionality goes in here
@@ -34,15 +34,31 @@ export default class LevelOne extends AbstractLevel {
     this.engine.addObject(this.player);
 
     // Load player object
+    // this.loadGlb(playerSpaceshipImg);
+  };
+
+  loadGlb = (glbFile) => {
     const loader = new GLTFLoader();
-    const scene = this.scene;
-
-    console.log(playerSpaceshipImg, playerSpaceshipBinary);
-
-    loader.load(playerSpaceshipImg, (gltf) => {
-      const root = gltf.scene;
-      scene.add(root);
-    });
+    loader.load(
+      glbFile,
+      (gltf) => {
+        const root = gltf.scene;
+        const position = new THREE.Vector3(0, 0, 300);
+        root.position.add(position);
+        console.log(root);
+        // TODO: Why can't we see this?
+        this.engine.scene.add(root);
+      },
+      // called while loading is progressing
+      function (xhr) {
+        // console.log((xhr.loaded / xhr.total) * 100 + '% loaded');
+      },
+      // called when loading has errors
+      function (error) {
+        console.log('An error happened');
+        console.error(error.message);
+      }
+    );
   };
 
   spawnEnemies = () => {
