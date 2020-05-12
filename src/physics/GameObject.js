@@ -10,9 +10,12 @@ export default class GameObject extends PhysicsObject {
   height;
   depth;
   color;
+  dead;
 
   constructor(pos, dim, col = 0x44aa88) {
     super(pos, {}); // Second parameter is init options like starting vel, etc
+
+    this.dead = false;
 
     // Add AABB Collider
     this.width = dim[0];
@@ -23,7 +26,9 @@ export default class GameObject extends PhysicsObject {
       minExtents,
       new Vector(this.width, this.height, this.depth)
     );
-    this.setCollider(new AABB(minExtents, maxExtents));
+
+    const aabbCollider = new AABB(minExtents, maxExtents);
+    this.setCollider(aabbCollider);
 
     // Geometry
     this.color = col;
@@ -43,5 +48,13 @@ export default class GameObject extends PhysicsObject {
 
   getMesh = () => {
     return this.mesh;
+  };
+
+  kill = () => {
+    this.dead = true;
+  };
+
+  isDead = () => {
+    return this.dead;
   };
 }

@@ -135,20 +135,9 @@ export default class ParticleSystem extends PSystem {
         'position',
         new THREE.BufferAttribute(this.geomParticles, 3) // x,y,z==3
       );
-      // this.material = new THREE.ShaderMaterial({
-      //   uniforms: {
-      //     texture: { type: 't', value: props.particleTexture },
-      //   },
-      //   vertexShader: particleVertexShader,
-      //   fragmentShader: particleFragmentShader,
-      //   transparent: true, // alphaTest: 0.5,  // if having transparency issues, try including: alphaTest: 0.5,
-      //   blending: THREE.NormalBlending,
-      //   depthTest: true,
-      // });
       this.material = new THREE.PointsMaterial({
         map: this.particleTexture,
-        // TODO: Get above texture mapping to work
-        color: new THREE.Color().setRGB(
+        color: new THREE.Color().setHSL(
           this.colorBase.x,
           this.colorBase.y,
           this.colorBase.z
@@ -162,6 +151,11 @@ export default class ParticleSystem extends PSystem {
 
     return this.mesh;
   }
+
+  kill = () => {
+    this.lifespan = -1;
+    this.particles = [];
+  };
 }
 
 const StarTunnelProps = {
@@ -183,7 +177,7 @@ const StarTunnelProps = {
 
   radiusBase: 0.5,
   radiusSpread: 0,
-  colorBase: new Vector(255, 255, 255), // H,S,L
+  colorBase: new Vector(0.15, 1.0, 0.8), // H,S,L
   opacityBase: 1,
 
   // genRate: 20000,
@@ -198,7 +192,7 @@ const LaserProps = {
 
   velStyle: ParticleSystem.ShapeType.CUBE,
   velBase: new Vector(0, 0, -0.4),
-  velSpread: new Vector(0.001, 0.001, 0.1),
+  velSpread: new Vector(0.001, 0.001, 0.01),
 
   angleBase: 0,
   angleSpread: 720,
@@ -210,7 +204,7 @@ const LaserProps = {
 
   radiusBase: 8,
   radiusSpread: 1,
-  colorBase: new Vector(0, 0, 211), // RGB
+  colorBase: new Vector(0.52, 1, 0.45), // HSL
   opacityBase: 1,
 
   // genRate: 20000,
@@ -220,43 +214,25 @@ const LaserProps = {
   isCollidable: true,
 };
 
-// positionStyle  : Type.SPHERE,
-// 		positionBase   : new THREE.Vector3( 0, 100, 0 ),
-// 		positionRadius : 10,
-
-// 		velocityStyle  : Type.SPHERE,
-// 		speedBase      : 90,
-// 		speedSpread    : 10,
-
-// 		accelerationBase : new THREE.Vector3( 0, -80, 0 ),
-
-// 		particleTexture : THREE.ImageUtils.loadTexture( 'images/spark.png' ),
-
-// 		sizeTween    : new Tween( [0.5, 0.7, 1.3], [5, 40, 1] ),
-// 		opacityTween : new Tween( [0.2, 0.7, 2.5], [0.75, 1, 0] ),
-// 		colorTween   : new Tween( [0.4, 0.8, 1.0], [ new THREE.Vector3(0,1,1), new THREE.Vector3(0,1,0.6), new THREE.Vector3(0.8, 1, 0.6) ] ),
-// 		blendStyle   : THREE.AdditiveBlending,
-
-// 		particlesPerSecond : 3000,
-// 		particleDeathAge   : 2.5,
-// 		emitterDeathAge    : 0.2
-
 const ExplosionProps = {
   posStyle: ParticleSystem.ShapeType.SPHERE,
   posRadius: 1,
 
   velStyle: ParticleSystem.ShapeType.SPHERE,
-  speedBase: 1,
+  speedBase: 0.4,
   speedSpread: 0.1,
 
   particleTexture: new THREE.TextureLoader().load(sparkImg),
   blendStyle: THREE.AdditiveBlending,
 
-  radiusTween: new Tween([10, 10, 10], [100, 100, 100]),
-  opacityTween: new Tween([10, 10, 10], [220, 220, 220]),
-  colorTween: new Tween([10, 10, 10], [220, 220, 220]),
+  radiusTween: new Tween([0.5, 0.7, 1.3], [5, 40, 1]),
+  opacityTween: new Tween([0.2, 0.7, 2.5], [0.75, 1, 0]),
+  colorTween: new Tween(
+    [0.4, 0.8, 1.0],
+    [new Vector(0, 1, 1), new Vector(0, 1, 0.6), new Vector(0.8, 1, 0.6)]
+  ),
 
   genRate: 75,
-  particleLifespan: 50,
+  particleLifespan: 200,
   lifespan: 1,
 };

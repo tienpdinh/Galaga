@@ -23,6 +23,18 @@ export default class PhysicsEngine extends AbstractPhysicsEngine {
     // Handle collisions
     this.handleCollisions();
 
+    // Update objects
+    const liveObjects = [];
+    for (let obj of this.objects) {
+      if (!obj.isDead()) {
+        obj.update(dt);
+        liveObjects.push(obj);
+      } else {
+        this.removeMesh(obj.getMesh());
+      }
+    }
+    this.objects = liveObjects;
+
     // Update particle systems
     const livePsArr = [];
     for (let ps of this.particleSystems) {
@@ -33,13 +45,7 @@ export default class PhysicsEngine extends AbstractPhysicsEngine {
         this.removeMesh(ps.getMesh());
       }
     }
-
     this.particleSystems = livePsArr;
-
-    // Update objects
-    for (let obj of this.objects) {
-      obj.update(dt);
-    }
   }
 
   handleCollisions() {
@@ -53,12 +59,9 @@ export default class PhysicsEngine extends AbstractPhysicsEngine {
           for (let p of ps.particles) {
             const isCollision = this.handleCollision(obj, p);
             if (isCollision) {
-              // Remove ps and obj mesh from scene
-              this.scene.remove(ps.getMesh());
-              this.scene.remove(obj.getMesh());
-              // Remove ps and obj from internal lists
-              this.objects.filter((newObj) => newObj !== obj);
-              this.particleSystems.filter((newPs) => newPs !== ps);
+              // Kill ps and obj
+              ps.kill();
+              obj.kill();
               break;
             }
           }

@@ -5097,10 +5097,10 @@ signal-exit@^3.0.2:
   resolved "https://registry.yarnpkg.com/signal-exit/-/signal-exit-3.0.3.tgz#a1410c2edd8f077b08b4e253c8eacfcaf057461c"
   integrity sha512-VUJ49FC8U1OxwZLxIbTTrDvLnf/6TDgxZcK8wxR8zs13xpx7xbG60ndBlhNrFi2EMuFRoeDoJO7wthSLq42EjA==
 
-simple-physics-engine@^0.0.53:
-  version "0.0.53"
-  resolved "https://registry.yarnpkg.com/simple-physics-engine/-/simple-physics-engine-0.0.53.tgz#f8fb797f33ce65765c2cd290de73d43ff9ab32d9"
-  integrity sha512-KA1bYUlcz7L95gT0uGKHfcjvRAr548MwTuGrcOSIvKcP1S8KJ2vz8BjXrXYRwRJDbDHIM4DF6MN9XswVetKzag==
+simple-physics-engine@^0.0.54:
+  version "0.0.54"
+  resolved "https://registry.yarnpkg.com/simple-physics-engine/-/simple-physics-engine-0.0.54.tgz#48609ec7d3d7661a70a7297f8ea6a444802626de"
+  integrity sha512-sk2viu7S0qCDWjUxg7u1c9907TJrtsPqYS5t71eY3Lf8yc09vUoO/UzGxKFP4ANxYMbF0BI5X++iZkRFZIu5zQ==
   dependencies:
     three "^0.116.1"
     tinyqueue "^2.0.3"
