@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { PhysicsObject, Vector, AABB } from 'simple-physics-engine';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 
 export default class GameObject extends PhysicsObject {
   geometry;
@@ -37,4 +38,10 @@ export default class GameObject extends PhysicsObject {
     this.mesh = new THREE.Mesh(this.geometry, this.material);
     this.mesh.position.set(pos.x, pos.y, pos.z);
   }
+
+  createMesh = () => {};
+
+  getMesh = () => {
+    return this.mesh;
+  };
 }

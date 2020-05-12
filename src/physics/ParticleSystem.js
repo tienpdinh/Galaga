@@ -208,13 +208,13 @@ const LaserProps = {
   particleTexture: new THREE.TextureLoader().load(spikeyImg),
   blendStyle: THREE.AdditiveBlending,
 
-  radiusBase: 3,
-  radiusSpread: 0,
-  colorBase: new Vector(0, 0, 255), // RGB
+  radiusBase: 8,
+  radiusSpread: 1,
+  colorBase: new Vector(0, 0, 211), // RGB
   opacityBase: 1,
 
   // genRate: 20000,
-  genRate: 1,
+  genRate: 5,
   particleLifespan: 700,
   lifespan: 1,
   isCollidable: true,
