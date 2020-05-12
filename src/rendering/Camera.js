@@ -9,6 +9,7 @@ export default class Camera extends THREE.PerspectiveCamera {
     const far = 1000; // anything after this not rendered
     super(fov, aspect, near, far);
 
+    // Bring camera behind
     this.position.z = 500;
   }
 
