@@ -83,12 +83,20 @@ export default class LevelOne extends AbstractLevel {
       this.player.setVel(new Vector(-0.3, 0, 0));
     }
     if (e.keyCode === 87 || e.keyCode === 38) {
-      // move up
+      // move forward
       this.player.setVel(new Vector(0, 0, -0.3));
     }
     if (e.keyCode === 83 || e.keyCode === 40) {
-      // move down
+      // move backward
       this.player.setVel(new Vector(0, 0, 0.3));
+    }
+    if (e.keyCode === 32) {
+      // move up with space
+      this.player.setVel(new Vector(0, 0.3, 0));
+    }
+    if (e.keyCode === 16) {
+      // move down with left shift
+      this.player.setVel(new Vector(0, -0.3, 0));
     }
   };
 

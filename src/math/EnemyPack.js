@@ -37,7 +37,7 @@ export default class EnemyPack {
     for (let i = 0; i < this.size; i++) {
       let enemyInitPos = new Vector(x + i * 20, 40 * i, z + i * 20);
       let enemy = new Enemy(enemyInitPos);
-      enemy.setDesignatedPos(70 * i + this.pos.x, this.pos.z);
+      enemy.setDesignatedPos(70 * i + this.pos.x, this.pos.y, this.pos.z);
       this.enemies.push(enemy);
       enemy.getCollider(); // needed for some reason to reset collider and get it working
     }
