@@ -8,9 +8,11 @@ export default class EnemyPack {
   enemiesPos;
   size;
   side;
+  model;
 
-  constructor(pos, size, side = 0) {
+  constructor(pos, model, size, side = 0) {
     this.size = size;
+    this.model = model;
     this.pos = pos;
     this.side = side;
     this.enemies = [];
@@ -36,7 +38,9 @@ export default class EnemyPack {
     }
     for (let i = 0; i < this.size; i++) {
       let enemyInitPos = new Vector(x + i * 20, 40 * i, z + i * 20);
-      let enemy = new Enemy(enemyInitPos);
+      // let modelClone = this.model.clone(true);
+      let modelClone = null;
+      let enemy = new Enemy(enemyInitPos, modelClone);
       enemy.setDesignatedPos(70 * i + this.pos.x, this.pos.z);
       this.enemies.push(enemy);
       enemy.getCollider(); // needed for some reason to reset collider and get it working

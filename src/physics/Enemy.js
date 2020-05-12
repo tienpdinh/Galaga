@@ -1,5 +1,6 @@
 import GameObject from './GameObject';
 import { Vector } from 'simple-physics-engine';
+import * as THREE from 'three';
 
 // TODO: There can only be a maximum of 15 enemies at a time
 // they spawn randomly outside the view of the player,
@@ -15,8 +16,16 @@ export default class Enemy extends GameObject {
   designatedPos;
   phase;
 
-  constructor(pos, dim = [15, 15, 15], col = 0xff0000) {
-    super(pos, dim, col); // Last parameter is init options like starting vel, etc
+  constructor(pos, modelMesh) {
+    super(pos, modelMesh);
+
+    // Custom model stuff
+    if (modelMesh) {
+      modelMesh.scale.sub(new THREE.Vector3(0.999, 0.999, 0.999));
+      // modelMesh.name = 'EnemySpaceship';
+      modelMesh.rotation.y = 3.14;
+    }
+
     this.phase = 1; // Alignment
   }
 

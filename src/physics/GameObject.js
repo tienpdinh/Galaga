@@ -12,7 +12,7 @@ export default class GameObject extends PhysicsObject {
   color;
   dead;
 
-  constructor(pos, dim, col = 0x44aa88) {
+  constructor(pos, modelMesh, dim = [15, 15, 15]) {
     super(pos, {}); // Second parameter is init options like starting vel, etc
 
     this.dead = false;
@@ -26,37 +26,34 @@ export default class GameObject extends PhysicsObject {
       minExtents,
       new Vector(this.width, this.height, this.depth)
     );
+    // TODO: Update AABB Collider with model size
 
     const aabbCollider = new AABB(minExtents, maxExtents);
     this.setCollider(aabbCollider);
 
-    // Geometry
-    this.color = col;
-    this.geometry = new THREE.BoxGeometry(this.width, this.height, this.depth);
-
-    // Material
-    this.material = new THREE.MeshBasicMaterial({
-      color: this.color, // greenish blue
-    });
-
-    // Mesh
-    this.mesh = new THREE.Mesh(this.geometry, this.material);
-    this.mesh.position.set(pos.x, pos.y, pos.z);
+    if (modelMesh) {
+      modelMesh.position.add(pos);
+      this.mesh = modelMesh;
+    } else {
+      // Geometry
+      this.color = new THREE.Color(0xff0000);
+      this.geometry = new THREE.BoxGeometry(
+        this.width,
+        this.height,
+        this.depth
+      );
+      // Material
+      this.material = new THREE.MeshBasicMaterial({
+        color: this.color, // greenish blue
+      });
+      // Mesh
+      this.mesh = new THREE.Mesh(this.geometry, this.material);
+      this.mesh.position.set(pos.x, pos.y, pos.z);
+    }
   }
-
-  setModel = (root, modelName) => {
-    console.log(root);
-    this.mesh = root;
-    const model = root.getObjectByName(modelName);
-    console.log(model);
-  };
 
   getMesh = () => {
     return this.mesh;
-  };
-
-  setMesh = (mesh) => {
-    this.mesh = mesh;
   };
 
   kill = () => {
@@ -67,5 +64,3 @@ export default class GameObject extends PhysicsObject {
     return this.dead;
   };
 }
-
-const defaultMesh = () => {};

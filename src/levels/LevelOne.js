@@ -6,6 +6,7 @@ import Player from '../physics/Player';
 import EnemyPack from '../math/EnemyPack';
 import { PSystemType } from '../physics/ParticleSystem';
 import playerSpaceshipImg from '../assets/models/playerSpaceship.glb';
+import enemySpaceshipImg from '../assets/models/enemySpaceship.glb';
 
 /**
  * Probably the only level this game will have. The actual game functionality goes in here
@@ -32,20 +33,20 @@ export default class LevelOne extends AbstractLevel {
 
   spawnPlayer = () => {
     // The player will be initialized to the bottom middle of the screen
-    this.player = new Player(new Vector(0, 0, 450));
-    // TODO: Update AABB Collider with model size
-    this.player.setModel(
-      this.assets.playerSpaceship,
-      'Raven_sketchfabobjcleanergles'
+    this.player = new Player(
+      new Vector(0, 0, 450),
+      this.assets.playerSpaceship
     );
+    console.log(this.player);
 
     // Add player to scene
     this.engine.addObject(this.player);
   };
 
   spawnEnemies = () => {
-    let tmpPack = new EnemyPack(new Vector(-140, 0, 200), 5, 1);
-    let tmpPack2 = new EnemyPack(new Vector(-140, 70, 200), 5, 2);
+    const model = this.assets.playerSpaceship;
+    let tmpPack = new EnemyPack(new Vector(-140, 0, 200), model, 5, 1);
+    let tmpPack2 = new EnemyPack(new Vector(-140, 70, 200), model, 5, 2);
     this.enemyPacks.push(tmpPack);
     this.enemyPacks.push(tmpPack2);
     for (let pack of this.enemyPacks) {
@@ -53,6 +54,7 @@ export default class LevelOne extends AbstractLevel {
         this.engine.addObject(enemy);
       }
     }
+    console.log(this.enemyPacks);
   };
 
   movePlayer = (e) => {
@@ -91,24 +93,22 @@ export default class LevelOne extends AbstractLevel {
   };
 
   loadAssets = async () => {
-    const promises = [this.loadGlb(playerSpaceshipImg)];
+    const promises = [
+      this.loadGlb(playerSpaceshipImg),
+      this.loadGlb(enemySpaceshipImg),
+    ];
 
     // Convert resolved assetArr into assets object
     const assetArr = await Promise.all(promises);
 
-    // Get player spaceship
+    // Get spaceships
     const playerSpaceship = assetArr[0].scene;
-
-    const position = new THREE.Vector3(0, 0, 300);
-    playerSpaceship.position.add(position);
-    playerSpaceship.scale.sub(new THREE.Vector3(0.95, 0.95, 0.95));
-    playerSpaceship.name = 'PlayerSpaceship';
-    playerSpaceship.rotation.y = 3.14;
-    // this.engine.addMesh(playerSpaceship);
+    const enemySpaceship = assetArr[1].scene;
 
     // Set this.assets for future use
     this.assets = {
       playerSpaceship,
+      enemySpaceship,
     };
   };
 
