@@ -1,11 +1,9 @@
 import { Vector } from 'simple-physics-engine';
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import * as THREE from 'three';
 import AbstractLevel from './AbstractLevel';
 import Player from '../physics/Player';
 import EnemyPack from '../math/EnemyPack';
 import { PSystemType } from '../physics/ParticleSystem';
-import playerSpaceshipImg from '../assets/models/playerSpaceship.glb';
 
 /**
  * Probably the only level this game will have. The actual game functionality goes in here
@@ -17,8 +15,8 @@ export default class LevelOne extends AbstractLevel {
   enemyPacks;
   player;
 
-  constructor(engine, renderer, camera, switchLevel) {
-    super(engine, renderer, camera, switchLevel);
+  constructor(engine, renderer, camera, assets, switchLevel) {
+    super(engine, renderer, camera, assets, switchLevel);
     this.enemyPacks = [];
   }
 
@@ -33,38 +31,17 @@ export default class LevelOne extends AbstractLevel {
     this.player = new Player(new Vector(0, 0, 450));
 
     // Load player object
-    this.loadGlb(playerSpaceshipImg);
+    // this.loadGlb(playerSpaceshipImg);
+    // console.log(spaceshipObj);
 
     // Add player to scene
     this.engine.addObject(this.player);
 
-    // TODO: put glb spaceship inside player class
-  };
+    const { playerSpaceship } = this.assets;
 
-  loadGlb = (glbFile) => {
-    const loader = new GLTFLoader();
-    loader.load(
-      glbFile,
-      (gltf) => {
-        const root = gltf.scene;
-        // Update root to go into field of view
-        const position = new THREE.Vector3(0, 0, 300);
-        root.position.add(position);
-        root.scale.sub(new THREE.Vector3(0.9, 0.9, 0.9));
-        console.log(root);
-        // Add root to scene
-        this.engine.scene.add(root);
-      },
-      // called while loading is progressing
-      function (xhr) {
-        // console.log((xhr.loaded / xhr.total) * 100 + '% loaded');
-      },
-      // called when loading has errors
-      function (error) {
-        console.log('An error happened');
-        console.error(error.message);
-      }
-    );
+    this.engine.addMesh(playerSpaceship);
+
+    // TODO: put glb spaceship inside player class
   };
 
   spawnEnemies = () => {

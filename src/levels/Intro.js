@@ -14,8 +14,8 @@ export default class Intro extends AbstractLevel {
   titleMesh;
   subtitleMesh;
 
-  constructor(engine, renderer, camera, switchLevel) {
-    super(engine, renderer, camera, switchLevel);
+  constructor(engine, renderer, camera, assets, switchLevel) {
+    super(engine, renderer, camera, assets, switchLevel);
   }
 
   init = () => {
