@@ -97,14 +97,13 @@ export default class LevelOne extends AbstractLevel {
   spawnLaser = (e) => {
     const pos = this.player.pos.copy();
     pos.z -= 20;
-    // TODO: Create laser particle system shooting out in z direction
     this.engine.createParticleSystem(PSystemType.LASER, { pos });
   };
 
   addEventListeners = () => {
     window.addEventListener('keydown', this.movePlayer, false);
     window.addEventListener('keyup', this.stopPlayer, false);
-    window.addEventListener('onclick', this.spawnLaser, false);
+    window.addEventListener('mousedown', this.spawnLaser, false);
   };
 
   cleanup = () => {};

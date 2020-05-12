@@ -162,6 +162,10 @@ export default class ParticleSystem extends PSystem {
 
     return this.mesh;
   }
+
+  kill = () => {
+    this.lifespan = -1;
+  };
 }
 
 const StarTunnelProps = {

@@ -51,9 +51,11 @@ export default class EnemyPack {
       z = this.rand(-200, 200);
     }
     for (let i = 0; i < this.size; i++) {
-      let enemy = new Enemy(new Vector(x + i * 20, 40 * i, z + i * 20));
+      let enemyInitPos = new Vector(x + i * 20, 40 * i, z + i * 20);
+      let enemy = new Enemy(enemyInitPos);
       enemy.setDesignatedPos(70 * i + this.pos.x, this.pos.z);
       this.enemies.push(enemy);
+      enemy.getCollider(); // needed for some reason to reset collider and get it working
     }
   };
 
