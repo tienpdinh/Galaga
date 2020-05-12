@@ -1,8 +1,11 @@
 import { Vector } from 'simple-physics-engine';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import AbstractLevel from './AbstractLevel';
 import Player from '../physics/Player';
 import Enemy from '../physics/Enemy';
 import { PSystemType } from '../physics/ParticleSystem';
+import playerSpaceshipBinary from '../assets/models/spaceship/scene.bin';
+import playerSpaceshipImg from '../assets/models/spaceship/scene.gltf';
 
 /**
  * Probably the only level this game will have. The actual game functionality goes in here
@@ -29,6 +32,17 @@ export default class LevelOne extends AbstractLevel {
     // The player will be initialized to the bottom middle of the screen
     this.player = new Player(new Vector(0, -20, 450));
     this.engine.addObject(this.player);
+
+    // Load player object
+    const loader = new GLTFLoader();
+    const scene = this.scene;
+
+    console.log(playerSpaceshipImg, playerSpaceshipBinary);
+
+    loader.load(playerSpaceshipImg, (gltf) => {
+      const root = gltf.scene;
+      scene.add(root);
+    });
   };
 
   spawnEnemies = () => {

@@ -44,30 +44,52 @@ export default class PhysicsEngine extends AbstractPhysicsEngine {
 
   handleCollisions() {
     // Handle collisions between lasers and game objects
-    for (let obj of this.objects) {
-      const objCollider = obj.getCollider();
-      for (let ps of this.particleSystems) {
+    for (let i = this.objects.length - 1; i >= 0; i--) {
+      for (let j = this.particleSystems.length - 1; j >= 0; j--) {
+        let obj = this.objects[i];
+        let ps = this.particleSystems[j];
         // Make sure particle system is a laser
         if (ps.type === PSystemType.LASER) {
           for (let p of ps.particles) {
-            // Compare object against every particle in ps
-            const pCollider = p.getCollider();
-            pCollider.center = p.pos.copy();
-            // console.log(obj, p);
-            const intersectData = objCollider.intersect(pCollider);
-
-            // If intersecting, do collision response
-            if (intersectData.doesIntersect) {
-              // TODO: Initialize explosion here, remove both laser and object
-              console.log('Collision detected!');
-              this.createParticleSystem(PSystemType.EXPLOSION, {
-                pos: obj.pos,
-              });
+            const isCollision = this.handleCollision(obj, p);
+            if (isCollision) {
+              // Remove ps and obj mesh from scene
+              this.scene.remove(ps.getMesh());
+              this.scene.remove(obj.getMesh());
+              // Remove ps and obj from internal lists
+              this.objects.filter((newObj) => newObj !== obj);
+              this.particleSystems.filter((newPs) => newPs !== ps);
+              break;
             }
           }
         }
       }
     }
+  }
+
+  handleCollision(obj, p) {
+    // Get colliders and intersect
+    const objCollider = obj.getCollider();
+    const pCollider = p.getCollider();
+    pCollider.center = p.pos.copy();
+
+    const intersectData = objCollider.intersect(pCollider);
+
+    // If intersecting, do collision response
+    if (intersectData.doesIntersect) {
+      // console.log(`collision detected: `, obj, p);
+
+      // Create explosion
+      this.createParticleSystem(PSystemType.EXPLOSION, {
+        pos: obj.pos,
+      });
+
+      // return true if collision
+      return true;
+    }
+
+    // no collision
+    return false;
   }
 
   // Return the scene instance
