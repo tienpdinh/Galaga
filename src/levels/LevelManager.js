@@ -33,8 +33,7 @@ export default class LevelManager {
 
   init = async () => {
     // Load assets
-    this.assets = await this.loadAssets();
-    console.log(this.assets);
+    await this.loadAssets();
 
     // Set Intro as current level
     const firstLevel = Levels.INTRO;
@@ -50,7 +49,17 @@ export default class LevelManager {
       playerSpaceship: assetArr[0].scene,
     };
 
-    return assets;
+    this.assets = assets;
+
+    const playerSpaceship = assetArr[0].scene;
+
+    const position = new THREE.Vector3(0, 0, 300);
+    playerSpaceship.position.add(position);
+    playerSpaceship.scale.sub(new THREE.Vector3(0.9, 0.9, 0.9));
+    playerSpaceship.name = 'PlayerSpaceship';
+    console.log(playerSpaceship);
+    playerSpaceship.visible = false;
+    this.engine.addMesh(playerSpaceship);
 
     // Promise.all(promises).then((assets) => assets);
     // Promise.resolve(spaceshipPromise).then(() => console.log(assets));
@@ -125,11 +134,6 @@ export default class LevelManager {
 
   // Renders the game
   render = () => {
-    if (this.assets) {
-      // Render scene with camera
-      this.renderer.render(this.engine.getScene(), this.camera);
-    } else {
-      console.log('loading...');
-    }
+    this.renderer.render(this.engine.getScene(), this.camera);
   };
 }

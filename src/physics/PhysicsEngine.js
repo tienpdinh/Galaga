@@ -118,6 +118,10 @@ export default class PhysicsEngine extends AbstractPhysicsEngine {
     this.scene.add(mesh);
   }
 
+  getMeshByName(name) {
+    return this.scene.getObjectByName(name);
+  }
+
   // Remove a mesh from the scene (garbage collection does not do this for you)
   removeMesh(mesh) {
     this.scene.remove(mesh);

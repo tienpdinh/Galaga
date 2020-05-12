@@ -30,18 +30,17 @@ export default class LevelOne extends AbstractLevel {
     // The player will be initialized to the bottom middle of the screen
     this.player = new Player(new Vector(0, 0, 450));
 
-    // Load player object
-    // this.loadGlb(playerSpaceshipImg);
-    // console.log(spaceshipObj);
+    // TODO: put glb spaceship inside player class
+    // const { playerSpaceship } = this.assets;
+    // const position = new THREE.Vector3(0, 0, 300);
+    // playerSpaceship.position.add(position);
+    // playerSpaceship.scale.sub(new THREE.Vector3(0.9, 0.9, 0.9));
+    // this.engine.addMesh(playerSpaceship);
+    const playerSpaceship = this.engine.getMeshByName('PlayerSpaceship');
+    playerSpaceship.visible = true;
 
     // Add player to scene
     this.engine.addObject(this.player);
-
-    const { playerSpaceship } = this.assets;
-
-    this.engine.addMesh(playerSpaceship);
-
-    // TODO: put glb spaceship inside player class
   };
 
   spawnEnemies = () => {
