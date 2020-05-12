@@ -23,11 +23,6 @@ export default class PhysicsEngine extends AbstractPhysicsEngine {
     // Handle collisions
     this.handleCollisions();
 
-    // Update objects
-    for (let obj of this.objects) {
-      obj.update(dt);
-    }
-
     // Update particle systems
     const livePsArr = [];
     for (let ps of this.particleSystems) {
@@ -40,6 +35,11 @@ export default class PhysicsEngine extends AbstractPhysicsEngine {
     }
 
     this.particleSystems = livePsArr;
+
+    // Update objects
+    for (let obj of this.objects) {
+      obj.update(dt);
+    }
   }
 
   handleCollisions() {

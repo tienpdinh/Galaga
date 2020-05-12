@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import Enemy from '../physics/Enemy';
-import { Vector } from 'simple-physics-engine';
+import { Vector, PhysicsObject } from 'simple-physics-engine';
 
 export default class EnemyPack {
   pos; // the enemy in the pack will be equally distributed around this pack position
@@ -15,22 +15,6 @@ export default class EnemyPack {
     this.side = side;
     this.enemies = [];
     this.enemiesPos = [];
-    // Enemies designated spots
-    // this.enemiesPos.push(new Vector(-140, -20, 200));
-    // this.enemiesPos.push(new Vector(-70, -20, 200));
-    // this.enemiesPos.push(new Vector(0, -20, 200));
-    // this.enemiesPos.push(new Vector(70, -20, 200));
-    // this.enemiesPos.push(new Vector(140, -20, 200));
-    // this.enemiesPos.push(new Vector(-140, -20, 150));
-    // this.enemiesPos.push(new Vector(-70, -20, 150));
-    // this.enemiesPos.push(new Vector(0, -20, 150));
-    // this.enemiesPos.push(new Vector(70, -20, 150));
-    // this.enemiesPos.push(new Vector(140, -20, 150));
-    // this.enemiesPos.push(new Vector(-140, -20, 100));
-    // this.enemiesPos.push(new Vector(-70, -20, 100));
-    // this.enemiesPos.push(new Vector(0, -20, 100));
-    // this.enemiesPos.push(new Vector(70, -20, 100));
-    // this.enemiesPos.push(new Vector(140, -20, 100));
     this.generatePack();
   }
 
@@ -38,7 +22,7 @@ export default class EnemyPack {
     let x;
     let z;
     if (this.side === 0) {
-      this.side = this.randInt(1, 4);
+      this.side = this.randInt(1, 3);
     }
     if (this.side === 1) {
       // left of screen
@@ -52,7 +36,7 @@ export default class EnemyPack {
     }
     for (let i = 0; i < this.size; i++) {
       let enemy = new Enemy(new Vector(x + i * 20, 40 * i, z + i * 20));
-      enemy.setDesignatedPos(70 * i + this.pos.x, this.pos.z);
+      enemy.setDesignatedPos(70 * i + this.pos.x, this.pos.y, this.pos.z);
       this.enemies.push(enemy);
     }
   };
