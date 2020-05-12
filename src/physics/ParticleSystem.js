@@ -154,6 +154,7 @@ export default class ParticleSystem extends PSystem {
 
   kill = () => {
     this.lifespan = -1;
+    this.particles = [];
   };
 }
 
@@ -191,7 +192,7 @@ const LaserProps = {
 
   velStyle: ParticleSystem.ShapeType.CUBE,
   velBase: new Vector(0, 0, -0.4),
-  velSpread: new Vector(0.001, 0.001, 0.1),
+  velSpread: new Vector(0.001, 0.001, 0.01),
 
   angleBase: 0,
   angleSpread: 720,

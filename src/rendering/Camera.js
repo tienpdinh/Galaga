@@ -11,6 +11,12 @@ export default class Camera extends THREE.PerspectiveCamera {
 
     // Bring camera behind
     this.position.z = 500;
+
+    // Point camera down for 2D like simulation
+    // this.position.z = 250; // halfway
+    // this.position.y = 300; // above
+    // const vecDown = new THREE.Vector3(0, -1, 250);
+    // this.lookAt(vecDown);
   }
 
   setAspect(aspect) {
