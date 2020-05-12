@@ -45,7 +45,9 @@ export default class LevelOne extends AbstractLevel {
 
   spawnEnemies = () => {
     let tmpPack = new EnemyPack(new Vector(-140, 0, 200), 5, 1);
+    let tmpPack2 = new EnemyPack(new Vector(-140, 70, 200), 5, 2);
     this.enemyPacks.push(tmpPack);
+    this.enemyPacks.push(tmpPack2);
     for (let pack of this.enemyPacks) {
       for (let enemy of pack.enemies) {
         this.engine.addObject(enemy);

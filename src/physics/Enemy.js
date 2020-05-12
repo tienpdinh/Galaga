@@ -20,8 +20,8 @@ export default class Enemy extends GameObject {
     this.phase = 1; // Alignment
   }
 
-  setDesignatedPos = (x, z) => {
-    this.designatedPos = new Vector(x, 0, z);
+  setDesignatedPos = (x, y, z) => {
+    this.designatedPos = new Vector(x, y, z);
   };
 
   setPhase = (phase) => {
