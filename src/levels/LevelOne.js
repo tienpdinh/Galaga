@@ -31,12 +31,13 @@ export default class LevelOne extends AbstractLevel {
   };
 
   spawnPlayer = () => {
-    // TODO: put glb spaceship inside player class
-    const playerSpaceship = this.assets.playerSpaceship;
-
     // The player will be initialized to the bottom middle of the screen
     this.player = new Player(new Vector(0, 0, 450));
-    this.player.setModel(playerSpaceship, 'Raven_sketchfabobjcleanergles');
+    // TODO: Update AABB Collider with model size
+    this.player.setModel(
+      this.assets.playerSpaceship,
+      'Raven_sketchfabobjcleanergles'
+    );
 
     // Add player to scene
     this.engine.addObject(this.player);
@@ -79,7 +80,7 @@ export default class LevelOne extends AbstractLevel {
 
   spawnLaser = (e) => {
     const pos = this.player.pos.copy();
-    pos.z -= 20;
+    pos.z -= 70; // don't collide with player
     this.engine.createParticleSystem(PSystemType.LASER, { pos });
   };
 
@@ -100,8 +101,9 @@ export default class LevelOne extends AbstractLevel {
 
     const position = new THREE.Vector3(0, 0, 300);
     playerSpaceship.position.add(position);
-    playerSpaceship.scale.sub(new THREE.Vector3(0.9, 0.9, 0.9));
+    playerSpaceship.scale.sub(new THREE.Vector3(0.95, 0.95, 0.95));
     playerSpaceship.name = 'PlayerSpaceship';
+    playerSpaceship.rotation.y = 3.14;
     // this.engine.addMesh(playerSpaceship);
 
     // Set this.assets for future use

@@ -164,7 +164,7 @@ const StarTunnelProps = {
   posSpread: new Vector(0.1, 0.1, 5),
 
   velStyle: ParticleSystem.ShapeType.CUBE,
-  velBase: new Vector(0, 0, 0.2),
+  velBase: new Vector(0, 0.02, 0.2),
   velSpread: new Vector(0.1, 0.1, 0.1),
 
   angleBase: 0,
@@ -202,7 +202,7 @@ const LaserProps = {
   particleTexture: new THREE.TextureLoader().load(spikeyImg),
   blendStyle: THREE.AdditiveBlending,
 
-  radiusBase: 8,
+  radiusBase: 20,
   radiusSpread: 1,
   colorBase: new Vector(0.52, 1, 0.45), // HSL
   opacityBase: 1,
