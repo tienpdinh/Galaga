@@ -31,10 +31,14 @@ export default class LevelOne extends AbstractLevel {
   spawnPlayer = () => {
     // The player will be initialized to the bottom middle of the screen
     this.player = new Player(new Vector(0, 0, 450));
-    this.engine.addObject(this.player);
 
     // Load player object
-    // this.loadGlb(playerSpaceshipImg);
+    this.loadGlb(playerSpaceshipImg);
+
+    // Add player to scene
+    this.engine.addObject(this.player);
+
+    // TODO: put glb spaceship inside player class
   };
 
   loadGlb = (glbFile) => {
@@ -43,10 +47,12 @@ export default class LevelOne extends AbstractLevel {
       glbFile,
       (gltf) => {
         const root = gltf.scene;
+        // Update root to go into field of view
         const position = new THREE.Vector3(0, 0, 300);
         root.position.add(position);
+        root.scale.sub(new THREE.Vector3(0.9, 0.9, 0.9));
         console.log(root);
-        // TODO: Why can't we see this?
+        // Add root to scene
         this.engine.scene.add(root);
       },
       // called while loading is progressing

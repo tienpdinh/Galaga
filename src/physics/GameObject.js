@@ -50,6 +50,10 @@ export default class GameObject extends PhysicsObject {
     return this.mesh;
   };
 
+  setMesh = (mesh) => {
+    this.mesh = mesh;
+  };
+
   kill = () => {
     this.dead = true;
   };
