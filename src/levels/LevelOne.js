@@ -1,7 +1,7 @@
 import { Vector } from 'simple-physics-engine';
 import AbstractLevel from './AbstractLevel';
 import Player from '../physics/Player';
-import Enemy from '../physics/Enemy';
+import EnemyPack from '../math/EnemyPack';
 import { PSystemType } from '../physics/ParticleSystem';
 
 /**
@@ -11,12 +11,12 @@ import { PSystemType } from '../physics/ParticleSystem';
  * @extends {AbstractLevel}
  */
 export default class LevelOne extends AbstractLevel {
-  enemies;
+  enemyPacks;
   player;
 
   constructor(engine, renderer, camera, switchLevel) {
     super(engine, renderer, camera, switchLevel);
-    this.enemies = [];
+    this.enemyPacks = [];
   }
 
   init = () => {
@@ -27,30 +27,17 @@ export default class LevelOne extends AbstractLevel {
 
   spawnPlayer = () => {
     // The player will be initialized to the bottom middle of the screen
-    this.player = new Player(new Vector(0, -20, 450));
+    this.player = new Player(new Vector(0, 0, 450));
     this.engine.addObject(this.player);
   };
 
   spawnEnemies = () => {
-    this.enemies.push(new Enemy(new Vector(-140, -20, 200)));
-    this.enemies.push(new Enemy(new Vector(-70, -20, 200)));
-    this.enemies.push(new Enemy(new Vector(0, -20, 200)));
-    this.enemies.push(new Enemy(new Vector(70, -20, 200)));
-    this.enemies.push(new Enemy(new Vector(140, -20, 200)));
-
-    this.enemies.push(new Enemy(new Vector(-140, -20, 150)));
-    this.enemies.push(new Enemy(new Vector(-70, -20, 150)));
-    this.enemies.push(new Enemy(new Vector(0, -20, 150)));
-    this.enemies.push(new Enemy(new Vector(70, -20, 150)));
-    this.enemies.push(new Enemy(new Vector(140, -20, 150)));
-
-    this.enemies.push(new Enemy(new Vector(-140, -20, 100)));
-    this.enemies.push(new Enemy(new Vector(-70, -20, 100)));
-    this.enemies.push(new Enemy(new Vector(0, -20, 100)));
-    this.enemies.push(new Enemy(new Vector(70, -20, 100)));
-    this.enemies.push(new Enemy(new Vector(140, -20, 100)));
-    for (let enemy of this.enemies) {
-      this.engine.addObject(enemy);
+    let tmpPack = new EnemyPack(new Vector(-140, 0, 200), 5, 1);
+    this.enemyPacks.push(tmpPack);
+    for (let pack of this.enemyPacks) {
+      for (let enemy of pack.enemies) {
+        this.engine.addObject(enemy);
+      }
     }
   };
 
@@ -78,19 +65,16 @@ export default class LevelOne extends AbstractLevel {
   };
 
   spawnLaser = (e) => {
-    const keyCode = 32; // SPACE
     const pos = this.player.pos.copy();
     pos.z -= 20;
-    if (e.keyCode === keyCode) {
-      // TODO: Create laser particle system shooting out in z direction
-      this.engine.createParticleSystem(PSystemType.LASER, { pos });
-    }
+    // TODO: Create laser particle system shooting out in z direction
+    this.engine.createParticleSystem(PSystemType.LASER, { pos });
   };
 
   addEventListeners = () => {
     window.addEventListener('keydown', this.movePlayer, false);
     window.addEventListener('keyup', this.stopPlayer, false);
-    window.addEventListener('keypress', this.spawnLaser, false);
+    window.addEventListener('onclick', this.spawnLaser, false);
   };
 
   cleanup = () => {};

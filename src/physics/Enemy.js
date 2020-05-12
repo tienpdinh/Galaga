@@ -1,4 +1,5 @@
 import GameObject from './GameObject';
+import { Vector } from 'simple-physics-engine';
 
 // TODO: There can only be a maximum of 15 enemies at a time
 // they spawn randomly outside the view of the player,
@@ -12,20 +13,36 @@ import GameObject from './GameObject';
 
 export default class Enemy extends GameObject {
   designatedPos;
+  phase;
 
   constructor(pos, dim = [15, 15, 15], col = 0xff0000) {
     super(pos, dim, col); // Last parameter is init options like starting vel, etc
+    this.phase = 1; // Alignment
   }
 
-  setDesignatedPos(x, z) {
+  setDesignatedPos = (x, z) => {
     this.designatedPos = new Vector(x, 0, z);
-  }
+  };
+
+  setPhase = (phase) => {
+    this.phase = phase;
+  };
+
+  isAtGoal = () => {
+    return Vector.distance(this.pos, this.designatedPos) < 5;
+  };
 
   // Update state of cube... by default this just performs euleriean integration but I'm overriding it to directly add rotation
   update(dt) {
-    // Let's stop rotating for now
-    // this.mesh.rotation.x = dt;
-    // this.mesh.rotation.y = dt;
+    // Moves toward the designated spot
     super.update(dt);
+    this.setVel(new Vector());
+    if (this.phase === 1 && !this.isAtGoal()) {
+      let velocity = Vector.sub(this.designatedPos, this.pos);
+      velocity.normalize();
+      velocity.mul(0.7);
+      this.setVel(velocity);
+    }
+    this.mesh.position.set(this.pos.x, this.pos.y, this.pos.z);
   }
 }
