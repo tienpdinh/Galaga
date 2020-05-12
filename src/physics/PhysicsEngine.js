@@ -103,7 +103,9 @@ export default class PhysicsEngine extends AbstractPhysicsEngine {
   // Add an object to internal objects list and the scene
   addObject(obj) {
     this.objects.push(obj);
-    this.scene.add(obj.mesh);
+    const mesh = obj.getMesh();
+    mesh.name = name + toString(Math.random() * 1000);
+    this.scene.add(mesh);
   }
 
   createParticleSystem(type, options = {}) {
@@ -116,6 +118,10 @@ export default class PhysicsEngine extends AbstractPhysicsEngine {
   // Add a mesh to the scene
   addMesh(mesh) {
     this.scene.add(mesh);
+  }
+
+  getMeshByName(name) {
+    return this.scene.getObjectByName(name);
   }
 
   // Remove a mesh from the scene (garbage collection does not do this for you)

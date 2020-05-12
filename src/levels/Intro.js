@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import AbstractLevel from './AbstractLevel';
 import { Levels } from './LevelManager';
 import { PSystemType } from '../physics/ParticleSystem';
+import gameplaySound from '../assets/sounds/starwars_gameplay.ogg';
 
 /**
  * First level a user sees when loading the game.
@@ -14,8 +15,8 @@ export default class Intro extends AbstractLevel {
   titleMesh;
   subtitleMesh;
 
-  constructor(engine, renderer, camera, switchLevel) {
-    super(engine, renderer, camera, switchLevel);
+  constructor(engine, renderer, camera, assets, switchLevel) {
+    super(engine, renderer, camera, assets, switchLevel);
   }
 
   init = () => {
@@ -71,7 +72,7 @@ export default class Intro extends AbstractLevel {
       bevelSegments: 20,
     });
     geometry.center();
-    geometry.translate(0, 10, 460);
+    geometry.translate(0, 25, 460);
     const material = new THREE.MeshNormalMaterial();
     const mesh = new THREE.Mesh(geometry, material);
     return mesh;
@@ -90,7 +91,7 @@ export default class Intro extends AbstractLevel {
       bevelSegments: 20,
     });
     geometry.center();
-    geometry.translate(0, -2, 460);
+    geometry.translate(0, 10, 460);
     const material = new THREE.MeshNormalMaterial();
     const mesh = new THREE.Mesh(geometry, material);
     return mesh;
@@ -101,10 +102,7 @@ export default class Intro extends AbstractLevel {
     const listener = new THREE.AudioListener();
     const audio = new THREE.Audio(listener);
     audio.crossOrigin = 'anonymous';
-    // TODO: fix cors issue with loading sound file
-    const streamUrl =
-      'https://storage.googleapis.com/misc-files-121/starwars_gameplay.ogg';
-    audioLoader.load(streamUrl, function (buffer) {
+    audioLoader.load(gameplaySound, function (buffer) {
       audio.setBuffer(buffer);
       audio.setLoop(true);
       audio.play();

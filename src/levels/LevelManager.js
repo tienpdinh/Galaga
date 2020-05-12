@@ -28,11 +28,13 @@ export default class LevelManager {
   }
 
   init = () => {
+    // Set Intro as current level
     const firstLevel = Levels.INTRO;
     this.setLevel(firstLevel);
   };
 
   switchLevel = (levelEnum) => {
+    // Cleanup and switch
     this.curLevel.cleanup();
     this.setLevel(levelEnum);
   };
@@ -44,6 +46,7 @@ export default class LevelManager {
       this.engine,
       this.renderer,
       this.camera,
+      this.assets,
       this.switchLevel // callback to switch to new level
     );
     this.curLevel.init();
@@ -63,7 +66,6 @@ export default class LevelManager {
 
   // Renders the game
   render = () => {
-    // Render scene with camera
     this.renderer.render(this.engine.getScene(), this.camera);
   };
 }

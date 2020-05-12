@@ -29,6 +29,7 @@ export default class App {
     this.createPhysics();
     this.createRenderer();
     this.createCamera();
+    this.createLights();
     this.addEventListeners();
     this.createLevelManager(); // Must be last
   };
@@ -59,6 +60,15 @@ export default class App {
   // Initialize camera
   createCamera = () => {
     this.camera = new Camera();
+  };
+
+  createLights = () => {
+    const ambientLight = new THREE.AmbientLight(0xcccccc);
+    this.engine.scene.add(ambientLight);
+
+    const directionalLight = new THREE.DirectionalLight(0xffffff);
+    directionalLight.position.set(0, 1, 250).normalize();
+    this.engine.scene.add(directionalLight);
   };
 
   // Create Level manager

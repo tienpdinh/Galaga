@@ -1,11 +1,12 @@
 import { Vector } from 'simple-physics-engine';
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import * as THREE from 'three';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import AbstractLevel from './AbstractLevel';
 import Player from '../physics/Player';
 import EnemyPack from '../math/EnemyPack';
 import { PSystemType } from '../physics/ParticleSystem';
 import playerSpaceshipImg from '../assets/models/playerSpaceship.glb';
+import enemySpaceshipImg from '../assets/models/enemySpaceship.glb';
 
 /**
  * Probably the only level this game will have. The actual game functionality goes in here
@@ -17,12 +18,14 @@ export default class LevelOne extends AbstractLevel {
   enemyPacks;
   player;
 
-  constructor(engine, renderer, camera, switchLevel) {
-    super(engine, renderer, camera, switchLevel);
+  constructor(engine, renderer, camera, assets, switchLevel) {
+    super(engine, renderer, camera, assets, switchLevel);
     this.enemyPacks = [];
   }
 
-  init = () => {
+  init = async () => {
+    // TODO: Loading message
+    await this.loadAssets();
     this.spawnPlayer();
     this.addEventListeners();
     this.spawnEnemies();
@@ -30,40 +33,20 @@ export default class LevelOne extends AbstractLevel {
 
   spawnPlayer = () => {
     // The player will be initialized to the bottom middle of the screen
-    this.player = new Player(new Vector(0, 0, 450));
-    this.engine.addObject(this.player);
-
-    // Load player object
-    // this.loadGlb(playerSpaceshipImg);
-  };
-
-  loadGlb = (glbFile) => {
-    const loader = new GLTFLoader();
-    loader.load(
-      glbFile,
-      (gltf) => {
-        const root = gltf.scene;
-        const position = new THREE.Vector3(0, 0, 300);
-        root.position.add(position);
-        console.log(root);
-        // TODO: Why can't we see this?
-        this.engine.scene.add(root);
-      },
-      // called while loading is progressing
-      function (xhr) {
-        // console.log((xhr.loaded / xhr.total) * 100 + '% loaded');
-      },
-      // called when loading has errors
-      function (error) {
-        console.log('An error happened');
-        console.error(error.message);
-      }
+    this.player = new Player(
+      new Vector(0, 0, 450),
+      this.assets.playerSpaceship
     );
+    console.log(this.player);
+
+    // Add player to scene
+    this.engine.addObject(this.player);
   };
 
   spawnEnemies = () => {
-    let tmpPack = new EnemyPack(new Vector(-140, 0, 200), 5, 1);
-    let tmpPack2 = new EnemyPack(new Vector(-140, 70, 200), 5, 2);
+    const model = this.assets.playerSpaceship;
+    let tmpPack = new EnemyPack(new Vector(-140, 0, 200), model, 5, 1);
+    let tmpPack2 = new EnemyPack(new Vector(-140, 70, 200), model, 5, 2);
     this.enemyPacks.push(tmpPack);
     this.enemyPacks.push(tmpPack2);
     for (let pack of this.enemyPacks) {
@@ -71,6 +54,7 @@ export default class LevelOne extends AbstractLevel {
         this.engine.addObject(enemy);
       }
     }
+    console.log(this.enemyPacks);
   };
 
   movePlayer = (e) => {
@@ -106,7 +90,7 @@ export default class LevelOne extends AbstractLevel {
 
   spawnLaser = (e) => {
     const pos = this.player.pos.copy();
-    pos.z -= 20;
+    pos.z -= 70; // don't collide with player
     this.engine.createParticleSystem(PSystemType.LASER, { pos });
   };
 
@@ -114,6 +98,33 @@ export default class LevelOne extends AbstractLevel {
     window.addEventListener('keydown', this.movePlayer, false);
     window.addEventListener('keyup', this.stopPlayer, false);
     window.addEventListener('mousedown', this.spawnLaser, false);
+  };
+
+  loadAssets = async () => {
+    const promises = [
+      this.loadGlb(playerSpaceshipImg),
+      this.loadGlb(enemySpaceshipImg),
+    ];
+
+    // Convert resolved assetArr into assets object
+    const assetArr = await Promise.all(promises);
+
+    // Get spaceships
+    const playerSpaceship = assetArr[0].scene;
+    const enemySpaceship = assetArr[1].scene;
+
+    // Set this.assets for future use
+    this.assets = {
+      playerSpaceship,
+      enemySpaceship,
+    };
+  };
+
+  loadGlb = (glbFile) => {
+    const loader = new GLTFLoader();
+    return new Promise((resolve, reject) => {
+      loader.load(glbFile, (data) => resolve(data), null, reject);
+    });
   };
 
   cleanup = () => {};
