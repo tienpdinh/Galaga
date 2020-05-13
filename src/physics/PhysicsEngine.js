@@ -47,7 +47,8 @@ export default class PhysicsEngine extends AbstractPhysicsEngine {
           this.onPlayerDeath();
         }
         this.kills++;
-        this.removeMesh(obj.getMesh());
+        // this.removeMesh(obj.getMesh());
+        obj.mesh.visible = false;
         if (obj.colliderMesh) {
           this.removeMesh(obj.colliderMesh);
         }
@@ -121,9 +122,10 @@ export default class PhysicsEngine extends AbstractPhysicsEngine {
   // Add an object to internal objects list and the scene
   addObject(obj) {
     this.objects.push(obj);
-    const mesh = obj.getMesh();
-    mesh.name = name + toString(Math.random() * 10000); // make sure name is unique
-    this.scene.add(mesh);
+    // Mesh already in engine
+    // const mesh = obj.getMesh();
+    // mesh.name = name + toString(Math.random() * 10000); // make sure name is unique
+    // this.scene.add(mesh);
 
     // Add collider mesh?
     if (obj.colliderMesh) {

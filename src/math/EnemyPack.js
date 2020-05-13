@@ -10,28 +10,27 @@ export default class EnemyPack {
   side;
   model;
 
-  constructor(pos, model, size, engine, side = 0, numEnemies) {
+  constructor(pos, size, side = 0, assets) {
     this.size = size;
-    this.model = model;
     this.pos = pos;
     this.side = side;
-    this.engine = engine;
+    this.assets = assets;
     this.enemies = [];
     this.enemiesPos = [];
-    this.generatePack(numEnemies);
+    this.generatePack();
   }
 
   isDead = () => {
     return this.enemies.length === 0;
   };
 
-  respawn = (numEnemies) => {
+  respawn = () => {
     this.enemies = [];
     this.enemiesPos = [];
-    this.generatePack(numEnemies);
+    this.generatePack();
   };
 
-  generatePack = (numEnemies) => {
+  generatePack = () => {
     let x;
     let z;
     if (this.side === 0) {
@@ -49,9 +48,7 @@ export default class EnemyPack {
     }
     for (let i = 0; i < this.size; i++) {
       let enemyInitPos = new Vector(x + i * 20, 40 * i, z + i * 20);
-      const name = `EnemySpaceship${numEnemies + i}`;
-      let model = this.engine.getMeshByName(name);
-      console.log(model, name, numEnemies);
+      let model = this.getAvailableEnemy();
       let enemy = new Enemy(enemyInitPos, model);
       enemy.setDesignatedPos(70 * i + this.pos.x, this.pos.y, this.pos.z);
       this.enemies.push(enemy);
@@ -61,6 +58,16 @@ export default class EnemyPack {
 
   to1D = (m, n) => {
     return 5 * m + n;
+  };
+
+  getAvailableEnemy = () => {
+    // Loop through enemies, return first enemy thats not visible
+    for (let model of Object.values(this.assets)) {
+      if (!model.visible) {
+        return model;
+      }
+    }
+    throw new Error('All Models are in use!');
   };
 
   rand = (min, max) => {

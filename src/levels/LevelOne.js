@@ -111,16 +111,13 @@ export default class LevelOne extends AbstractLevel {
   };
 
   spawnEnemies = () => {
-    const model = this.assets.enemySpaceship;
     // spawn 2 packs initially
     for (let i = 0; i < 2; i++) {
       let pack = new EnemyPack(
         new Vector(-140, this.currentPackYPos + i * 70, 100),
-        model,
         5,
-        this.engine,
         i + 1,
-        this.getTotalEnemies()
+        this.assets
       );
       this.enemyPacks.push(pack);
       this.currentPackYPos += i * 70;
