@@ -50,6 +50,7 @@ export default class LevelOne extends AbstractLevel {
     this.spawnPlayer();
     this.addEventListeners();
     this.spawnEnemies();
+    this.displayHealthbar();
   };
 
   // Custom update functionality
@@ -86,6 +87,12 @@ export default class LevelOne extends AbstractLevel {
       // reset pack enemies to only be live enemies
       pack.enemies = liveEnemies;
     }
+    for (let pack of this.enemyPacks) {
+      for (let enemy of pack.enemies) {
+        // each enemy has 30% chance of start chasing the player
+        enemy.chase(this.player.pos);
+      }
+    }
   };
 
   spawnPlayer = () => {
@@ -108,7 +115,7 @@ export default class LevelOne extends AbstractLevel {
     // spawn 2 packs initially
     for (let i = 0; i < 2; i++) {
       let pack = new EnemyPack(
-        new Vector(-140, this.currentPackYPos + i * 70, 300),
+        new Vector(-140, this.currentPackYPos + i * 70, 100),
         model,
         5,
         i + 1
@@ -177,12 +184,6 @@ export default class LevelOne extends AbstractLevel {
       // handling ammos and respawning enemies
       this.ammos--;
       // loop through each pack and respawn the pack if all enemies in the pack has been destroyed
-      for (let pack of this.enemyPacks) {
-        for (let enemy of pack.enemies) {
-          // each enemy has 30% chance of start chasing the player
-          enemy.chase(this.player.pos);
-        }
-      }
     }
   };
 
@@ -240,8 +241,6 @@ export default class LevelOne extends AbstractLevel {
 
   displayControlsText = () => {
     const controlsDiv = document.getElementById('controls');
-    const healthBar = document.getElementById('health');
-    healthBar.style.display = 'inherit';
     controlsDiv.style.display = 'inherit';
   };
 
@@ -254,6 +253,11 @@ export default class LevelOne extends AbstractLevel {
 
   onPlayerDeath = () => {
     this.onSwitchLevel(Levels.CREDITS);
+  };
+
+  displayHealthbar = () => {
+    const healthBar = document.getElementById('health');
+    healthBar.style.display = 'inherit';
   };
 
   cleanup = () => {
@@ -270,6 +274,8 @@ export default class LevelOne extends AbstractLevel {
     // Remove window user controls
     const controlsDiv = document.getElementById('controls');
     controlsDiv.style.display = 'none';
+    const healthBar = document.getElementById('health');
+    healthBar.style.display = 'none';
 
     // Stats
     const elapsedTime = this.clock.getElapsedTime().toFixed(2) + ' seconds';
