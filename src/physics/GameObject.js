@@ -56,6 +56,10 @@ export default class GameObject extends PhysicsObject {
     return this.mesh;
   };
 
+  lookAt = (point) => {
+    this.mesh.lookAt(point);
+  };
+
   kill = () => {
     this.dead = true;
   };

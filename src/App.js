@@ -1,5 +1,4 @@
 import * as THREE from 'three';
-
 import PhysicsEngine from './physics/PhysicsEngine';
 import LevelManager from './levels/LevelManager';
 import Camera from './rendering/Camera';

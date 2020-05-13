@@ -115,6 +115,21 @@ export default class LevelOne extends AbstractLevel {
     }
   };
 
+  pointTowardsMouse = (e) => {
+    const plane = new THREE.Plane(new THREE.Vector3(0, 0, 1), 0);
+    const raycaster = new THREE.Raycaster(); //for reuse
+    const mouse = new THREE.Vector2(); //for reuse
+    const intersectPoint = new THREE.Vector3(); //for reuse
+
+    //get mouse coordinates
+    mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+    mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+    raycaster.setFromCamera(mouse, this.camera); //set raycaster
+    raycaster.ray.intersectPlane(plane, intersectPoint); // find the point of intersection
+    this.player.lookAt(intersectPoint); // face our arrow to this point
+  };
+
   getTotalEnemies = () => {
     let total = 0;
     for (let pack of this.enemyPacks) {
@@ -129,6 +144,7 @@ export default class LevelOne extends AbstractLevel {
     window.addEventListener('keydown', this.movePlayer, false);
     window.addEventListener('keyup', this.stopPlayer, false);
     window.addEventListener('mousedown', this.spawnLaser, false);
+    window.addEventListener('mousemove', this.pointTowardsMouse, false);
   };
 
   loadAssets = async () => {
