@@ -37,8 +37,6 @@ export default class LevelManager {
   }
 
   init = async () => {
-    // TODO: Loading message
-
     // Load Assets
     await this.loadAssets();
 
@@ -183,7 +181,7 @@ export default class LevelManager {
   };
 
   onSetAudio = (gameplaySound) => {
-    if (this.audio) {
+    if (this.audio && this.audio.isPlaying()) {
       this.audio.stop();
     }
 
@@ -196,6 +194,7 @@ export default class LevelManager {
     audioLoader.load(gameplaySound, function (buffer) {
       audio.setBuffer(buffer);
       audio.setLoop(true);
+      audio.setVolume(0.4);
       audio.play();
     });
   };

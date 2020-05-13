@@ -63,11 +63,11 @@ export default class Enemy extends GameObject {
       this.setAccel(steer);
     }
     // steer away
-    if (Vector.distance(pos, this.pos) < 100) {
+    if (Vector.distance(pos, this.pos) < 150) {
       desired = new Vector(0, 0, -1);
       steer = Vector.sub(desired, this.getVel());
       steer.normalize();
-      steer.mul(0.1);
+      steer.mul(0.11);
       this.setAccel(steer);
     }
   };

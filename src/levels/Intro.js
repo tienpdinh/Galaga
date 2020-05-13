@@ -15,6 +15,7 @@ import font from '../assets/fonts/Josefin_Sans_Thin_Regular.json';
 export default class Intro extends AbstractLevel {
   titleMesh;
   subtitleMesh;
+  authorMesh;
 
   constructor(
     engine,
@@ -42,6 +43,7 @@ export default class Intro extends AbstractLevel {
     // Remove meshs from engine
     this.engine.removeMesh(this.titleMesh);
     this.engine.removeMesh(this.subtitleMesh);
+    this.engine.removeMesh(this.authorMesh);
 
     // Remove window eventListener for listening to "enter" key
     window.removeEventListener('keypress', this.onPressEnter);
@@ -57,9 +59,11 @@ export default class Intro extends AbstractLevel {
       // create text mesh
       this.titleMesh = this.createTitleMesh(font);
       this.subtitleMesh = this.createSubtitleMesh(font);
+      this.authorMesh = this.createAuthorMesh(font);
       // add mesh to engine
       this.engine.addMesh(this.titleMesh);
       this.engine.addMesh(this.subtitleMesh);
+      this.engine.addMesh(this.authorMesh);
     };
 
     loader.load(font, onFontLoad);
@@ -103,6 +107,25 @@ export default class Intro extends AbstractLevel {
     });
     geometry.center();
     geometry.translate(0, 10, 460);
+    const material = new THREE.MeshNormalMaterial();
+    const mesh = new THREE.Mesh(geometry, material);
+    return mesh;
+  };
+
+  // return authors
+  createAuthorMesh = (font) => {
+    const geometry = new THREE.TextGeometry('By Rafi Barash and Tien Dinh', {
+      font: font,
+      size: 1.2,
+      height: 0.1,
+      curveSegments: 4,
+      bevelEnabled: true,
+      bevelThickness: 0.1,
+      bevelSize: 0.05,
+      bevelSegments: 10,
+    });
+    geometry.center();
+    geometry.translate(0, 0, 460);
     const material = new THREE.MeshNormalMaterial();
     const mesh = new THREE.Mesh(geometry, material);
     return mesh;

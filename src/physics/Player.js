@@ -7,6 +7,7 @@ const color = new Vector(0.52, 1, 0.45);
 export default class Player extends GameObject {
   inMotion;
   health;
+  oldHealth;
 
   constructor(pos, modelMesh) {
     super(ObjectType.PLAYER, pos, modelMesh, new Vector(70, 10, 25), color);
@@ -18,9 +19,11 @@ export default class Player extends GameObject {
     // modelMesh.rotation.y = 3.14;
     this.inMotion = false;
     this.health = 100;
+    this.oldHealth = 100;
   }
 
   kill = () => {
+    this.oldHealth = this.health;
     this.health -= 20;
     let healthHTML = document.getElementById('health');
     healthHTML.value -= 20;
