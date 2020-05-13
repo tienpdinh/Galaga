@@ -1,3 +1,4 @@
+import Stats from 'stats.js';
 import Intro from './Intro';
 import LevelOne from './LevelOne';
 
@@ -20,6 +21,7 @@ export default class LevelManager {
   camera;
   curLevelEnum; // for indexing the levelsArr
   curLevel; // current level object
+  stats; // like FPS and the like
 
   constructor(engine, renderer, camera) {
     this.engine = engine;
@@ -31,6 +33,7 @@ export default class LevelManager {
     // Set Intro as current level
     const firstLevel = Levels.INTRO;
     this.setLevel(firstLevel);
+    this.createStats();
   };
 
   switchLevel = (levelEnum) => {
@@ -54,8 +57,12 @@ export default class LevelManager {
 
   // The actual game loop
   run = (dt) => {
+    this.stats.begin();
+
     this.update(dt);
     this.render();
+
+    this.stats.end();
   };
 
   // Updates the game state
@@ -67,5 +74,12 @@ export default class LevelManager {
   // Renders the game
   render = () => {
     this.renderer.render(this.engine.getScene(), this.camera);
+  };
+
+  // To display things like fps
+  createStats = () => {
+    this.stats = new Stats();
+    this.stats.showPanel(0); // 0: fps, 1: ms, 2: mb, 3+: custom
+    document.body.appendChild(this.stats.dom);
   };
 }
