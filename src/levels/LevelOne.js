@@ -25,8 +25,13 @@ export default class LevelOne extends AbstractLevel {
   totalShots;
   clock;
 
-  constructor(engine, renderer, camera, assets, switchLevel) {
-    super(engine, renderer, camera, assets, switchLevel);
+  constructor(
+    engine,
+    renderer,
+    camera,
+    { assets, onSwitchLevel, onToggleAudio }
+  ) {
+    super(engine, renderer, camera, { assets, onSwitchLevel, onToggleAudio });
     this.enemyPacks = [];
     this.ammos = 1000;
     this.currentPackYPos = 0;
@@ -101,6 +106,10 @@ export default class LevelOne extends AbstractLevel {
     if (e.keyCode === 81) {
       // move backward with Q
       this.player.setVel(new Vector(0, 0, amt));
+    }
+    if (e.keyCode === 84) {
+      // toggle sound with t
+      this.onToggleAudio();
     }
   };
 
@@ -205,7 +214,7 @@ export default class LevelOne extends AbstractLevel {
   };
 
   onPlayerDeath = () => {
-    this.switchLevel(Levels.CREDITS);
+    this.onSwitchLevel(Levels.CREDITS);
   };
 
   cleanup = () => {
