@@ -1,8 +1,11 @@
 import * as THREE from 'three';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import Stats from 'stats.js';
 import Intro from './Intro';
 import LevelOne from './LevelOne';
 import Credits from './Credits';
+import playerSpaceshipImg from '../assets/models/playerSpaceship.glb';
+import enemySpaceshipImg from '../assets/models/enemySpaceship.glb';
 
 const levelsArr = [Intro, LevelOne, Credits];
 
@@ -25,6 +28,7 @@ export default class LevelManager {
   curLevelEnum; // for indexing the levelsArr
   curLevel; // current level object
   stats; // like FPS and the like
+  assets;
 
   constructor(engine, renderer, camera) {
     this.engine = engine;
@@ -32,11 +36,46 @@ export default class LevelManager {
     this.camera = camera;
   }
 
-  init = () => {
+  init = async () => {
+    this.createStats();
+
+    // Load Assets
+    // TODO: Loading message
+    await this.loadAssets();
+
     // Set Intro as current level
     const firstLevel = Levels.INTRO;
     this.setLevel(firstLevel);
-    this.createStats();
+  };
+
+  loadAssets = async () => {
+    const promises = [
+      this.loadGlb(playerSpaceshipImg),
+      this.loadGlb(enemySpaceshipImg),
+    ];
+
+    // Convert resolved assetArr into assets object
+    const assetArr = await Promise.all(promises);
+
+    // Get spaceships
+    const playerSpaceship = assetArr[0].scene;
+    const enemySpaceship = assetArr[1].scene;
+
+    // Set this.assets for future use
+    playerSpaceship.name = 'PlayerSpaceship';
+
+    // Set this.assets for future use
+    this.assets = {
+      playerSpaceship,
+      enemySpaceship,
+    };
+  };
+
+  loadGlb = (glbFile) => {
+    const loader = new GLTFLoader();
+    return new Promise((resolve, reject) => {
+      loader.load(glbFile, (data) => resolve(data), null, reject);
+    });
   };
 
   onSwitchLevel = (levelEnum) => {
@@ -48,11 +87,12 @@ export default class LevelManager {
   setLevel = (levelEnum) => {
     const Level = levelsArr[levelEnum];
     this.curLevelEnum = levelEnum;
-    const { onSwitchLevel, onToggleAudio, onSetAudio } = this;
+    const { onSwitchLevel, onToggleAudio, onSetAudio, assets } = this;
     this.curLevel = new Level(this.engine, this.renderer, this.camera, {
       onSwitchLevel,
       onToggleAudio,
       onSetAudio,
+      assets,
     });
     this.curLevel.init();
   };

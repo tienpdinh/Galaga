@@ -1,14 +1,11 @@
 import { Vector } from 'simple-physics-engine';
 import * as THREE from 'three';
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import AbstractLevel from './AbstractLevel';
 import { ObjectType } from '../physics/GameObject';
 import { Levels } from './LevelManager';
 import Player from '../physics/Player';
 import EnemyPack from '../math/EnemyPack';
 import { PSystemType } from '../physics/ParticleSystem';
-import playerSpaceshipImg from '../assets/models/playerSpaceship.glb';
-import enemySpaceshipImg from '../assets/models/enemySpaceship.glb';
 
 /**
  * Probably the only level this game will have. The actual game functionality goes in here
@@ -49,9 +46,7 @@ export default class LevelOne extends AbstractLevel {
     this.engine.updateLevel = this.update;
   }
 
-  init = async () => {
-    // TODO: Loading message
-    await this.loadAssets();
+  init = () => {
     this.spawnPlayer();
     this.addEventListeners();
     this.spawnEnemies();
@@ -244,33 +239,6 @@ export default class LevelOne extends AbstractLevel {
     window.addEventListener('keyup', this.stopPlayer, false);
     window.addEventListener('mousedown', this.spawnLaser, false);
     window.addEventListener('mousemove', this.pointTowardsMouse, false);
-  };
-
-  loadAssets = async () => {
-    const promises = [
-      this.loadGlb(playerSpaceshipImg),
-      this.loadGlb(enemySpaceshipImg),
-    ];
-
-    // Convert resolved assetArr into assets object
-    const assetArr = await Promise.all(promises);
-
-    // Get spaceships
-    const playerSpaceship = assetArr[0].scene;
-    const enemySpaceship = assetArr[1].scene;
-
-    // Set this.assets for future use
-    this.assets = {
-      playerSpaceship,
-      enemySpaceship,
-    };
-  };
-
-  loadGlb = (glbFile) => {
-    const loader = new GLTFLoader();
-    return new Promise((resolve, reject) => {
-      loader.load(glbFile, (data) => resolve(data), null, reject);
-    });
   };
 
   onPlayerDeath = () => {
