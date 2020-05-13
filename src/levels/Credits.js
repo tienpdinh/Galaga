@@ -1,8 +1,6 @@
 import * as THREE from 'three';
 import AbstractLevel from './AbstractLevel';
 import { Levels } from './LevelManager';
-import { PSystemType } from '../physics/ParticleSystem';
-import gameplaySound from '../assets/sounds/starwars_gameplay.ogg';
 
 /**
  * First level a user sees when loading the game.
@@ -15,22 +13,34 @@ export default class Intro extends AbstractLevel {
   titleMesh;
   subtitleMesh;
 
-  constructor(engine, renderer, camera, assets, switchLevel) {
-    super(engine, renderer, camera, assets, switchLevel);
+  constructor(
+    engine,
+    renderer,
+    camera,
+    { assets, onSwitchLevel, onSetAudio, onToggleAudio }
+  ) {
+    super(engine, renderer, camera, {
+      assets,
+      onSwitchLevel,
+      onSetAudio,
+      onToggleAudio,
+    });
   }
 
   init = () => {
     this.addText();
     this.addEventListeners();
-    this.showStats();
   };
 
   cleanup = () => {
     // Remove meshs from engine
     this.engine.removeMesh(this.titleMesh);
     this.engine.removeMesh(this.subtitleMesh);
+
     // Remove window eventListener for listening to "enter" key
     window.removeEventListener('keypress', this.onPressEnter);
+    window.removeEventListener('keydown', this.toggleSoundOnKeyDown);
+
     // Remove stats
     const statsDiv = document.getElementById('stats');
     statsDiv.style.display = 'none';
@@ -99,13 +109,14 @@ export default class Intro extends AbstractLevel {
   addEventListeners = () => {
     // Add event listener for <Enter> key
     window.addEventListener('keypress', this.onPressEnter, false);
+    window.addEventListener('keydown', this.toggleSoundOnKeyDown, false);
   };
 
   // Switch levels when <Enter> is pressed
   onPressEnter = (e) => {
     if (e.keyCode === 13) {
       // <Enter> key
-      this.switchLevel(Levels.LEVEL_ONE);
+      this.onSwitchLevel(Levels.LEVEL_ONE);
     }
   };
 }

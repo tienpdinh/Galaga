@@ -1,3 +1,4 @@
+import * as THREE from 'three';
 import Stats from 'stats.js';
 import Intro from './Intro';
 import LevelOne from './LevelOne';
@@ -20,6 +21,7 @@ export default class LevelManager {
   engine;
   renderer;
   camera;
+  audio;
   curLevelEnum; // for indexing the levelsArr
   curLevel; // current level object
   stats; // like FPS and the like
@@ -37,7 +39,7 @@ export default class LevelManager {
     this.createStats();
   };
 
-  switchLevel = (levelEnum) => {
+  onSwitchLevel = (levelEnum) => {
     // Cleanup and switch
     this.curLevel.cleanup();
     this.setLevel(levelEnum);
@@ -46,13 +48,12 @@ export default class LevelManager {
   setLevel = (levelEnum) => {
     const Level = levelsArr[levelEnum];
     this.curLevelEnum = levelEnum;
-    this.curLevel = new Level(
-      this.engine,
-      this.renderer,
-      this.camera,
-      this.assets,
-      this.switchLevel // callback to switch to new level
-    );
+    const { onSwitchLevel, onToggleAudio, onSetAudio } = this;
+    this.curLevel = new Level(this.engine, this.renderer, this.camera, {
+      onSwitchLevel,
+      onToggleAudio,
+      onSetAudio,
+    });
     this.curLevel.init();
   };
 
@@ -82,5 +83,29 @@ export default class LevelManager {
     this.stats = new Stats();
     this.stats.showPanel(0); // 0: fps, 1: ms, 2: mb, 3+: custom
     document.body.appendChild(this.stats.dom);
+  };
+
+  // Toggles Audio
+  onToggleAudio = () => {
+    if (this.audio.isPlaying) this.audio.pause();
+    else this.audio.play();
+  };
+
+  onSetAudio = (gameplaySound) => {
+    if (this.audio) {
+      this.audio.stop();
+    }
+
+    const audioLoader = new THREE.AudioLoader();
+    const listener = new THREE.AudioListener();
+    this.audio = new THREE.Audio(listener);
+    this.audio.crossOrigin = 'anonymous';
+
+    const audio = this.audio;
+    audioLoader.load(gameplaySound, function (buffer) {
+      audio.setBuffer(buffer);
+      audio.setLoop(true);
+      audio.play();
+    });
   };
 }

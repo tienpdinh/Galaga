@@ -2,6 +2,7 @@ import { Vector } from 'simple-physics-engine';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import AbstractLevel from './AbstractLevel';
+import { ObjectType } from '../physics/GameObject';
 import { Levels } from './LevelManager';
 import Player from '../physics/Player';
 import EnemyPack from '../math/EnemyPack';
@@ -25,14 +26,27 @@ export default class LevelOne extends AbstractLevel {
   totalShots;
   clock;
 
-  constructor(engine, renderer, camera, assets, switchLevel) {
-    super(engine, renderer, camera, assets, switchLevel);
+  constructor(
+    engine,
+    renderer,
+    camera,
+    { assets, onSwitchLevel, onToggleAudio }
+  ) {
+    super(engine, renderer, camera, {
+      assets,
+      onSwitchLevel,
+      onToggleAudio,
+    });
     this.enemyPacks = [];
     this.ammos = 1000;
     this.currentPackYPos = 0;
     this.totalShots = 0;
     this.clock = new THREE.Clock();
     this.clock.start();
+
+    // let physics engine call onPlayerDeath
+    this.engine.onPlayerDeath = this.onPlayerDeath;
+    this.engine.updateLevel = this.update;
   }
 
   init = async () => {
@@ -42,6 +56,42 @@ export default class LevelOne extends AbstractLevel {
     this.addEventListeners();
     this.spawnEnemies();
     this.displayControlsText();
+  };
+
+  // Custom update functionality
+  update = (dt) => {
+    // Loop through enemies and do some logic
+    for (let pack of this.enemyPacks) {
+      // Respawn pack if all enemies are dead
+      if (pack.isDead()) {
+        pack.respawn();
+        for (let enemy of pack.enemies) {
+          this.engine.addObject(enemy);
+        }
+      }
+
+      // Keep track of live enemies
+      const liveEnemies = [];
+
+      // Loop through and randomly spawn enemy lasers
+      const elapsedTime = this.clock.getElapsedTime();
+      const probOfLaser = 0.001 * Math.cbrt(elapsedTime);
+      for (let enemy of pack.enemies) {
+        if (!enemy.isDead()) {
+          // Give user some time to get used to game
+          if (elapsedTime > 6) {
+            if (Math.random() < probOfLaser) {
+              this.spawnEnemyLaser(enemy);
+            }
+          }
+
+          liveEnemies.push(enemy);
+        }
+      }
+
+      // reset pack enemies to only be live enemies
+      pack.enemies = liveEnemies;
+    }
   };
 
   spawnPlayer = () => {
@@ -102,6 +152,10 @@ export default class LevelOne extends AbstractLevel {
       // move backward with Q
       this.player.setVel(new Vector(0, 0, amt));
     }
+    if (e.keyCode === 84) {
+      // toggle sound with t
+      this.onToggleAudio();
+    }
   };
 
   stopPlayer = (e) => {
@@ -111,12 +165,14 @@ export default class LevelOne extends AbstractLevel {
   spawnLaser = (e) => {
     if (this.ammos > 1) {
       const pos = this.player.pos.copy();
-      pos.z -= 70; // don't collide with player
+      pos.z -= 50; // don't collide with player
       const vel = this.player.mesh.getWorldDirection(new THREE.Vector3());
       vel.z *= 0.5;
       this.engine.createParticleSystem(PSystemType.LASER, {
         pos,
         vel,
+        color: this.player.color,
+        ownerType: ObjectType.PLAYER,
       });
       this.totalShots++;
 
@@ -124,18 +180,31 @@ export default class LevelOne extends AbstractLevel {
       this.ammos--;
       // loop through each pack and respawn the pack if all enemies in the pack has been destroyed
       for (let pack of this.enemyPacks) {
-        if (pack.isDead()) {
-          pack.respawn();
-          for (let enemy of pack.enemies) {
-            this.engine.addObject(enemy);
-          }
-        }
         for (let enemy of pack.enemies) {
           // each enemy has 30% chance of start chasing the player
           enemy.chase(this.player.pos);
         }
       }
     }
+  };
+
+  spawnEnemyLaser = (enemy) => {
+    const pos = enemy.pos.copy();
+    pos.z += 50; // don't collide with player
+
+    // Shoot at player with some random noise
+    const vel = Vector.sub(this.player.pos, enemy.pos);
+    vel.normalize();
+    vel.x += getRandomInt(-1, 1) * 0.05; // make it a lil easier to live
+    vel.y += getRandomInt(-1, 1) * 0.01;
+    vel.z *= 0.4; // slow down laser
+
+    // Create particle system
+    this.engine.createParticleSystem(PSystemType.LASER, {
+      pos,
+      vel,
+      color: enemy.color,
+    });
   };
 
   // Point player towards mouse, completely based off the following link
@@ -153,6 +222,12 @@ export default class LevelOne extends AbstractLevel {
     raycaster.setFromCamera(mouse, this.camera); //set raycaster
     raycaster.ray.intersectPlane(plane, intersectPoint); // find the point of intersection
     this.player.lookAt(intersectPoint); // face our arrow to this point
+  };
+
+  pointTowardsPlayer = (enemy) => {
+    // const dir = Vector.sub(this.player.pos.copy(), enemy.pos.copy());
+    // enemy.lookAt(new THREE.Vector3(dir.x, dir.y, dir.z));
+    enemy.lookAt(this.player.pos.copy());
   };
 
   getTotalEnemies = () => {
@@ -205,12 +280,13 @@ export default class LevelOne extends AbstractLevel {
   };
 
   onPlayerDeath = () => {
-    this.switchLevel(Levels.CREDITS);
+    this.onSwitchLevel(Levels.CREDITS);
   };
 
   cleanup = () => {
     // Remove all objects
     this.engine.teardown();
+    this.engine.updateLevel = null;
 
     // Remove window handlers
     window.removeEventListener('keydown', this.movePlayer);
@@ -227,7 +303,12 @@ export default class LevelOne extends AbstractLevel {
     const kills = this.engine.getKills();
     const totalShots = this.totalShots;
     const remainingAmmo = this.ammos;
-    const stats = { elapsedTime, kills, totalShots, remainingAmmo };
+    const stats = {
+      elapsedTime,
+      kills,
+      totalShots,
+      remainingAmmo,
+    };
 
     // Display stats
     const statsDiv = document.getElementById('stats');
@@ -239,4 +320,10 @@ export default class LevelOne extends AbstractLevel {
       statsUl.appendChild(li);
     }
   };
+}
+
+function getRandomInt(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min)) + min; // The maximum is exclusive and the minimum is inclusive
 }
