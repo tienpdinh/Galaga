@@ -41,6 +41,14 @@ export default class Enemy extends GameObject {
     return Vector.distance(this.pos, this.designatedPos) < 5;
   };
 
+  rand = (min, max) => {
+    return Math.random() * (max - min) + min;
+  };
+
+  randInt = (min, max) => {
+    return Math.floor(this.rand(min, max));
+  };
+
   // Update state of cube... by default this just performs euleriean integration but I'm overriding it to directly add rotation
   update(dt) {
     // Moves toward the designated spot
@@ -51,6 +59,29 @@ export default class Enemy extends GameObject {
       velocity.normalize();
       velocity.mul(0.7);
       this.setVel(velocity);
+    }
+    if (this.isAtGoal()) {
+      // start pulsing
+      // apply a small force in a random direction to the ship
+      let accel = new Vector(
+        this.rand(-1, 1),
+        this.rand(-1, 1),
+        this.rand(-1, 1)
+      );
+      accel.normalize();
+      accel.mul(0.01);
+      this.setAccel(accel);
+      this.setPhase(2);
+    }
+    if (
+      this.phase === 2 &&
+      Vector.distance(this.pos, this.designatedPos) > 10
+    ) {
+      // try to move them back in position
+      let accel = Vector.sub(this.designatedPos, this.pos);
+      accel.normalize();
+      accel.mul(0.01);
+      this.setAccel(accel);
     }
     this.mesh.position.set(this.pos.x, this.pos.y, this.pos.z);
   }

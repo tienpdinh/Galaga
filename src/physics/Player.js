@@ -11,6 +11,11 @@ export default class Player extends GameObject {
     modelMesh.rotation.y = 3.14;
   }
 
+  moveRight = (vel) => {
+    this.setVel(vel);
+    this.mesh.rotation.x = 10;
+  };
+
   // Update state of cube... by default this just performs euleriean integration but I'm overriding it to directly add rotation
   update(dt) {
     super.update(dt);

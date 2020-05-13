@@ -18,9 +18,15 @@ export default class LevelOne extends AbstractLevel {
   enemyPacks;
   player;
 
+  ammos;
+
+  currentPackYPos;
+
   constructor(engine, renderer, camera, assets, switchLevel) {
     super(engine, renderer, camera, assets, switchLevel);
     this.enemyPacks = [];
+    this.ammos = 1000;
+    this.currentPackYPos = 0;
   }
 
   init = async () => {
@@ -45,10 +51,17 @@ export default class LevelOne extends AbstractLevel {
 
   spawnEnemies = () => {
     const model = this.assets.playerSpaceship;
-    let tmpPack = new EnemyPack(new Vector(-140, 0, 200), model, 5, 1);
-    let tmpPack2 = new EnemyPack(new Vector(-140, 70, 200), model, 5, 2);
-    this.enemyPacks.push(tmpPack);
-    this.enemyPacks.push(tmpPack2);
+    // spawn 2 packs initially
+    for (let i = 0; i < 2; i++) {
+      let pack = new EnemyPack(
+        new Vector(-140, this.currentPackYPos + i * 70, 200),
+        model,
+        5,
+        i + 1
+      );
+      this.enemyPacks.push(pack);
+      this.currentPackYPos += i * 70;
+    }
     for (let pack of this.enemyPacks) {
       for (let enemy of pack.enemies) {
         this.engine.addObject(enemy);
@@ -89,9 +102,26 @@ export default class LevelOne extends AbstractLevel {
   };
 
   spawnLaser = (e) => {
-    const pos = this.player.pos.copy();
-    pos.z -= 70; // don't collide with player
-    this.engine.createParticleSystem(PSystemType.LASER, { pos });
+    if (this.ammos > 1) {
+      const pos = this.player.pos.copy();
+      pos.z -= 70; // don't collide with player
+      this.engine.createParticleSystem(PSystemType.LASER, { pos });
+
+      // handling ammos and respawning enemies
+      this.ammos--;
+      console.log(this.ammos); // for now, we'll add a text to display this
+      console.log(this.enemyPacks[0].isDead());
+    }
+  };
+
+  getTotalEnemies = () => {
+    let total = 0;
+    for (let pack of this.enemyPacks) {
+      for (let _ of pack.enemies) {
+        total++;
+      }
+    }
+    return total;
   };
 
   addEventListeners = () => {

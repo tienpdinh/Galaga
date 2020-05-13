@@ -20,6 +20,15 @@ export default class EnemyPack {
     this.generatePack();
   }
 
+  isDead = () => {
+    for (let enemy of this.enemies) {
+      if (!enemy.isDead()) {
+        return false;
+      }
+    }
+    return true;
+  };
+
   generatePack = () => {
     let x;
     let z;
@@ -41,7 +50,7 @@ export default class EnemyPack {
       // let modelClone = this.model.clone(true);
       let modelClone = null;
       let enemy = new Enemy(enemyInitPos, modelClone);
-      enemy.setDesignatedPos(70 * i + this.pos.x, this.pos.z);
+      enemy.setDesignatedPos(70 * i + this.pos.x, this.pos.y, this.pos.z);
       this.enemies.push(enemy);
       enemy.getCollider(); // needed for some reason to reset collider and get it working
     }
