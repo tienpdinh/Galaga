@@ -1,7 +1,6 @@
 import * as THREE from 'three';
 import AbstractLevel from './AbstractLevel';
 import { Levels } from './LevelManager';
-import { PSystemType } from '../physics/ParticleSystem';
 import creditsSound from '../assets/sounds/credits_interstellar.ogg';
 import gameplaySound from '../assets/sounds/gameplay_starwars.ogg';
 
@@ -16,8 +15,18 @@ export default class Intro extends AbstractLevel {
   titleMesh;
   subtitleMesh;
 
-  constructor(engine, renderer, camera, { assets, onSwitchLevel }) {
-    super(engine, renderer, camera, { assets, onSwitchLevel });
+  constructor(
+    engine,
+    renderer,
+    camera,
+    { assets, onSwitchLevel, onSetAudio, onToggleAudio }
+  ) {
+    super(engine, renderer, camera, {
+      assets,
+      onSwitchLevel,
+      onSetAudio,
+      onToggleAudio,
+    });
   }
 
   init = () => {
