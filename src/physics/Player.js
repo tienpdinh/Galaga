@@ -1,7 +1,9 @@
 import GameObject from './GameObject';
 import * as THREE from 'three';
+import { Vector } from 'simple-physics-engine';
 
 export default class Player extends GameObject {
+  inMotion;
   constructor(pos, modelMesh) {
     super(pos, modelMesh);
 
@@ -9,16 +11,15 @@ export default class Player extends GameObject {
     modelMesh.scale.sub(new THREE.Vector3(0.95, 0.95, 0.95));
     modelMesh.name = 'PlayerSpaceship';
     modelMesh.rotation.y = 3.14;
+    this.inMotion = false;
   }
-
-  moveRight = (vel) => {
-    this.setVel(vel);
-    this.mesh.rotation.x = 10;
-  };
-
   // Update state of player
   update(dt) {
     super.update(dt);
+
+    if (!this.inMotion) {
+      this.setVel(Vector.mul(this.getVel(), 1 / 1.1));
+    }
 
     // Boundary checks
     const topX = 55;
