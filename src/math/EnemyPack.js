@@ -29,6 +29,12 @@ export default class EnemyPack {
     return true;
   };
 
+  respawn = () => {
+    this.enemies = [];
+    this.enemiesPos = [];
+    this.generatePack();
+  };
+
   generatePack = () => {
     let x;
     let z;

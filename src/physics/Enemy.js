@@ -49,6 +49,17 @@ export default class Enemy extends GameObject {
     return Math.floor(this.rand(min, max));
   };
 
+  chase = (pos) => {
+    this.phase === 3;
+    if (this.rand(0, 1) > 0.7) {
+      let desired = Vector.sub(pos, this.pos);
+      let steer = Vector.sub(desired, this.getVel());
+      steer.normalize();
+      steer.mul(0.1);
+      this.setAccel(steer);
+    }
+  };
+
   // Update state of cube... by default this just performs euleriean integration but I'm overriding it to directly add rotation
   update(dt) {
     // Moves toward the designated spot
@@ -60,7 +71,7 @@ export default class Enemy extends GameObject {
       velocity.mul(0.7);
       this.setVel(velocity);
     }
-    if (this.isAtGoal()) {
+    if (this.phase === 1 && this.isAtGoal()) {
       // start pulsing
       // apply a small force in a random direction to the ship
       let accel = new Vector(

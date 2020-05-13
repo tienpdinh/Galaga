@@ -113,8 +113,19 @@ export default class LevelOne extends AbstractLevel {
 
       // handling ammos and respawning enemies
       this.ammos--;
-      console.log(this.ammos); // for now, we'll add a text to display this
-      console.log(this.enemyPacks[0].isDead());
+      // loop through each pack and respawn the pack if all enemies in the pack has been destroyed
+      for (let pack of this.enemyPacks) {
+        if (pack.isDead()) {
+          pack.respawn();
+          for (let enemy of pack.enemies) {
+            this.engine.addObject(enemy);
+          }
+        }
+        for (let enemy of pack.enemies) {
+          // each enemy has 30% chance of start chasing the player
+          enemy.chase(this.player.pos);
+        }
+      }
     }
   };
 
