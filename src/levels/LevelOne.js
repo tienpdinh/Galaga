@@ -35,6 +35,7 @@ export default class LevelOne extends AbstractLevel {
     this.spawnPlayer();
     this.addEventListeners();
     this.spawnEnemies();
+    this.displayControlsText();
   };
 
   spawnPlayer = () => {
@@ -152,6 +153,11 @@ export default class LevelOne extends AbstractLevel {
       }
     }
     return total;
+  };
+
+  displayControlsText = () => {
+    const controlsDiv = document.getElementById('controls');
+    controlsDiv.style.display = 'inherit';
   };
 
   addEventListeners = () => {
