@@ -194,6 +194,7 @@ export default class LevelManager {
     audioLoader.load(gameplaySound, function (buffer) {
       audio.setBuffer(buffer);
       audio.setLoop(true);
+      audio.setVolume(0.4);
       audio.play();
     });
   };

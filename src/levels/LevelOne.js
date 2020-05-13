@@ -7,6 +7,7 @@ import Player from '../physics/Player';
 import EnemyPack from '../math/EnemyPack';
 import { PSystemType } from '../physics/ParticleSystem';
 import laserSound from '../assets/sounds/laser.ogg';
+import explosionSound from '../assets/sounds/explosion.ogg';
 
 /**
  * Probably the only level this game will have. The actual game functionality goes in here
@@ -55,7 +56,15 @@ export default class LevelOne extends AbstractLevel {
   };
 
   // Custom update functionality
-  update = (dt) => {
+  update = async (dt) => {
+    // Check if player was hit
+    if (this.player.health !== this.player.oldHealth) {
+      // add explosion sound at my position
+      const sound = await this.createSound(explosionSound, 1);
+      this.player.mesh.add(sound);
+      this.player.oldHealth = this.player.health;
+    }
+
     // Loop through enemies and do some logic
     for (let pack of this.enemyPacks) {
       // Respawn pack if all enemies are dead
@@ -82,6 +91,10 @@ export default class LevelOne extends AbstractLevel {
           }
 
           liveEnemies.push(enemy);
+        } else {
+          // add explosion sound at enemy position
+          const sound = await this.createSound(explosionSound, 2);
+          enemy.mesh.add(sound);
         }
       }
 
@@ -185,7 +198,7 @@ export default class LevelOne extends AbstractLevel {
       // loop through each pack and respawn the pack if all enemies in the pack has been destroyed
 
       // Laser sound
-      const sound = await this.createLaserSound();
+      const sound = await this.createSound(laserSound, 1);
       this.player.mesh.add(sound);
     }
   };
@@ -209,11 +222,11 @@ export default class LevelOne extends AbstractLevel {
     });
 
     // Laser sound
-    const sound = await this.createLaserSound();
+    const sound = await this.createSound(laserSound, 2);
     enemy.mesh.add(sound);
   };
 
-  createLaserSound = async () => {
+  createSound = async (soundFile, volume) => {
     // create an AudioListener and add it to the camera
     const listener = new THREE.AudioListener();
     this.camera.add(listener);
@@ -222,10 +235,10 @@ export default class LevelOne extends AbstractLevel {
     const sound = new THREE.PositionalAudio(listener);
 
     // load a sound and set it as the PositionalAudio object's buffer
-    const buffer = await this.loadSound(laserSound);
+    const buffer = await this.loadSound(soundFile);
     sound.setBuffer(buffer);
     sound.setRefDistance(20);
-    sound.setVolume(1);
+    sound.setVolume(volume);
     sound.play();
 
     return sound;
