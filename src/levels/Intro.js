@@ -105,6 +105,7 @@ export default class Intro extends AbstractLevel {
     audioLoader.load(gameplaySound, function (buffer) {
       audio.setBuffer(buffer);
       audio.setLoop(true);
+      audio.setVolume(0.5);
       audio.play();
     });
   };
