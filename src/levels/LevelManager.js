@@ -181,7 +181,7 @@ export default class LevelManager {
   };
 
   onSetAudio = (gameplaySound) => {
-    if (this.audio && this.audio.isPlaying()) {
+    if (this.audio && this.audio.isPlaying) {
       this.audio.stop();
     }
 
