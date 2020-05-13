@@ -76,7 +76,7 @@ export default class PhysicsEngine extends AbstractPhysicsEngine {
         let obj = this.objects[i];
         let ps = this.particleSystems[j];
         // Make sure particle system is a laser
-        if (ps.type === PSystemType.LASER) {
+        if (ps.type === PSystemType.LASER && ps.ownerType !== obj.type) {
           for (let p of ps.particles) {
             const isCollision = this.handleCollision(obj, p);
             if (isCollision) {

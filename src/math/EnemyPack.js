@@ -67,7 +67,7 @@ export default class EnemyPack {
         return model;
       }
     }
-    throw new Error('All Models are in use!');
+    console.error('All models are in use!');
   };
 
   rand = (min, max) => {

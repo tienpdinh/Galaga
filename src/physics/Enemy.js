@@ -67,7 +67,7 @@ export default class Enemy extends GameObject {
       desired = new Vector(0, 0, -1);
       steer = Vector.sub(desired, this.getVel());
       steer.normalize();
-      steer.mul(0.1);
+      steer.mul(0.11);
       this.setAccel(steer);
     }
   };
