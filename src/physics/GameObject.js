@@ -4,6 +4,7 @@ import { PhysicsObject, Vector, AABB } from 'simple-physics-engine';
 export const ObjectType = Object.freeze({
   PLAYER: 1,
   ENEMY: 2,
+  HEALTH_ORB: 3,
 });
 
 export default class GameObject extends PhysicsObject {
