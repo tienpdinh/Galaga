@@ -60,8 +60,6 @@ export default class LevelOne extends AbstractLevel {
 
   // Custom update functionality
   update = (dt) => {
-    const probOfLaser = 0.001;
-
     // Loop through enemies and do some logic
     for (let pack of this.enemyPacks) {
       // Respawn pack if all enemies are dead
@@ -72,20 +70,25 @@ export default class LevelOne extends AbstractLevel {
         }
       }
 
+      // Keep track of live enemies
       const liveEnemies = [];
+
+      // Loop through and randomly spawn enemy lasers
       const elapsedTime = this.clock.getElapsedTime();
+      const probOfLaser = 0.001 * Math.cbrt(elapsedTime);
       for (let enemy of pack.enemies) {
         if (!enemy.isDead()) {
           // Give user some time to get used to game
           if (elapsedTime > 10) {
-            // Randomly spawn enemy lasers (as a function of dt and timeElapsed if feeling fancy)
             if (Math.random() < probOfLaser) {
               this.spawnEnemyLaser(enemy);
             }
           }
+
           liveEnemies.push(enemy);
         }
       }
+
       // reset pack enemies to only be live enemies
       pack.enemies = liveEnemies;
     }
@@ -189,6 +192,7 @@ export default class LevelOne extends AbstractLevel {
     const pos = enemy.pos.copy();
     pos.z += 50; // don't collide with player
     const vel = enemy.mesh.getWorldDirection(new THREE.Vector3());
+    // TODO: shoot at player with some random noise
     vel.z *= 0.4;
     this.engine.createParticleSystem(PSystemType.LASER, {
       pos,
@@ -270,6 +274,7 @@ export default class LevelOne extends AbstractLevel {
   cleanup = () => {
     // Remove all objects
     this.engine.teardown();
+    this.engine.updateLevel = null;
 
     // Remove window handlers
     window.removeEventListener('keydown', this.movePlayer);
