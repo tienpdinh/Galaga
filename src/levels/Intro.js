@@ -3,6 +3,7 @@ import AbstractLevel from './AbstractLevel';
 import { Levels } from './LevelManager';
 import { PSystemType } from '../physics/ParticleSystem';
 import gameplaySound from '../assets/sounds/starwars.ogg';
+import font from '../assets/fonts/Josefin_Sans_Thin_Regular.json';
 
 /**
  * First level a user sees when loading the game.
@@ -61,10 +62,7 @@ export default class Intro extends AbstractLevel {
       this.engine.addMesh(this.subtitleMesh);
     };
 
-    loader.load(
-      'https://threejs.org/examples/fonts/helvetiker_regular.typeface.json',
-      onFontLoad
-    );
+    loader.load(font, onFontLoad);
   };
 
   // Creates star tunnel particle system

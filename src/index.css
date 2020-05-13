@@ -68,3 +68,16 @@ body {
   margin-left: -250px;
   border-radius: 10px;
 }
+
+#score {
+  position: absolute;
+  width: 500px;
+  height: 100px;
+  text-align: center;
+  color: aliceblue;
+  top: 30px;
+  right: 25%;
+  left: 50%;
+  margin-left: -250px;
+  border-radius: 10px;
+}
