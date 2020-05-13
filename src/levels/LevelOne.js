@@ -2,6 +2,7 @@ import { Vector } from 'simple-physics-engine';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import AbstractLevel from './AbstractLevel';
+import { ObjectType } from '../physics/GameObject';
 import { Levels } from './LevelManager';
 import Player from '../physics/Player';
 import EnemyPack from '../math/EnemyPack';
@@ -31,7 +32,11 @@ export default class LevelOne extends AbstractLevel {
     camera,
     { assets, onSwitchLevel, onToggleAudio }
   ) {
-    super(engine, renderer, camera, { assets, onSwitchLevel, onToggleAudio });
+    super(engine, renderer, camera, {
+      assets,
+      onSwitchLevel,
+      onToggleAudio,
+    });
     this.enemyPacks = [];
     this.ammos = 1000;
     this.currentPackYPos = 0;
@@ -41,6 +46,7 @@ export default class LevelOne extends AbstractLevel {
 
     // let physics engine call onPlayerDeath
     this.engine.onPlayerDeath = this.onPlayerDeath;
+    this.engine.updateLevel = this.update;
   }
 
   init = async () => {
@@ -50,6 +56,39 @@ export default class LevelOne extends AbstractLevel {
     this.addEventListeners();
     this.spawnEnemies();
     this.displayControlsText();
+  };
+
+  // Custom update functionality
+  update = (dt) => {
+    const probOfLaser = 0.001;
+
+    // Loop through enemies and do some logic
+    for (let pack of this.enemyPacks) {
+      // Respawn pack if all enemies are dead
+      if (pack.isDead()) {
+        pack.respawn();
+        for (let enemy of pack.enemies) {
+          this.engine.addObject(enemy);
+        }
+      }
+
+      const liveEnemies = [];
+      const elapsedTime = this.clock.getElapsedTime();
+      for (let enemy of pack.enemies) {
+        if (!enemy.isDead()) {
+          // Give user some time to get used to game
+          if (elapsedTime > 10) {
+            // Randomly spawn enemy lasers (as a function of dt and timeElapsed if feeling fancy)
+            if (Math.random() < probOfLaser) {
+              this.spawnEnemyLaser(enemy);
+            }
+          }
+          liveEnemies.push(enemy);
+        }
+      }
+      // reset pack enemies to only be live enemies
+      pack.enemies = liveEnemies;
+    }
   };
 
   spawnPlayer = () => {
@@ -129,6 +168,8 @@ export default class LevelOne extends AbstractLevel {
       this.engine.createParticleSystem(PSystemType.LASER, {
         pos,
         vel,
+        color: this.player.color,
+        ownerType: ObjectType.PLAYER,
       });
       this.totalShots++;
 
@@ -136,18 +177,24 @@ export default class LevelOne extends AbstractLevel {
       this.ammos--;
       // loop through each pack and respawn the pack if all enemies in the pack has been destroyed
       for (let pack of this.enemyPacks) {
-        if (pack.isDead()) {
-          pack.respawn();
-          for (let enemy of pack.enemies) {
-            this.engine.addObject(enemy);
-          }
-        }
         for (let enemy of pack.enemies) {
           // each enemy has 30% chance of start chasing the player
           enemy.chase(this.player.pos);
         }
       }
     }
+  };
+
+  spawnEnemyLaser = (enemy) => {
+    const pos = enemy.pos.copy();
+    pos.z += 50; // don't collide with player
+    const vel = enemy.mesh.getWorldDirection(new THREE.Vector3());
+    vel.z *= 0.4;
+    this.engine.createParticleSystem(PSystemType.LASER, {
+      pos,
+      vel,
+      color: enemy.color,
+    });
   };
 
   // Point player towards mouse, completely based off the following link
@@ -239,7 +286,12 @@ export default class LevelOne extends AbstractLevel {
     const kills = this.engine.getKills();
     const totalShots = this.totalShots;
     const remainingAmmo = this.ammos;
-    const stats = { elapsedTime, kills, totalShots, remainingAmmo };
+    const stats = {
+      elapsedTime,
+      kills,
+      totalShots,
+      remainingAmmo,
+    };
 
     // Display stats
     const statsDiv = document.getElementById('stats');

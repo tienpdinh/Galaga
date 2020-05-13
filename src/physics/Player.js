@@ -2,10 +2,12 @@ import GameObject, { ObjectType } from './GameObject';
 import * as THREE from 'three';
 import { Vector } from 'simple-physics-engine';
 
+const color = new Vector(0.52, 1, 0.45);
+
 export default class Player extends GameObject {
   inMotion;
   constructor(pos, modelMesh) {
-    super(ObjectType.PLAYER, pos, modelMesh, new Vector(70, 10, 25));
+    super(ObjectType.PLAYER, pos, modelMesh, new Vector(70, 10, 25), color);
 
     // Custom model updates
     modelMesh.scale.sub(new THREE.Vector3(0.95, 0.95, 0.95));

@@ -8,6 +8,7 @@ import {
 // Images
 import sparkImg from '../assets/images/spark.png';
 import spikeyImg from '../assets/images/spikey.png';
+import { ObjectType } from './GameObject';
 
 export const PSystemType = Object.freeze({
   STAR_TUNNEL: 1,
@@ -87,6 +88,7 @@ export default class ParticleSystem extends PSystem {
     } else if (type === PSystemType.LASER) {
       props = this.getLaserProps(options);
       this.type = PSystemType.LASER;
+      this.ownerType = options.ownerType || ObjectType.ENEMY;
     } else if (type === PSystemType.EXPLOSION) {
       props = this.getExplosionProps(options);
       this.type = PSystemType.EXPLOSION;
@@ -125,6 +127,7 @@ export default class ParticleSystem extends PSystem {
   mergeOptionsWithProps = (options, props) => {
     if (options.pos) props.posBase = options.pos;
     if (options.vel) props.velBase = options.vel;
+    if (options.color) props.colorBase = options.color;
     return props;
   };
 

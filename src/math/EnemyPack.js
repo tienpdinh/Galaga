@@ -21,12 +21,7 @@ export default class EnemyPack {
   }
 
   isDead = () => {
-    for (let enemy of this.enemies) {
-      if (!enemy.isDead()) {
-        return false;
-      }
-    }
-    return true;
+    return this.enemies.length === 0;
   };
 
   respawn = () => {

@@ -12,12 +12,14 @@ import * as THREE from 'three';
 // the player's ship, while moving, they also try to attack by shooting
 // the player, in the direction they are facing.
 
+const color = new Vector(0, 1, 0.5);
+
 export default class Enemy extends GameObject {
   designatedPos;
   phase;
 
   constructor(pos, modelMesh) {
-    super(ObjectType.ENEMY, pos, modelMesh, new Vector(30, 12, 15));
+    super(ObjectType.ENEMY, pos, modelMesh, new Vector(30, 12, 15), color);
 
     // Custom model stuff
     if (modelMesh) {

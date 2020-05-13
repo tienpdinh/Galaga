@@ -13,6 +13,7 @@ export default class PhysicsEngine extends AbstractPhysicsEngine {
 
   // Callbacks that are set
   onPlayerDeath;
+  updateLevel;
 
   constructor() {
     super();
@@ -28,6 +29,11 @@ export default class PhysicsEngine extends AbstractPhysicsEngine {
   update(dt) {
     // Handle collisions
     this.handleCollisions();
+
+    // Call custom update if available
+    if (this.updateLevel) {
+      this.updateLevel(dt);
+    }
 
     // Update objects
     const liveObjects = [];

@@ -13,10 +13,17 @@ export default class GameObject extends PhysicsObject {
   dim;
   dead;
 
-  constructor(type, pos, modelMesh, dim = new Vector(15, 15, 15)) {
+  constructor(
+    type,
+    pos,
+    modelMesh,
+    dim = new Vector(15, 15, 15),
+    color = new Vector(0, 1, 0.5)
+  ) {
     super(pos, {}); // Second parameter is init options like starting vel, etc
 
     this.type = type;
+    this.color = color;
     this.dead = false;
 
     // Add AABB Collider
@@ -36,8 +43,7 @@ export default class GameObject extends PhysicsObject {
 
     if (showCollider) {
       // Add collider mesh for debugging
-      const redColor = new THREE.Color(0xff0000); // red
-      this.colliderMesh = createBoxedMesh(dim, pos, redColor);
+      this.colliderMesh = createBoxedMesh(dim, pos, color);
     }
   }
 
