@@ -37,8 +37,6 @@ export default class LevelManager {
   }
 
   init = async () => {
-    // TODO: Loading message
-
     // Load Assets
     await this.loadAssets();
 

@@ -96,7 +96,6 @@ export default class LevelOne extends AbstractLevel {
   };
 
   spawnPlayer = () => {
-    console.log(this.assets);
     // The player will be initialized to the bottom middle of the screen
     this.player = new Player(
       new Vector(0, -15, 400),
