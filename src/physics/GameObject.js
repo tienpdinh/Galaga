@@ -1,13 +1,11 @@
 import * as THREE from 'three';
 import { PhysicsObject, Vector, AABB } from 'simple-physics-engine';
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 
 export default class GameObject extends PhysicsObject {
   mesh;
+  colliderMesh; // for help with debugging
   dim;
   dead;
-  minExtentMesh;
-  maxExtentMesh;
 
   constructor(pos, modelMesh, dim = new Vector(15, 15, 15)) {
     super(pos, {}); // Second parameter is init options like starting vel, etc
@@ -18,17 +16,21 @@ export default class GameObject extends PhysicsObject {
     this.dim = dim;
     const minExtents = Vector.sub(pos, Vector.div(dim, 2));
     const maxExtents = Vector.add(pos, Vector.div(dim, 2));
-    // TODO: Update AABB Collider with model size
 
     const aabbCollider = new AABB(minExtents, maxExtents);
     this.setCollider(aabbCollider);
 
-    if (modelMesh) {
-      modelMesh.position.add(pos);
-      this.mesh = modelMesh;
-    } else {
+    // Add model mesh
+    modelMesh.position.add(pos);
+    this.mesh = modelMesh;
+
+    // For collider debugging
+    const showCollider = false;
+
+    if (showCollider) {
+      // Add collider mesh for debugging
       const redColor = new THREE.Color(0xff0000); // red
-      this.mesh = createBoxedMesh(dim, pos, redColor);
+      this.colliderMesh = createBoxedMesh(dim, pos, redColor);
     }
   }
 

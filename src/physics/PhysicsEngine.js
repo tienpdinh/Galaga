@@ -31,6 +31,9 @@ export default class PhysicsEngine extends AbstractPhysicsEngine {
         liveObjects.push(obj);
       } else {
         this.removeMesh(obj.getMesh());
+        if (obj.colliderMesh) {
+          this.removeMesh(obj.colliderMesh);
+        }
       }
     }
     this.objects = liveObjects;
@@ -80,8 +83,6 @@ export default class PhysicsEngine extends AbstractPhysicsEngine {
 
     // If intersecting, do collision response
     if (intersectData.doesIntersect) {
-      // console.log(`collision detected: `, obj, p);
-
       // Create explosion
       this.createParticleSystem(PSystemType.EXPLOSION, {
         pos: obj.pos,
@@ -104,8 +105,13 @@ export default class PhysicsEngine extends AbstractPhysicsEngine {
   addObject(obj) {
     this.objects.push(obj);
     const mesh = obj.getMesh();
-    mesh.name = name + toString(Math.random() * 1000);
+    mesh.name = name + toString(Math.random() * 10000); // make sure name is unique
     this.scene.add(mesh);
+
+    // Add collider mesh?
+    if (obj.colliderMesh) {
+      this.addMesh(obj.colliderMesh);
+    }
   }
 
   createParticleSystem(type, options = {}) {

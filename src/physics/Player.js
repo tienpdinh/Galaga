@@ -5,7 +5,7 @@ import { Vector } from 'simple-physics-engine';
 export default class Player extends GameObject {
   inMotion;
   constructor(pos, modelMesh) {
-    super(pos, modelMesh);
+    super(pos, modelMesh, new Vector(70, 10, 25));
 
     // Custom model updates
     modelMesh.scale.sub(new THREE.Vector3(0.95, 0.95, 0.95));
@@ -39,5 +39,14 @@ export default class Player extends GameObject {
 
     // Update mesh position
     this.mesh.position.set(this.pos.x, this.pos.y, this.pos.z);
+
+    if (this.colliderMesh) {
+      const colliderPos = this.getCollider().getCenter();
+      this.colliderMesh.position.set(
+        colliderPos.x,
+        colliderPos.y,
+        colliderPos.z
+      );
+    }
   }
 }

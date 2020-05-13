@@ -17,7 +17,7 @@ export default class Enemy extends GameObject {
   phase;
 
   constructor(pos, modelMesh) {
-    super(pos, modelMesh);
+    super(pos, modelMesh, new Vector(30, 12, 15));
 
     // Custom model stuff
     if (modelMesh) {
@@ -95,5 +95,14 @@ export default class Enemy extends GameObject {
       this.setAccel(accel);
     }
     this.mesh.position.set(this.pos.x, this.pos.y, this.pos.z);
+
+    if (this.colliderMesh) {
+      const colliderPos = this.getCollider().getCenter();
+      this.colliderMesh.position.set(
+        colliderPos.x,
+        colliderPos.y,
+        colliderPos.z
+      );
+    }
   }
 }
