@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import AbstractLevel from './AbstractLevel';
 import { Levels } from './LevelManager';
 import { PSystemType } from '../physics/ParticleSystem';
-import gameplaySound from '../assets/sounds/interstellar.ogg';
+import gameplaySound from '../assets/sounds/starwars.ogg';
 
 /**
  * First level a user sees when loading the game.
@@ -33,6 +33,7 @@ export default class Intro extends AbstractLevel {
     this.addText();
     this.addStarTunnel();
     this.addEventListeners();
+    this.displayControlsText();
     this.onSetAudio(gameplaySound);
   };
 
@@ -120,6 +121,11 @@ export default class Intro extends AbstractLevel {
       audio.setVolume(0.5);
       audio.play();
     });
+  };
+
+  displayControlsText = () => {
+    const controlsDiv = document.getElementById('controls');
+    controlsDiv.style.display = 'inherit';
   };
 
   addEventListeners = () => {
