@@ -43,7 +43,6 @@ export default class LevelOne extends AbstractLevel {
       new Vector(0, 0, 400),
       this.assets.playerSpaceship
     );
-    console.log(this.player);
 
     // Add player to scene
     this.engine.addObject(this.player);
@@ -67,7 +66,6 @@ export default class LevelOne extends AbstractLevel {
         this.engine.addObject(enemy);
       }
     }
-    console.log(this.enemyPacks);
   };
 
   movePlayer = (e) => {
@@ -106,7 +104,9 @@ export default class LevelOne extends AbstractLevel {
     if (this.ammos > 1) {
       const pos = this.player.pos.copy();
       pos.z -= 70; // don't collide with player
-      this.engine.createParticleSystem(PSystemType.LASER, { pos });
+      const vel = this.player.mesh.getWorldDirection();
+      // vel.z = -1
+      this.engine.createParticleSystem(PSystemType.LASER, { pos, vel });
 
       // handling ammos and respawning enemies
       this.ammos--;

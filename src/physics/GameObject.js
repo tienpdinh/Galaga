@@ -3,8 +3,6 @@ import { PhysicsObject, Vector, AABB } from 'simple-physics-engine';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 
 export default class GameObject extends PhysicsObject {
-  geometry;
-  material;
   mesh;
   width;
   height;
@@ -36,18 +34,17 @@ export default class GameObject extends PhysicsObject {
       this.mesh = modelMesh;
     } else {
       // Geometry
-      this.color = new THREE.Color(0xff0000);
-      this.geometry = new THREE.BoxGeometry(
+      const geometry = new THREE.BoxGeometry(
         this.width,
         this.height,
         this.depth
       );
       // Material
-      this.material = new THREE.MeshBasicMaterial({
-        color: this.color, // greenish blue
+      const material = new THREE.MeshBasicMaterial({
+        color: new THREE.Color(0xff0000), // red
       });
       // Mesh
-      this.mesh = new THREE.Mesh(this.geometry, this.material);
+      this.mesh = new THREE.Mesh(geometry, material);
       this.mesh.position.set(pos.x, pos.y, pos.z);
     }
   }

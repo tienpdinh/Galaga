@@ -124,6 +124,7 @@ export default class ParticleSystem extends PSystem {
 
   mergeOptionsWithProps = (options, props) => {
     if (options.pos) props.posBase = options.pos;
+    if (options.vel) props.velBase = options.vel;
     return props;
   };
 
