@@ -181,7 +181,7 @@ const StarTunnelProps = {
   opacityBase: 1,
 
   // genRate: 20000,
-  genRate: 0.8,
+  genRate: 1,
   particleLifespan: 600,
   lifespan: Infinity,
 };

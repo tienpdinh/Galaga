@@ -40,7 +40,7 @@ export default class LevelOne extends AbstractLevel {
   spawnPlayer = () => {
     // The player will be initialized to the bottom middle of the screen
     this.player = new Player(
-      new Vector(0, 0, 450),
+      new Vector(0, 0, 400),
       this.assets.playerSpaceship
     );
     console.log(this.player);
@@ -71,29 +71,30 @@ export default class LevelOne extends AbstractLevel {
   };
 
   movePlayer = (e) => {
+    const amt = 0.3;
     if (e.keyCode === 68 || e.keyCode === 39) {
-      // move right
-      this.player.setVel(new Vector(0.3, 0, 0));
+      // move right with arrow or D
+      this.player.setVel(new Vector(amt, 0, 0));
     }
     if (e.keyCode === 65 || e.keyCode === 37) {
-      // move left
-      this.player.setVel(new Vector(-0.3, 0, 0));
+      // move left with arrow or A
+      this.player.setVel(new Vector(-1 * amt, 0, 0));
     }
     if (e.keyCode === 87 || e.keyCode === 38) {
-      // move forward
-      this.player.setVel(new Vector(0, 0, -0.3));
+      // move up with arrow or W
+      this.player.setVel(new Vector(0, amt, -0));
     }
     if (e.keyCode === 83 || e.keyCode === 40) {
-      // move backward
-      this.player.setVel(new Vector(0, 0, 0.3));
+      // move down with arrow or S
+      this.player.setVel(new Vector(0, -1 * amt, 0));
     }
-    if (e.keyCode === 32) {
-      // move up with space
-      this.player.setVel(new Vector(0, 0.3, 0));
+    if (e.keyCode === 69) {
+      // move forward with E
+      this.player.setVel(new Vector(0, 0, -1 * amt));
     }
-    if (e.keyCode === 16) {
-      // move down with left shift
-      this.player.setVel(new Vector(0, -0.3, 0));
+    if (e.keyCode === 81) {
+      // move backward with Q
+      this.player.setVel(new Vector(0, 0, amt));
     }
   };
 
