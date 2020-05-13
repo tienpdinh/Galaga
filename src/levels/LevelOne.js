@@ -94,6 +94,8 @@ export default class LevelOne extends AbstractLevel {
       // move backward with Q
       this.player.setVel(new Vector(0, 0, amt));
     }
+
+    console.log(this.player.pos);
   };
 
   stopPlayer = (e) => {

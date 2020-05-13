@@ -16,9 +16,27 @@ export default class Player extends GameObject {
     this.mesh.rotation.x = 10;
   };
 
-  // Update state of cube... by default this just performs euleriean integration but I'm overriding it to directly add rotation
+  // Update state of player
   update(dt) {
     super.update(dt);
+
+    // Boundary checks
+    const topX = 55;
+    const floorX = -75;
+    const topY = 70;
+    const floorY = -25;
+    const topZ = 430;
+    const floorZ = 350;
+
+    const pos = this.pos;
+    pos.x = Math.min(pos.x, topX);
+    pos.x = Math.max(pos.x, floorX);
+    pos.y = Math.min(pos.y, topY);
+    pos.y = Math.max(pos.y, floorY);
+    pos.z = Math.min(pos.z, topZ);
+    pos.z = Math.max(pos.z, floorZ);
+
+    // Update mesh position
     this.mesh.position.set(this.pos.x, this.pos.y, this.pos.z);
   }
 }
