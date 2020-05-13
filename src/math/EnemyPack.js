@@ -10,11 +10,12 @@ export default class EnemyPack {
   side;
   model;
 
-  constructor(pos, model, size, side = 0) {
+  constructor(pos, model, size, engine, side = 0) {
     this.size = size;
     this.model = model;
     this.pos = pos;
     this.side = side;
+    this.engine = engine;
     this.enemies = [];
     this.enemiesPos = [];
     this.generatePack();
@@ -24,13 +25,13 @@ export default class EnemyPack {
     return this.enemies.length === 0;
   };
 
-  respawn = () => {
+  respawn = (numEnemies) => {
     this.enemies = [];
     this.enemiesPos = [];
-    this.generatePack();
+    this.generatePack(numEnemies);
   };
 
-  generatePack = () => {
+  generatePack = (numEnemies) => {
     let x;
     let z;
     if (this.side === 0) {
@@ -48,8 +49,10 @@ export default class EnemyPack {
     }
     for (let i = 0; i < this.size; i++) {
       let enemyInitPos = new Vector(x + i * 20, 40 * i, z + i * 20);
-      let modelClone = this.model.clone(true);
-      let enemy = new Enemy(enemyInitPos, modelClone);
+      const name = `EnemySpaceship${numEnemies + i}`;
+      let model = this.engine.getMeshByName(name);
+      console.log(model, name, numEnemies);
+      let enemy = new Enemy(enemyInitPos, model);
       enemy.setDesignatedPos(70 * i + this.pos.x, this.pos.y, this.pos.z);
       this.enemies.push(enemy);
       enemy.getCollider(); // needed for some reason to reset collider and get it working

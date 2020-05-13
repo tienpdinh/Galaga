@@ -12,9 +12,10 @@ export default class Player extends GameObject {
     super(ObjectType.PLAYER, pos, modelMesh, new Vector(70, 10, 25), color);
 
     // Custom model updates
-    modelMesh.scale.sub(new THREE.Vector3(0.95, 0.95, 0.95));
-    modelMesh.name = 'PlayerSpaceship';
-    modelMesh.rotation.y = 3.14;
+    // modelMesh.visible = true;
+    // modelMesh.scale.sub(new THREE.Vector3(0.95, 0.95, 0.95));
+    // modelMesh.name = 'PlayerSpaceship';
+    // modelMesh.rotation.y = 3.14;
     this.inMotion = false;
     this.health = 100;
   }

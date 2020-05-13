@@ -59,7 +59,7 @@ export default class LevelOne extends AbstractLevel {
     for (let pack of this.enemyPacks) {
       // Respawn pack if all enemies are dead
       if (pack.isDead()) {
-        pack.respawn();
+        pack.respawn(this.getTotalEnemies());
         for (let enemy of pack.enemies) {
           this.engine.addObject(enemy);
         }
@@ -118,6 +118,7 @@ export default class LevelOne extends AbstractLevel {
         new Vector(-140, this.currentPackYPos + i * 70, 100),
         model,
         5,
+        this.engine,
         i + 1
       );
       this.enemyPacks.push(pack);

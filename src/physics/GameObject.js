@@ -36,7 +36,11 @@ export default class GameObject extends PhysicsObject {
     this.setCollider(aabbCollider);
 
     // Add model mesh
-    modelMesh.position.add(pos);
+    // modelMesh.position.add(pos);
+    modelMesh.position.x = pos.x;
+    modelMesh.position.y = pos.y;
+    modelMesh.position.z = pos.z;
+    modelMesh.visible = true;
     this.mesh = modelMesh;
 
     // For collider debugging

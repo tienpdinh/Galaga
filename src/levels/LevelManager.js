@@ -37,15 +37,17 @@ export default class LevelManager {
   }
 
   init = async () => {
-    this.createStats();
+    // TODO: Loading message
 
     // Load Assets
-    // TODO: Loading message
     await this.loadAssets();
 
     // Set Intro as current level
     const firstLevel = Levels.INTRO;
     this.setLevel(firstLevel);
+
+    // Show stats
+    this.createStats();
   };
 
   loadAssets = async () => {
@@ -71,31 +73,19 @@ export default class LevelManager {
     const enemySpaceship9 = enemySpaceship0.clone(true);
     const enemySpaceship10 = enemySpaceship0.clone(true);
 
-    // Set names of spaceships
-    playerSpaceship.name = 'PlayerSpaceship';
-    playerSpaceship.visible = false;
-    enemySpaceship0.name = 'EnemySpaceship0';
-    enemySpaceship0.visible = false;
-    enemySpaceship1.name = 'EnemySpaceship1';
-    enemySpaceship1.visible = false;
-    enemySpaceship2.name = 'EnemySpaceship2';
-    enemySpaceship2.visible = false;
-    enemySpaceship3.name = 'EnemySpaceship3';
-    enemySpaceship3.visible = false;
-    enemySpaceship4.name = 'EnemySpaceship4';
-    enemySpaceship4.visible = false;
-    enemySpaceship5.name = 'EnemySpaceship5';
-    enemySpaceship5.visible = false;
-    enemySpaceship6.name = 'EnemySpaceship6';
-    enemySpaceship6.visible = false;
-    enemySpaceship7.name = 'EnemySpaceship7';
-    enemySpaceship7.visible = false;
-    enemySpaceship8.name = 'EnemySpaceship8';
-    enemySpaceship8.visible = false;
-    enemySpaceship9.name = 'EnemySpaceship9';
-    enemySpaceship9.visible = false;
-    enemySpaceship10.name = 'EnemySpaceship10';
-    enemySpaceship10.visible = false;
+    // Set init properties of spaceships
+    this.setPlayerModel(playerSpaceship);
+    this.setEnemyModel(enemySpaceship0, 'EnemySpaceship0');
+    this.setEnemyModel(enemySpaceship1, 'EnemySpaceship1');
+    this.setEnemyModel(enemySpaceship2, 'EnemySpaceship2');
+    this.setEnemyModel(enemySpaceship3, 'EnemySpaceship3');
+    this.setEnemyModel(enemySpaceship4, 'EnemySpaceship4');
+    this.setEnemyModel(enemySpaceship5, 'EnemySpaceship5');
+    this.setEnemyModel(enemySpaceship6, 'EnemySpaceship6');
+    this.setEnemyModel(enemySpaceship7, 'EnemySpaceship7');
+    this.setEnemyModel(enemySpaceship8, 'EnemySpaceship8');
+    this.setEnemyModel(enemySpaceship9, 'EnemySpaceship9');
+    this.setEnemyModel(enemySpaceship10, 'EnemySpaceship10');
 
     // Set this.assets for future use
     this.assets = {
@@ -117,6 +107,19 @@ export default class LevelManager {
     for (let asset of Object.values(this.assets)) {
       this.engine.addMesh(asset);
     }
+  };
+
+  setPlayerModel = (playerModel) => {
+    playerModel.name = 'PlayerSpaceship';
+    playerModel.scale.sub(new THREE.Vector3(0.95, 0.95, 0.95));
+    playerModel.rotation.y = 3.14;
+    playerModel.visible = false;
+  };
+
+  setEnemyModel = (enemyModel, name) => {
+    enemyModel.name = name;
+    enemyModel.visible = false;
+    enemyModel.scale.add(new THREE.Vector3(3, 3, 3));
   };
 
   loadGlb = (glbFile) => {
@@ -147,12 +150,12 @@ export default class LevelManager {
 
   // The actual game loop
   run = (dt) => {
-    this.stats.begin();
+    if (this.stats) this.stats.begin();
 
     this.update(dt);
     this.render();
 
-    this.stats.end();
+    if (this.stats) this.stats.end();
   };
 
   // Updates the game state

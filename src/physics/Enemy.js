@@ -22,11 +22,11 @@ export default class Enemy extends GameObject {
     super(ObjectType.ENEMY, pos, modelMesh, new Vector(30, 12, 15), color);
 
     // Custom model stuff
-    if (modelMesh) {
-      // modelMesh.scale.sub(new THREE.Vector3(0.03, 0.03, 0.03));
-      modelMesh.scale.add(new THREE.Vector3(3, 3, 3));
-      // modelMesh.rotation.y = 3.14;
-    }
+    // if (modelMesh) {
+    // modelMesh.scale.sub(new THREE.Vector3(0.03, 0.03, 0.03));
+    // modelMesh.scale.add(new THREE.Vector3(3, 3, 3));
+    // modelMesh.rotation.y = 3.14;
+    // }
 
     this.phase = 1; // Alignment
   }
