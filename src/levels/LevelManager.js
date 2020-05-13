@@ -59,16 +59,64 @@ export default class LevelManager {
 
     // Get spaceships
     const playerSpaceship = assetArr[0].scene;
-    const enemySpaceship = assetArr[1].scene;
+    const enemySpaceship0 = assetArr[1].scene;
+    const enemySpaceship1 = enemySpaceship0.clone(true);
+    const enemySpaceship2 = enemySpaceship0.clone(true);
+    const enemySpaceship3 = enemySpaceship0.clone(true);
+    const enemySpaceship4 = enemySpaceship0.clone(true);
+    const enemySpaceship5 = enemySpaceship0.clone(true);
+    const enemySpaceship6 = enemySpaceship0.clone(true);
+    const enemySpaceship7 = enemySpaceship0.clone(true);
+    const enemySpaceship8 = enemySpaceship0.clone(true);
+    const enemySpaceship9 = enemySpaceship0.clone(true);
+    const enemySpaceship10 = enemySpaceship0.clone(true);
 
-    // Set this.assets for future use
+    // Set names of spaceships
     playerSpaceship.name = 'PlayerSpaceship';
+    playerSpaceship.visible = false;
+    enemySpaceship0.name = 'EnemySpaceship0';
+    enemySpaceship0.visible = false;
+    enemySpaceship1.name = 'EnemySpaceship1';
+    enemySpaceship1.visible = false;
+    enemySpaceship2.name = 'EnemySpaceship2';
+    enemySpaceship2.visible = false;
+    enemySpaceship3.name = 'EnemySpaceship3';
+    enemySpaceship3.visible = false;
+    enemySpaceship4.name = 'EnemySpaceship4';
+    enemySpaceship4.visible = false;
+    enemySpaceship5.name = 'EnemySpaceship5';
+    enemySpaceship5.visible = false;
+    enemySpaceship6.name = 'EnemySpaceship6';
+    enemySpaceship6.visible = false;
+    enemySpaceship7.name = 'EnemySpaceship7';
+    enemySpaceship7.visible = false;
+    enemySpaceship8.name = 'EnemySpaceship8';
+    enemySpaceship8.visible = false;
+    enemySpaceship9.name = 'EnemySpaceship9';
+    enemySpaceship9.visible = false;
+    enemySpaceship10.name = 'EnemySpaceship10';
+    enemySpaceship10.visible = false;
 
     // Set this.assets for future use
     this.assets = {
       playerSpaceship,
-      enemySpaceship,
+      enemySpaceship0,
+      enemySpaceship1,
+      enemySpaceship2,
+      enemySpaceship3,
+      enemySpaceship4,
+      enemySpaceship5,
+      enemySpaceship6,
+      enemySpaceship7,
+      enemySpaceship8,
+      enemySpaceship9,
+      enemySpaceship10,
     };
+
+    // Add assets to engine
+    for (let asset of Object.values(this.assets)) {
+      this.engine.addMesh(asset);
+    }
   };
 
   loadGlb = (glbFile) => {
