@@ -40,7 +40,7 @@ export default class LevelOne extends AbstractLevel {
   spawnPlayer = () => {
     // The player will be initialized to the bottom middle of the screen
     this.player = new Player(
-      new Vector(0, 0, 400),
+      new Vector(0, -15, 400),
       this.assets.playerSpaceship
     );
 
@@ -95,8 +95,6 @@ export default class LevelOne extends AbstractLevel {
       // move backward with Q
       this.player.setVel(new Vector(0, 0, amt));
     }
-
-    console.log(this.player.pos);
   };
 
   stopPlayer = (e) => {
@@ -107,8 +105,8 @@ export default class LevelOne extends AbstractLevel {
     if (this.ammos > 1) {
       const pos = this.player.pos.copy();
       pos.z -= 70; // don't collide with player
-      const vel = this.player.mesh.getWorldDirection();
-      // vel.z = -1
+      const vel = this.player.mesh.getWorldDirection(new THREE.Vector3());
+      vel.z *= 0.5;
       this.engine.createParticleSystem(PSystemType.LASER, { pos, vel });
 
       // handling ammos and respawning enemies
@@ -129,6 +127,8 @@ export default class LevelOne extends AbstractLevel {
     }
   };
 
+  // Point player towards mouse, completely based off the following link
+  // https://stackoverflow.com/questions/44823986/how-to-rotate-object-to-look-mouse-point-in-three-js
   pointTowardsMouse = (e) => {
     const plane = new THREE.Plane(new THREE.Vector3(0, 0, 1), 0);
     const raycaster = new THREE.Raycaster(); //for reuse

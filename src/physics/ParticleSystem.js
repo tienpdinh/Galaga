@@ -143,7 +143,7 @@ export default class ParticleSystem extends PSystem {
           this.colorBase.y,
           this.colorBase.z
         ),
-        size: this.radiusBase,
+        size: this.radiusBase * 2,
         blending: this.blendStyle,
         transparent: true,
       });
@@ -176,7 +176,7 @@ const StarTunnelProps = {
   particleTexture: new THREE.TextureLoader().load(spikeyImg),
   blendStyle: THREE.AdditiveBlending,
 
-  radiusBase: 0.5,
+  radiusBase: 0.3,
   radiusSpread: 0,
   colorBase: new Vector(0.15, 1.0, 0.8), // H,S,L
   opacityBase: 1,
@@ -203,7 +203,7 @@ const LaserProps = {
   particleTexture: new THREE.TextureLoader().load(spikeyImg),
   blendStyle: THREE.AdditiveBlending,
 
-  radiusBase: 20,
+  radiusBase: 10,
   radiusSpread: 1,
   colorBase: new Vector(0.52, 1, 0.45), // HSL
   opacityBase: 1,
@@ -225,6 +225,8 @@ const ExplosionProps = {
 
   particleTexture: new THREE.TextureLoader().load(sparkImg),
   blendStyle: THREE.AdditiveBlending,
+
+  radiusBase: 4,
 
   radiusTween: new Tween([0.5, 0.7, 1.3], [5, 40, 1]),
   opacityTween: new Tween([0.2, 0.7, 2.5], [0.75, 1, 0]),
