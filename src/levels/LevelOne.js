@@ -95,6 +95,9 @@ export default class LevelOne extends AbstractLevel {
       this.assets.playerSpaceship
     );
 
+    let tmpHealth = document.getElementById('health');
+    tmpHealth.value = 100;
+
     // Add player to scene
     this.engine.addObject(this.player);
   };
@@ -104,7 +107,7 @@ export default class LevelOne extends AbstractLevel {
     // spawn 2 packs initially
     for (let i = 0; i < 2; i++) {
       let pack = new EnemyPack(
-        new Vector(-140, this.currentPackYPos + i * 70, 200),
+        new Vector(-140, this.currentPackYPos + i * 70, 300),
         model,
         5,
         i + 1
@@ -232,6 +235,13 @@ export default class LevelOne extends AbstractLevel {
       }
     }
     return total;
+  };
+
+  displayControlsText = () => {
+    const controlsDiv = document.getElementById('controls');
+    const healthBar = document.getElementById('health');
+    healthBar.style.display = 'inherit';
+    controlsDiv.style.display = 'inherit';
   };
 
   addEventListeners = () => {
