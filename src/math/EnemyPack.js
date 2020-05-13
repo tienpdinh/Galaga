@@ -10,7 +10,7 @@ export default class EnemyPack {
   side;
   model;
 
-  constructor(pos, model, size, engine, side = 0) {
+  constructor(pos, model, size, engine, side = 0, numEnemies) {
     this.size = size;
     this.model = model;
     this.pos = pos;
@@ -18,7 +18,7 @@ export default class EnemyPack {
     this.engine = engine;
     this.enemies = [];
     this.enemiesPos = [];
-    this.generatePack();
+    this.generatePack(numEnemies);
   }
 
   isDead = () => {

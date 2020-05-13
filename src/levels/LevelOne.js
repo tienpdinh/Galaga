@@ -119,7 +119,8 @@ export default class LevelOne extends AbstractLevel {
         model,
         5,
         this.engine,
-        i + 1
+        i + 1,
+        this.getTotalEnemies()
       );
       this.enemyPacks.push(pack);
       this.currentPackYPos += i * 70;
