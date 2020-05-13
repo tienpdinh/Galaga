@@ -55,7 +55,7 @@ export default class Enemy extends GameObject {
     this.phase === 3;
     let desired;
     let steer;
-    if (this.rand(0, 1) > 0.99) {
+    if (this.rand(0, 1) > 0.99 || Vector.distance(pos, this.pos) > 1000) {
       desired = Vector.sub(pos, this.pos);
       steer = Vector.sub(desired, this.getVel());
       steer.normalize();
