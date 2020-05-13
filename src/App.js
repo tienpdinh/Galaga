@@ -63,11 +63,16 @@ export default class App {
   };
 
   createLights = () => {
+    // not really sure how these lights work but i can see things
+    var hemiLight = new THREE.HemisphereLight(0xffffff, 0x444444);
+    hemiLight.position.set(0, 300, 0).normalize;
+    this.engine.scene.add(hemiLight);
+
     const ambientLight = new THREE.AmbientLight(0xcccccc);
     this.engine.scene.add(ambientLight);
 
     const directionalLight = new THREE.DirectionalLight(0xffffff);
-    directionalLight.position.set(0, 1, 250).normalize();
+    directionalLight.position.set(0, 1, 1).normalize();
     this.engine.scene.add(directionalLight);
   };
 

@@ -21,9 +21,9 @@ export default class Enemy extends GameObject {
 
     // Custom model stuff
     if (modelMesh) {
-      modelMesh.scale.sub(new THREE.Vector3(0.999, 0.999, 0.999));
-      // modelMesh.name = 'EnemySpaceship';
-      modelMesh.rotation.y = 3.14;
+      // modelMesh.scale.sub(new THREE.Vector3(0.03, 0.03, 0.03));
+      modelMesh.scale.add(new THREE.Vector3(3, 3, 3));
+      // modelMesh.rotation.y = 3.14;
     }
 
     this.phase = 1; // Alignment

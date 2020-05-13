@@ -53,8 +53,7 @@ export default class EnemyPack {
     }
     for (let i = 0; i < this.size; i++) {
       let enemyInitPos = new Vector(x + i * 20, 40 * i, z + i * 20);
-      // let modelClone = this.model.clone(true);
-      let modelClone = null;
+      let modelClone = this.model.clone(true);
       let enemy = new Enemy(enemyInitPos, modelClone);
       enemy.setDesignatedPos(70 * i + this.pos.x, this.pos.y, this.pos.z);
       this.enemies.push(enemy);
