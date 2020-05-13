@@ -1,11 +1,11 @@
-import GameObject from './GameObject';
+import GameObject, { ObjectType } from './GameObject';
 import * as THREE from 'three';
 import { Vector } from 'simple-physics-engine';
 
 export default class Player extends GameObject {
   inMotion;
   constructor(pos, modelMesh) {
-    super(pos, modelMesh, new Vector(70, 10, 25));
+    super(ObjectType.PLAYER, pos, modelMesh, new Vector(70, 10, 25));
 
     // Custom model updates
     modelMesh.scale.sub(new THREE.Vector3(0.95, 0.95, 0.95));

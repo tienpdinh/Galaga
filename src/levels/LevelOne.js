@@ -38,6 +38,9 @@ export default class LevelOne extends AbstractLevel {
     this.totalShots = 0;
     this.clock = new THREE.Clock();
     this.clock.start();
+
+    // let physics engine call onPlayerDeath
+    this.engine.onPlayerDeath = this.onPlayerDeath;
   }
 
   init = async () => {
@@ -120,7 +123,7 @@ export default class LevelOne extends AbstractLevel {
   spawnLaser = (e) => {
     if (this.ammos > 1) {
       const pos = this.player.pos.copy();
-      pos.z -= 70; // don't collide with player
+      pos.z -= 50; // don't collide with player
       const vel = this.player.mesh.getWorldDirection(new THREE.Vector3());
       vel.z *= 0.5;
       this.engine.createParticleSystem(PSystemType.LASER, {

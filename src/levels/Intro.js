@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import AbstractLevel from './AbstractLevel';
 import { Levels } from './LevelManager';
 import { PSystemType } from '../physics/ParticleSystem';
-import gameplaySound from '../assets/sounds/gameplay_starwars.ogg';
+import gameplaySound from '../assets/sounds/interstellar.ogg';
 
 /**
  * First level a user sees when loading the game.

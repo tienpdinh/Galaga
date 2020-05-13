@@ -92,6 +92,10 @@ export default class LevelManager {
   };
 
   onSetAudio = (gameplaySound) => {
+    if (this.audio) {
+      this.audio.stop();
+    }
+
     const audioLoader = new THREE.AudioLoader();
     const listener = new THREE.AudioListener();
     this.audio = new THREE.Audio(listener);

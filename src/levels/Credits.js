@@ -1,8 +1,6 @@
 import * as THREE from 'three';
 import AbstractLevel from './AbstractLevel';
 import { Levels } from './LevelManager';
-import creditsSound from '../assets/sounds/credits_interstellar.ogg';
-import gameplaySound from '../assets/sounds/gameplay_starwars.ogg';
 
 /**
  * First level a user sees when loading the game.
@@ -32,8 +30,6 @@ export default class Intro extends AbstractLevel {
   init = () => {
     this.addText();
     this.addEventListeners();
-    this.showStats();
-    this.onSetAudio(creditsSound);
   };
 
   cleanup = () => {
@@ -44,9 +40,6 @@ export default class Intro extends AbstractLevel {
     // Remove window eventListener for listening to "enter" key
     window.removeEventListener('keypress', this.onPressEnter);
     window.removeEventListener('keydown', this.toggleSoundOnKeyDown);
-
-    // Revert back to gameplay audio
-    this.onSetAudio(gameplaySound);
 
     // Remove stats
     const statsDiv = document.getElementById('stats');

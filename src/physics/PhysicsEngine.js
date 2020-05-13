@@ -4,11 +4,15 @@ import {
   Vector,
 } from 'simple-physics-engine';
 import ParticleSystem, { PSystemType } from './ParticleSystem';
+import { ObjectType } from './GameObject';
 
 export default class PhysicsEngine extends AbstractPhysicsEngine {
   scene;
   particleSystems;
   kills;
+
+  // Callbacks that are set
+  onPlayerDeath;
 
   constructor() {
     super();
@@ -32,6 +36,10 @@ export default class PhysicsEngine extends AbstractPhysicsEngine {
         obj.update(dt);
         liveObjects.push(obj);
       } else {
+        // Check for player death
+        if (obj.type === ObjectType.PLAYER) {
+          this.onPlayerDeath();
+        }
         this.kills++;
         this.removeMesh(obj.getMesh());
         if (obj.colliderMesh) {

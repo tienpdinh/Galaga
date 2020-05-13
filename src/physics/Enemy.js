@@ -1,4 +1,4 @@
-import GameObject from './GameObject';
+import GameObject, { ObjectType } from './GameObject';
 import { Vector } from 'simple-physics-engine';
 import * as THREE from 'three';
 
@@ -17,7 +17,7 @@ export default class Enemy extends GameObject {
   phase;
 
   constructor(pos, modelMesh) {
-    super(pos, modelMesh, new Vector(30, 12, 15));
+    super(ObjectType.ENEMY, pos, modelMesh, new Vector(30, 12, 15));
 
     // Custom model stuff
     if (modelMesh) {
