@@ -54,5 +54,17 @@ body {
 
 #stats-list {
   color: white;
-  margin: 0;
+}
+
+#health {
+  display: none;
+  position: absolute;
+  width: 500px;
+  height: 20px;
+  background: rgb(4, 37, 128);
+  bottom: 30px;
+  right: 25%;
+  left: 50%;
+  margin-left: -250px;
+  border-radius: 10px;
 }

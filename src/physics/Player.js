@@ -23,7 +23,10 @@ export default class Player extends GameObject {
     this.health -= 20;
     let healthHTML = document.getElementById('health');
     healthHTML.value -= 20;
-    if (this.health < 0) {
+    if (healthHTML.value < 50) {
+      healthHTML.style.background = 'rgb(128,8,4)';
+    }
+    if (this.health <= 0) {
       this.dead = true;
     }
   };
