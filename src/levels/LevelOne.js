@@ -79,7 +79,7 @@ export default class LevelOne extends AbstractLevel {
       for (let enemy of pack.enemies) {
         if (!enemy.isDead()) {
           // Give user some time to get used to game
-          if (elapsedTime > 10) {
+          if (elapsedTime > 6) {
             if (Math.random() < probOfLaser) {
               this.spawnEnemyLaser(enemy);
             }
@@ -191,9 +191,15 @@ export default class LevelOne extends AbstractLevel {
   spawnEnemyLaser = (enemy) => {
     const pos = enemy.pos.copy();
     pos.z += 50; // don't collide with player
-    const vel = enemy.mesh.getWorldDirection(new THREE.Vector3());
-    // TODO: shoot at player with some random noise
-    vel.z *= 0.4;
+
+    // Shoot at player with some random noise
+    const vel = Vector.sub(this.player.pos, enemy.pos);
+    vel.normalize();
+    vel.x += getRandomInt(-1, 1) * 0.05; // make it a lil easier to live
+    vel.y += getRandomInt(-1, 1) * 0.01;
+    vel.z *= 0.4; // slow down laser
+
+    // Create particle system
     this.engine.createParticleSystem(PSystemType.LASER, {
       pos,
       vel,
@@ -216,6 +222,12 @@ export default class LevelOne extends AbstractLevel {
     raycaster.setFromCamera(mouse, this.camera); //set raycaster
     raycaster.ray.intersectPlane(plane, intersectPoint); // find the point of intersection
     this.player.lookAt(intersectPoint); // face our arrow to this point
+  };
+
+  pointTowardsPlayer = (enemy) => {
+    // const dir = Vector.sub(this.player.pos.copy(), enemy.pos.copy());
+    // enemy.lookAt(new THREE.Vector3(dir.x, dir.y, dir.z));
+    enemy.lookAt(this.player.pos.copy());
   };
 
   getTotalEnemies = () => {
@@ -308,4 +320,10 @@ export default class LevelOne extends AbstractLevel {
       statsUl.appendChild(li);
     }
   };
+}
+
+function getRandomInt(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min)) + min; // The maximum is exclusive and the minimum is inclusive
 }

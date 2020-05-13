@@ -6,6 +6,7 @@ const color = new Vector(0.52, 1, 0.45);
 
 export default class Player extends GameObject {
   inMotion;
+
   constructor(pos, modelMesh) {
     super(ObjectType.PLAYER, pos, modelMesh, new Vector(70, 10, 25), color);
 
@@ -15,6 +16,7 @@ export default class Player extends GameObject {
     modelMesh.rotation.y = 3.14;
     this.inMotion = false;
   }
+
   // Update state of player
   update(dt) {
     super.update(dt);
