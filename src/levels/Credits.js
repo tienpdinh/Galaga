@@ -22,6 +22,7 @@ export default class Intro extends AbstractLevel {
   init = () => {
     this.addText();
     this.addEventListeners();
+    this.showStats();
   };
 
   cleanup = () => {
@@ -30,6 +31,11 @@ export default class Intro extends AbstractLevel {
     this.engine.removeMesh(this.subtitleMesh);
     // Remove window eventListener for listening to "enter" key
     window.removeEventListener('keypress', this.onPressEnter);
+    // Remove stats
+    const statsDiv = document.getElementById('stats');
+    statsDiv.style.display = 'none';
+    const statsUl = document.getElementById('stats-list');
+    statsUl.innerHTML = '';
   };
 
   // Add a title and subtitle to main scene

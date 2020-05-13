@@ -175,7 +175,6 @@ export default class LevelOne extends AbstractLevel {
     window.addEventListener('keyup', this.stopPlayer, false);
     window.addEventListener('mousedown', this.spawnLaser, false);
     window.addEventListener('mousemove', this.pointTowardsMouse, false);
-    window.addEventListener('keypress', this.onPressEnter, false);
   };
 
   loadAssets = async () => {
@@ -218,23 +217,26 @@ export default class LevelOne extends AbstractLevel {
     window.removeEventListener('keyup', this.stopPlayer);
     window.removeEventListener('mousedown', this.spawnLaser);
     window.removeEventListener('mousemove', this.pointTowardsMouse);
-    window.removeEventListener('keypress', this.onPressEnter); // remove
+
+    // Remove window user controls
+    const controlsDiv = document.getElementById('controls');
+    controlsDiv.style.display = 'none';
 
     // Stats
-    const elapsedTime = this.clock.getElapsedTime();
+    const elapsedTime = this.clock.getElapsedTime().toFixed(2) + ' seconds';
     const kills = this.engine.getKills();
     const totalShots = this.totalShots;
-    const ammos = this.ammos;
-    const stats = { elapsedTime, kills, totalShots, ammos };
+    const remainingAmmo = this.ammos;
+    const stats = { elapsedTime, kills, totalShots, remainingAmmo };
 
     // Display stats
-    console.log(stats);
-  };
-
-  onPressEnter = (e) => {
-    if (e.keyCode === 13) {
-      // <Enter> key
-      this.switchLevel(Levels.CREDITS);
+    const statsDiv = document.getElementById('stats');
+    statsDiv.style.display = 'inherit';
+    const statsUl = document.getElementById('stats-list');
+    for (let [key, value] of Object.entries(stats)) {
+      let li = document.createElement('li');
+      li.appendChild(document.createTextNode(`${key}: ${value}`));
+      statsUl.appendChild(li);
     }
   };
 }

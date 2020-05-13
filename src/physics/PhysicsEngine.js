@@ -152,16 +152,5 @@ export default class PhysicsEngine extends AbstractPhysicsEngine {
       }
     }
     this.objects = [];
-
-    // Remove particle systems except star tunnel
-    let starTunnelPs;
-    for (let ps of this.particleSystems) {
-      if (ps.type !== PSystemType.STAR_TUNNEL) {
-        this.removeMesh(ps.getMesh());
-      } else {
-        starTunnelPs = ps;
-      }
-    }
-    this.particleSystems = [starTunnelPs];
   }
 }
