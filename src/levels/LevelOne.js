@@ -106,7 +106,7 @@ export default class LevelOne extends AbstractLevel {
       const pos = this.player.pos.copy();
       pos.z -= 70; // don't collide with player
       const vel = this.player.mesh.getWorldDirection(new THREE.Vector3());
-      // vel.z = -1
+      vel.z *= 0.5;
       this.engine.createParticleSystem(PSystemType.LASER, { pos, vel });
 
       // handling ammos and respawning enemies
