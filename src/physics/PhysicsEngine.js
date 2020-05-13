@@ -162,7 +162,8 @@ export default class PhysicsEngine extends AbstractPhysicsEngine {
   teardown() {
     // Remove all objects
     for (let object of this.objects) {
-      this.removeMesh(object.getMesh());
+      // this.removeMesh(object.getMesh());
+      object.mesh.visible = false;
       if (object.colliderMesh) {
         this.removeMesh(object.colliderMesh);
       }
