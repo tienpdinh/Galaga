@@ -53,9 +53,19 @@ export default class Enemy extends GameObject {
 
   chase = (pos) => {
     this.phase === 3;
-    if (this.rand(0, 1) > 0.7) {
-      let desired = Vector.sub(pos, this.pos);
-      let steer = Vector.sub(desired, this.getVel());
+    let desired;
+    let steer;
+    if (this.rand(0, 1) > 0.99) {
+      desired = Vector.sub(pos, this.pos);
+      steer = Vector.sub(desired, this.getVel());
+      steer.normalize();
+      steer.mul(0.1);
+      this.setAccel(steer);
+    }
+    // steer away
+    if (Vector.distance(pos, this.pos) < 100) {
+      desired = new Vector(0, 0, -1);
+      steer = Vector.sub(desired, this.getVel());
       steer.normalize();
       steer.mul(0.1);
       this.setAccel(steer);
