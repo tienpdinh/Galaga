@@ -70,6 +70,22 @@ export default class Enemy extends GameObject {
       steer.mul(0.11);
       this.setAccel(steer);
     }
+    // pull back from outer right side
+    if (this.pos.x > 250) {
+      desired = new Vector(-1, 0, -0.1);
+      steer = Vector.sub(desired, this.getVel());
+      steer.normalize();
+      steer.mul(0.08);
+      this.setAccel(steer);
+    }
+    // pull back from outer left side
+    if (this.pos.x < -250) {
+      desired = new Vector(1, 0, -0.1);
+      steer = Vector.sub(desired, this.getVel());
+      steer.normalize();
+      steer.mul(0.08);
+      this.setAccel(steer);
+    }
   };
 
   // Update state of cube... by default this just performs euleriean integration but I'm overriding it to directly add rotation
