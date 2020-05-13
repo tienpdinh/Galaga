@@ -6,6 +6,7 @@ import { Levels } from './LevelManager';
 import Player from '../physics/Player';
 import EnemyPack from '../math/EnemyPack';
 import { PSystemType } from '../physics/ParticleSystem';
+import laserSound from '../assets/sounds/laser.ogg';
 
 /**
  * Probably the only level this game will have. The actual game functionality goes in here
@@ -165,7 +166,7 @@ export default class LevelOne extends AbstractLevel {
     this.player.inMotion = false;
   };
 
-  spawnLaser = (e) => {
+  spawnLaser = async (e) => {
     if (this.ammos > 1) {
       const pos = this.player.pos.copy();
       pos.z -= 50; // don't collide with player
@@ -182,10 +183,14 @@ export default class LevelOne extends AbstractLevel {
       // handling ammos and respawning enemies
       this.ammos--;
       // loop through each pack and respawn the pack if all enemies in the pack has been destroyed
+
+      // Laser sound
+      const sound = await this.createLaserSound();
+      this.player.mesh.add(sound);
     }
   };
 
-  spawnEnemyLaser = (enemy) => {
+  spawnEnemyLaser = async (enemy) => {
     const pos = enemy.pos.copy();
     pos.z += 50; // don't collide with player
 
@@ -201,6 +206,35 @@ export default class LevelOne extends AbstractLevel {
       pos,
       vel,
       color: enemy.color,
+    });
+
+    // Laser sound
+    const sound = await this.createLaserSound();
+    enemy.mesh.add(sound);
+  };
+
+  createLaserSound = async () => {
+    // create an AudioListener and add it to the camera
+    const listener = new THREE.AudioListener();
+    this.camera.add(listener);
+
+    // create the PositionalAudio object (passing in the listener)
+    const sound = new THREE.PositionalAudio(listener);
+
+    // load a sound and set it as the PositionalAudio object's buffer
+    const buffer = await this.loadSound(laserSound);
+    sound.setBuffer(buffer);
+    sound.setRefDistance(20);
+    sound.setVolume(1);
+    sound.play();
+
+    return sound;
+  };
+
+  loadSound = (soundFile) => {
+    const audioLoader = new THREE.AudioLoader();
+    return new Promise((resolve, reject) => {
+      audioLoader.load(soundFile, (data) => resolve(data), null, reject);
     });
   };
 
