@@ -55,7 +55,6 @@ export default class LevelOne extends AbstractLevel {
     this.spawnPlayer();
     this.addEventListeners();
     this.spawnEnemies();
-    this.displayControlsText();
   };
 
   // Custom update functionality

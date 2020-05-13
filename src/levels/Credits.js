@@ -1,6 +1,8 @@
 import * as THREE from 'three';
 import AbstractLevel from './AbstractLevel';
 import { Levels } from './LevelManager';
+import gameplaySound from '../assets/sounds/starwars.ogg';
+import creditsSound from '../assets/sounds/interstellar.ogg';
 
 /**
  * First level a user sees when loading the game.
@@ -30,12 +32,16 @@ export default class Intro extends AbstractLevel {
   init = () => {
     this.addText();
     this.addEventListeners();
+    this.onSetAudio(creditsSound);
   };
 
   cleanup = () => {
     // Remove meshs from engine
     this.engine.removeMesh(this.titleMesh);
     this.engine.removeMesh(this.subtitleMesh);
+
+    // Sound
+    this.onSetAudio(gameplaySound);
 
     // Remove window eventListener for listening to "enter" key
     window.removeEventListener('keypress', this.onPressEnter);
@@ -46,6 +52,10 @@ export default class Intro extends AbstractLevel {
     statsDiv.style.display = 'none';
     const statsUl = document.getElementById('stats-list');
     statsUl.innerHTML = '';
+
+    // Reshow controls
+    const controlsDiv = document.getElementById('controls');
+    controlsDiv.style.display = 'inherit';
   };
 
   // Add a title and subtitle to main scene
