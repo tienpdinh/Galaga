@@ -70,6 +70,7 @@ export default class LevelOne extends AbstractLevel {
 
   movePlayer = (e) => {
     const amt = 0.3;
+    this.player.inMotion = true;
     if (e.keyCode === 68 || e.keyCode === 39) {
       // move right with arrow or D
       this.player.setVel(new Vector(amt, 0, 0));
@@ -97,7 +98,7 @@ export default class LevelOne extends AbstractLevel {
   };
 
   stopPlayer = (e) => {
-    this.player.setVel(new Vector());
+    this.player.inMotion = false;
   };
 
   spawnLaser = (e) => {
