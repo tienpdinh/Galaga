@@ -8,6 +8,7 @@ import ParticleSystem, { PSystemType } from './ParticleSystem';
 export default class PhysicsEngine extends AbstractPhysicsEngine {
   scene;
   particleSystems;
+  kills;
 
   constructor() {
     super();
@@ -17,6 +18,7 @@ export default class PhysicsEngine extends AbstractPhysicsEngine {
     // Create Scene
     this.scene = new THREE.Scene();
     this.particleSystems = [];
+    this.kills = 0;
   }
 
   update(dt) {
@@ -30,6 +32,7 @@ export default class PhysicsEngine extends AbstractPhysicsEngine {
         obj.update(dt);
         liveObjects.push(obj);
       } else {
+        this.kills++;
         this.removeMesh(obj.getMesh());
         if (obj.colliderMesh) {
           this.removeMesh(obj.colliderMesh);
@@ -133,5 +136,32 @@ export default class PhysicsEngine extends AbstractPhysicsEngine {
   // Remove a mesh from the scene (garbage collection does not do this for you)
   removeMesh(mesh) {
     this.scene.remove(mesh);
+  }
+
+  getKills() {
+    return this.kills;
+  }
+
+  // Remove all particle systems except star tunnel, remove all objects
+  teardown() {
+    // Remove all objects
+    for (let object of this.objects) {
+      this.removeMesh(object.getMesh());
+      if (object.colliderMesh) {
+        this.removeMesh(object.colliderMesh);
+      }
+    }
+    this.objects = [];
+
+    // Remove particle systems except star tunnel
+    let starTunnelPs;
+    for (let ps of this.particleSystems) {
+      if (ps.type !== PSystemType.STAR_TUNNEL) {
+        this.removeMesh(ps.getMesh());
+      } else {
+        starTunnelPs = ps;
+      }
+    }
+    this.particleSystems = [starTunnelPs];
   }
 }

@@ -2,6 +2,7 @@ import { Vector } from 'simple-physics-engine';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import AbstractLevel from './AbstractLevel';
+import { Levels } from './LevelManager';
 import Player from '../physics/Player';
 import EnemyPack from '../math/EnemyPack';
 import { PSystemType } from '../physics/ParticleSystem';
@@ -18,15 +19,20 @@ export default class LevelOne extends AbstractLevel {
   enemyPacks;
   player;
 
+  // Stats
   ammos;
-
   currentPackYPos;
+  totalShots;
+  clock;
 
   constructor(engine, renderer, camera, assets, switchLevel) {
     super(engine, renderer, camera, assets, switchLevel);
     this.enemyPacks = [];
     this.ammos = 1000;
     this.currentPackYPos = 0;
+    this.totalShots = 0;
+    this.clock = new THREE.Clock();
+    this.clock.start();
   }
 
   init = async () => {
@@ -108,7 +114,11 @@ export default class LevelOne extends AbstractLevel {
       pos.z -= 70; // don't collide with player
       const vel = this.player.mesh.getWorldDirection(new THREE.Vector3());
       vel.z *= 0.5;
-      this.engine.createParticleSystem(PSystemType.LASER, { pos, vel });
+      this.engine.createParticleSystem(PSystemType.LASER, {
+        pos,
+        vel,
+      });
+      this.totalShots++;
 
       // handling ammos and respawning enemies
       this.ammos--;
@@ -165,6 +175,7 @@ export default class LevelOne extends AbstractLevel {
     window.addEventListener('keyup', this.stopPlayer, false);
     window.addEventListener('mousedown', this.spawnLaser, false);
     window.addEventListener('mousemove', this.pointTowardsMouse, false);
+    window.addEventListener('keypress', this.onPressEnter, false);
   };
 
   loadAssets = async () => {
@@ -194,5 +205,36 @@ export default class LevelOne extends AbstractLevel {
     });
   };
 
-  cleanup = () => {};
+  onPlayerDeath = () => {
+    this.switchLevel(Levels.CREDITS);
+  };
+
+  cleanup = () => {
+    // Remove all objects
+    this.engine.teardown();
+
+    // Remove window handlers
+    window.removeEventListener('keydown', this.movePlayer);
+    window.removeEventListener('keyup', this.stopPlayer);
+    window.removeEventListener('mousedown', this.spawnLaser);
+    window.removeEventListener('mousemove', this.pointTowardsMouse);
+    window.removeEventListener('keypress', this.onPressEnter); // remove
+
+    // Stats
+    const elapsedTime = this.clock.getElapsedTime();
+    const kills = this.engine.getKills();
+    const totalShots = this.totalShots;
+    const ammos = this.ammos;
+    const stats = { elapsedTime, kills, totalShots, ammos };
+
+    // Display stats
+    console.log(stats);
+  };
+
+  onPressEnter = (e) => {
+    if (e.keyCode === 13) {
+      // <Enter> key
+      this.switchLevel(Levels.CREDITS);
+    }
+  };
 }

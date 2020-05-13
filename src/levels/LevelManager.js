@@ -1,13 +1,14 @@
 import Stats from 'stats.js';
 import Intro from './Intro';
 import LevelOne from './LevelOne';
+import Credits from './Credits';
 
-const levelsArr = [Intro, LevelOne];
+const levelsArr = [Intro, LevelOne, Credits];
 
 export const Levels = Object.freeze({
   INTRO: 0,
   LEVEL_ONE: 1,
-  END: 2,
+  CREDITS: 2,
 });
 
 /**
